@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="utils.js"></script>
+        <script src="code.js"></script>
+        <style>
+            .glow {
+                box-shadow: inset 0px 0px 10px 2px #0ff;
+            }
+
+            table {
+                border-collapse: collapse;
+                border: 1px solid black;
+                float: left;
+                position: relative;
+                background: #EAE171;
+            }
+
+            td {
+                width: 20px;
+                height: 20px;
+                border: 1px solid black;
+            }
+
+            arrow {
+                width: 20px;
+                height: 20px;
+                position: absolute;
+                background-image: url('arrow.png');
+            }
+
+            #dude {
+                background-image: url('dude.png');
+            }
+
+        </style>
+    </head>
+    <body>
+        <table>
+        </table>
+        <button id="shoot-arrow">Shoot</button>
+    </body>
+</html>

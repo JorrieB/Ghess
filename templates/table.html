@@ -1,0 +1,11 @@
+<div class="ghess-table">
+    {% for y in range(height) %}
+        <div class="ghess-row" style="height:{{100.0/height}}%">
+        {% for x in range(width) %}
+            <div class="ghess-td" data-x="{{ x }}" data-y="{{ y }}" style="width:{{ 100.0/width}}%">
+
+            </div>
+        {% endfor %}
+        </div>
+    {% endfor %}
+</div>

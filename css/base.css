@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+}
+
+.glow {
+    box-shadow: inset 0px 0px 10px 2px #0ff;
+}
+
+.ghess-table, .ghess-td {
+    border-style: solid;
+    border-color: black;
+}
+
+.ghess-table {
+    border-width: 0 0 1px 1px;
+    float: left;
+    position: relative;
+    background: #EAE171;
+    width:500px;
+    height:500px;
+}
+
+.ghess-row {
+    float: left;
+    width: 100%;
+}
+
+.ghess-td {
+    float: left;
+    height: 100%;
+    border-width: 1px 1px 0 0;
+}
+
+sprite {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+}
