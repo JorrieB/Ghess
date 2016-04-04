@@ -8,20 +8,33 @@ Ghess is a competitive multiplayer game where players use the tools they have in
 
 
 ##Characters
-Each character in the game *must* represent something unique. There also must exist every character which represents a unique way to play to bring true diversity into the game. 
+Each character in the game *must* represent something unique. There also must exist every character which represents a unique way to play to bring true diversity into the game.
+
+Diagram Key:
+
+![Assets](GDDAssets/Chars/Key.png)
+
+ 
 ####Archer
+![Assets](GDDAssets/Chars/Archer.png)
+
 Pros: Can fire an arrow, which will go straight across the map.
 
 Cons: Is completely blind.
 ####Javelin thrower
+![Javelin thrower](GDDAssets/Chars/Javelinthrower.png)
 Pros: Can throw a javelin at any point in a diagonal or straight direction.
 
 Con: Is completely blind.
 ####Swordsman
+![Swordsman](GDDAssets/Chars/Swordsman.png)
+
 Pros: Can attack forward and has a shield.
 
 Cons: Isn't particularly good at anything. 
 ####Pikeman
+![Pikeman](GDDAssets/Chars/Pikeman.png)
+
 Pros: Can see and attack two squares ahead and diagonally forward.
 
 Cons: Doesn't have a shield.
