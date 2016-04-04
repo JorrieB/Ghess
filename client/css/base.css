@@ -109,7 +109,7 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 );
 }
 
-/* ELEMENTS */
+/* BASIC ELEMENTS */
 .round-button {
     border-radius: 50%;
 
@@ -121,7 +121,15 @@
     box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.6);
 }
 
+.screen {
+    width: 1200px;
+    height: 800px;
+    border: 1px solid black;
+    padding: 20px;
+}
 
+
+/* PLAY VIEW */
 .ghess-table, .ghess-td {
     border-style: solid;
     border-color: black;
@@ -152,3 +160,4 @@ sprite {
     height: 20px;
     position: absolute;
 }
+
