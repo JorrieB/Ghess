@@ -3,7 +3,7 @@ V 1.0
 
 4/3/2016
 
-##The Game
+##Game Concept
 Ghess is a competitive multiplayer game where players use the tools they have in a simple system to predict what the other person is going to do. The game is meant to eliminate all technical skill necessary from a user. They must instead use only their powers of reasoning to predict and deduce what the other player is going to do.
 
 
