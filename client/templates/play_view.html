@@ -1,5 +1,18 @@
 <div id="play-view" class="screen">
+
     {% set width = 10 %}
     {% set height = 10 %}
     {% include '/templates/table.html' %}
+
+    <div id="info-pane" class="playView-info">
+    	<!-- User selects their unique playerID before entering play view -->
+    	<div id="player-id" class="h1 playView-info-text"> (PlayerID) </div>
+    	<!-- player-stat contains visual info on the characters that comprise their team  -->
+    	<div id="player-stat" class="h2 playView-info-text"> (player stats) </div>
+    	<!-- enemy-stat contains info about enemy's team -->
+    	<div id="enemy-stat" class="h2 playView-info-text"> (enemy stats) </div>
+    	<!-- character-stat contains info about the selected character and his powers -->
+		<div id="character-stat" class="h2 playView-info-text"> (character stats) </div>    	
+	</div>
+
 </div>
