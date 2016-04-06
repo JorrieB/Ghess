@@ -161,9 +161,11 @@
 .h1 {
     font-size: 24px;
 }
+
 .h2 {
     font-size: 18px;
 }
+
 .playView-info-text {
     border: 1px solid black;
     margin-bottom: 10px;
@@ -210,3 +212,44 @@ sprite {
     position: absolute;
 }
 
+.turn-arrow-container {
+    position: absolute;
+}
+
+.turn-arrow-relative-container{
+    position: relative;
+    width:100%;
+    height:100%;
+}
+
+.turn-arrow {
+    background-image: url('/img/turn_arrow.png');
+    background-size: 100%;
+    position: absolute;
+    width:100%;
+    height:100%;
+}
+
+.turn-arrow:hover {
+    background-image: url('/img/turn_arrow_white.png');
+    cursor: pointer;
+}
+
+.turn-arrow-up {
+    top: -100%;
+}
+
+.turn-arrow-left {
+    left: -100%;
+    transform: rotate(270deg);
+}
+
+.turn-arrow-right {
+    left: 100%;
+    transform: rotate(90deg);
+}
+
+.turn-arrow-down {
+    top: 100%;
+    transform: rotate(180deg);
+}

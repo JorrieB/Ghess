@@ -14,13 +14,20 @@ $.fn.rotate = function(degrees) {
     return this;
 };
 
-$.fn.getSquare = function(vec) {
+getSquare = function(vec) {
     var x = vec[0];
     var y = vec[1];
-    return $('td').filter(function() {
+    return $('.ghess-td').filter(function() {
         return ($(this).data('x') == x) && ($(this).data('y') == y);
     });
 };
+
+$.fn.placeAt = function(vec) {
+    var $square = getSquare(vec);
+    var pos = $square.position();
+    this.css('top', pos.top).css('left', pos.left);
+    return this;
+}
 
 dirToDegrees = {'up': 0, 'down': 180, 'left': 270, 'right': 90};
 
