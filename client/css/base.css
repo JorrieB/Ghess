@@ -109,7 +109,7 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 );
 }
 
-/* ELEMENTS */
+/* BASIC ELEMENTS */
 .round-button {
     border-radius: 50%;
 
@@ -121,7 +121,52 @@
     box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.6);
 }
 
+.screen {
+    width: 800px;
+    height: 600px;
+    border: 1px solid black;
+    padding: 30px;
+}
 
+/* START VIEW */
+.start-view {
+
+}
+
+
+/* PLAY VIEW INFO PANE */
+
+.playView-info {
+    position: relative;
+    width: 200px;
+    float: right;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.h1 {
+    font-size: 24px;
+}
+.h2 {
+    font-size: 18px;
+}
+.playView-info-text {
+    font-family: 'Sansita One';
+    font-style: normal;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+#player-id {
+    border: none;
+}
+
+#character-stat {
+    height: 200px;
+}
+
+/* PLAY VIEW TABLE */
 .ghess-table, .ghess-td {
     border-style: solid;
     border-color: black;
@@ -132,8 +177,8 @@
     float: left;
     position: relative;
     background: #EAE171;
-    width:500px;
-    height:500px;
+    width: 500px;
+    height: 500px;
 }
 
 .ghess-row {
@@ -152,3 +197,4 @@ sprite {
     height: 20px;
     position: absolute;
 }
+
