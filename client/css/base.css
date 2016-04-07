@@ -2,26 +2,24 @@
     box-sizing: border-box;
 }
 
-
-
 /* UTILITY CSS CLASSES */
 
 @-webkit-keyframes wiggle {
-    0% {-webkit-transform:rotate(8deg);}
-    50% {-webkit-transform:rotate(-8deg);}
-    100% {-webkit-transform:rotate(8deg);}
+    0% {-webkit-transform:rotate(15deg);}
+    50% {-webkit-transform:rotate(-15deg);}
+    100% {-webkit-transform:rotate(15deg);}
 }
 
 @-moz-keyframes wiggle {
-    0% {-moz-transform:rotate(8deg);}
-    50% {-moz-transform:rotate(-8deg);}
-    100% {-moz-transform:rotate(8deg);}
+    0% {-moz-transform:rotate(15deg);}
+    50% {-moz-transform:rotate(-15deg);}
+    100% {-moz-transform:rotate(15deg);}
 }
 
 @keyframes wiggle {
-    0% {transform:rotate(8deg);}
-    50% {transform:rotate(-8deg);}
-    100% {transform:rotate(8deg);}
+    0% {transform:rotate(15deg);}
+    50% {transform:rotate(-15deg);}
+    100% {transform:rotate(15deg);}
 }
 
 .wiggle:hover {
@@ -113,12 +111,6 @@
 .round-button {
     border-radius: 50%;
 
-}
-
-.round-button:active {
-    -webkit-box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.6);
-    -moz-box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.6);
-    box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, 0.6);
 }
 
 .screen {
@@ -252,4 +244,44 @@ sprite {
 .turn-arrow-down {
     top: 100%;
     transform: rotate(180deg);
+}
+
+.character-portrait {
+    position: relative;
+    background-image: url('/img/test_portrait.png');
+    background-size: 100%;
+    width: 100%;
+    padding-bottom: 100%;
+}
+
+.action-button {
+    position: absolute;
+    width: 20%;
+    height: 20%;
+    background-size: 100%;
+    border: 1px solid black;
+}
+
+.attack-button {
+    background-image: url('/img/attack.png');
+    top: 0%;
+    left: 0%;
+}
+
+.turn-button {
+    background-image: url('/img/turn.png');
+    top: 22%;
+    left: 0%;
+}
+
+.move-button {
+    background-image: url('/img/move.png');
+    top: 44%;
+    left: 0%;
+}
+
+.sleep-button {
+    background-image: url('/img/sleep.png');
+    top: 66%;
+    left: 0%;
 }
