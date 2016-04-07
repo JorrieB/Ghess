@@ -22,12 +22,12 @@ Pros: Can fire an arrow, which will go straight across the map.
 
 Cons: Is completely blind.
 ####Javelin thrower
-![Javelin thrower](GDDAssets/Chars/Javelinthrower.png)
+![Javelin thrower](GDDAssets/Chars/JavelinThrower.png)
 Pros: Can throw a javelin at any point in a diagonal or straight direction.
 
 Con: Is completely blind.
 ####Swordsman
-![Swordsman](GDDAssets/Chars/Swordsman.png)
+![Swordsman](GDDAssets/Chars/SwordsMan.png)
 
 Pros: Can attack forward and has a shield.
 
@@ -130,6 +130,9 @@ The result is a comic book art style. I think this is the best direction to go a
 
 ##Networking
 ###Server to client message
+
+
+
 ####Board state:
 Whose turn it is.
 
@@ -145,15 +148,16 @@ Controller object:
 [['arrow', [[3,3],[3,6]],...]
 
 ##Client to server message
-####Type:
+```
+Message name: "update-game" 
 
-*  Pass
-*  Attack
-*  Move
-*  Turn
-
-####Location
-For a pass, it will just return the current location.
-
+Message data:	 {
+	id: gameID,
+	type: 'pass','attack','turn','move',
+	objectPosition: position of acting object,
+	(optl) targetPosition: 'move' and 'attack',
+	(optl) newHeading: 'turn'
+}
+```
 
 
