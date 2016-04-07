@@ -1,4 +1,5 @@
 var GameStore = require('./GameStore');
+var GameHandler = require('./GameHandler');
 
 // The socket message handlers.
 // The first argument of each must be the socket
@@ -7,4 +8,9 @@ module.exports = {
         var gameId = GameStore.create();
         // send id to clients
     },
+    'update-game': function(socket, data) {
+    	var game = GameStore.get(data.id);
+    	GameHandler(data, game);
+   		// Send result back
+    }
 };
