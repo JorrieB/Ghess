@@ -10,7 +10,7 @@ module.exports = {
     create: function() {
         // Use current time to make the ID unique, and convert to base 64 to shorten it
         var newId = toBase64(Date.now());
-        games[newId] = 'there is a game here';
+        games[newId] = new Game();
         return newId;
     },
     // Gets a game given an ID
