@@ -11,9 +11,13 @@
     	<div id="player-stat" class="h2 playView-info-text"> (player stats) </div>
     	<!-- enemy-stat contains info about enemy's team -->
     	<div id="enemy-stat" class="h2 playView-info-text"> (enemy stats) </div>
-    	<!-- character-stat contains info about the selected character and his powers -->
-		<div id="character-stat" class="h2 playView-info-text"> (character stats) </div>
+    	
         {% include '/templates/character_portrait.html' %}
+
+        <!-- character-stat contains info about the selected character and his powers -->
+		<div id="character-stat" class="h2 playView-info-text"> (character stats) </div>
+		<button type="button" id="forfeit-button" class="h2 basic-button redBtn">Forfeit! :(</button>
+
 	</div>
 
 </div>
