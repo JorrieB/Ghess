@@ -5,6 +5,17 @@ $.fn.allPosition = function() {
     return position;
 };
 
+$.fn.getPosition = function() {
+    var $square = this.closest('.ghess-td');
+    if ($square.length == 1) {
+        $square = $square.eq(0);
+        var x = $square.data('x');
+        var y = $square.data('y');
+        return [x, y];
+    }
+    return null;
+};
+
 $.fn.rotate = function(degrees) {
     this.css('-webkit-transform', 'rotate(' + degrees + 'deg)')
         .css('-moz-transform', 'rotate(' + degrees + 'deg)')
