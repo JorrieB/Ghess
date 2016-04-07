@@ -1,5 +1,6 @@
 // Basic imports to set up Express app & Socket.io
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
@@ -12,6 +13,8 @@ var GameStore = require('./GameStore');
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });
+
+app.use('/static', express.static('js'));
 
 // Handle Socket.io communication
 io.on('connection', function(socket) {

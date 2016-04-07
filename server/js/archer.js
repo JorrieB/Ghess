@@ -17,11 +17,14 @@ var Archer = function(startPosition, startHeading) {
 	};
 
 	_this.getAttackableCells = function(){
-		attackableCells = []
-		//TODO discuss format for attack 
+		attackableCells = [];
+		for (var i = 0; i <= arrowRange; i++) {
+			attackableCells.push(startHeading * i);
+		}
+		return attackableCells
 	};
 
 	_this.getAccessibleCells = function(){
-		return [[_heading]];
+		return [_heading];
 	};
 };

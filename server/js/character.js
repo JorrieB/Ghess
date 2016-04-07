@@ -24,3 +24,5 @@ var Character = function(startPosition, startHeading) {
 		return [];
 	};
 };
+
+console.log("FUCK YOU")
