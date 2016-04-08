@@ -13,8 +13,16 @@ var Character = function(startPosition, startHeading, playerId) {
 		return _position;
 	};
 
+	this.setPosition = function(position) {
+		_position = position;
+	};
+
 	_this.getHeading = function(){
 		return _heading;
+	};
+
+	_this.setHeading = function(heading){
+		_heading = newHeading;
 	};
 
 	_this.getVisibleCells = function(){

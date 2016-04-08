@@ -10,7 +10,7 @@ module.exports = {
     },
     'update-game': function(socket, data) {
     	var game = GameStore.get(data.id);
-    	GameHandler(data, game);
+    	var isValid = GameHandler(data, game);
    		// Send result back
     }
 };

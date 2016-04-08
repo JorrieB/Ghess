@@ -1,17 +1,19 @@
-module.exports = function(message, game) {
+module.exports = function(message, game, playerId) {
+    var isValid = false;
     switch(message.type) {
     case "move":
-        game.handleMove(message.objectPosition, message.targetPosition);
+        isValid = game.handleMove(message.objectPosition, message.targetPosition, playerId);
         break;
     case "turn":
-        game.handleTurn(message.objectPosition, message.newHeading);
+        isValid = game.handleTurn(message.objectPosition, message.newHeading, playerId);
         break;
     case "attack":
-        game.handleAttack(message.objectPosition, message.targetPosition);
+        isValid = game.handleAttack(message.objectPosition, message.targetPosition, playerId);
         break;
     case "pass":
-        break
+        isValid = game.handlePass(playerId);
     default:
         //
-}
+    }
+    return isValid;
 };
