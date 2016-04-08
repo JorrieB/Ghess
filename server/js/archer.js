@@ -1,8 +1,8 @@
-var Archer = function(startPosition, startHeading) {
+var Archer = function(startPosition, startHeading, playerId) {
 	var _this = this;
 	var arrowRange = 10;
  
-	Character.call(_this, startPosition, startHeading);
+	Character.call(_this, startPosition, startHeading, playerId);
 
 	_this.getPosition = function() {
 		return _position;

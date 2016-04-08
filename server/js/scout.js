@@ -1,9 +1,9 @@
-var Scout = function(startPosition, startHeading) {
+var Scout = function(startPosition, startHeading, playerId) {
 	var _this = this;
 	var scoutRange = 2;
  	//The size of the square centerd at the scout is scoutRange + 1
 
-	Character.call(_this, startPosition, startHeading);
+	Character.call(_this, startPosition, startHeading, playerId);
 
 	_this.getPosition = function() {
 		return _position;
