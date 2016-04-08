@@ -130,29 +130,60 @@ The result is a comic book art style. I think this is the best direction to go a
 
 ##Networking
 ###Server to client message
+######Update state
+Client should go through characters and use their properties to figure to create the controller objects and to deduce what is visible.
 
+```
+Message name: "update-state"
 
+Message data: {
+	turn: playerID,
+	characters: [characterObjects],
+	animations: [animationObjects]
+}
 
-####Board state:
-Whose turn it is.
+```
+######Round over
+Updates HUD on details to do round over/game over animations.
 
-Controller object:
+```
+Message name: "round-over"
 
-*  Team
-*  Type
-*  Visibility
-*  Attack
-*  Location
+Message data: {
+	winner: playerID,
+	match-score: [score1, score2],
+	game-over: bool
+}
+```
+######Character object
+```
+character: {
+	type: string,
+	team: playerID,
+	position: position,
+	alive: bool,
+	visibility: [position],
+	attack: [position],
+	move: [position]
+}
+```
 
-####Animations:
-[['arrow', [[3,3],[3,6]],...]
+######Animation object
+```
+animation: {
+	type: string,
+	positions: [position]
+}
+```
 
-##Client to server message
+###Client to server message
+######Update game
 ```
 Message name: "update-game" 
 
 Message data:	 {
-	id: gameID,
+	gameId: gameID,
+	playerId: playerID,
 	type: 'pass','attack','turn','move',
 	objectPosition: position of acting object,
 	(optl) targetPosition: 'move' and 'attack',
