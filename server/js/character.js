@@ -5,7 +5,7 @@ var Character = function(startPosition, startHeading, playerId) {
 	var _position = startPosition;
 	var _heading = heading;
 
-	_this.getPlayerId() = function{
+	_this.getPlayerId = function() {
 		return _playerId;
 	};
 
@@ -29,5 +29,3 @@ var Character = function(startPosition, startHeading, playerId) {
 		return [];
 	};
 };
-
-console.log("FUCK YOU")
