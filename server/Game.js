@@ -135,6 +135,7 @@ var Game = function() {
             return false;
         }
 
+        // This is wrong: some character don't give a shit about the target.
         // Is the endPosition occupied by an enemy?
         if (targetCharacter.getPlayerId() == playerID){
             return false;
@@ -156,7 +157,7 @@ var Game = function() {
             return false;
         }
         // More spooky arithmetic for eric
-        _numberOfMoves = Math.floor(_numberOfMoves / _movePerTurn) + 1;
+        _numberOfMoves =  (Math.floor(_numberOfMoves / _movePerTurn) + 1) * _movePerTurn;
         return true;
     };
 };
