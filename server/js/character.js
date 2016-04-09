@@ -36,4 +36,9 @@ var Character = function(startPosition, startHeading, playerId) {
 	_this.getAccessibleCells = function(){
 		return [];
 	};
+
+	// Return a boolean that represent the validity of the attack
+	_this.attack = function(attackedPosition, characters){
+		return false;
+	}
 };

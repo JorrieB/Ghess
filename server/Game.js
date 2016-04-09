@@ -129,27 +129,25 @@ var Game = function() {
             return false;
         }
 
-        // Is the endPosition occupied?
-        targetCharacter = (charactersAtPosition(endPosition)
-        if (targetCharacter == null){
-            return false;
-        }
+        // NOTE: This should probably happen inside Character.attack, with specific conditions for each character.
+        // // Is the endPosition occupied?
+        // targetCharacter = (charactersAtPosition(endPosition)
+        // if (targetCharacter == null){
+        //     return false;
+        // }
 
-        // This is wrong: some character don't give a shit about the target.
-        // Is the endPosition occupied by an enemy?
-        if (targetCharacter.getPlayerId() == playerID){
-            return false;
-        }
+        // if (targetCharacter.getPlayerId() == playerID){
+        //     return false;
+        // }
 
-        // Can the activeCharacter attack in that position?
-        if !(endPosition in activeCharacter.getAttackableCells()){
-            return false;
-        }
+        // // Can the activeCharacter attack in that position?
+        // if !(endPosition in activeCharacter.getAttackableCells()){
+        //     return false;
+        // }
 
-        // TODO: Character.attack have to be implemented
-        activeCharacter.attack(targetCharacter);
+        isValid = activeCharacter.attack(attackedPosition, _characters);
         _numberOfMoves += 1; 
-        return true;
+        return isValid;
     };
 
     _this.handlePass  = function(playerId) {
