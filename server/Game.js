@@ -207,8 +207,27 @@ module.exports = function() {
         // This function should return game parameters like available characters, board size, etc
     };
 
-    _this.serialize = function(playerId) {
-        // given a player id, should return a JSON object of game state for that player
-        // (so it takes into account visibility)
-    };
+    //takes player ID and returns all enemy characters that lie within visibility of player's characters
+    var charactersVisibleTo = function(playerID){
+        //filter character array on player id
+        //find union of visibility of player's characters
+        //find all characters visible to players characters
+    }
+
+    //returns game state object dependent upon who is requesting it
+    //player id can correspond to player 1, 2, or an observer
+    _this.serialize = function(playerID){
+        //if (player id is observer){send full character array}
+        //else {
+            //characters = enemiesVisible
+        //}
+
+        gameObj = {
+            "message":"update-state",
+            "turn":getActivePlayerId(),
+            "characters":_characters,
+            "animations":[]
+        }
+        return gameObj;
+    }
 };
