@@ -38,8 +38,8 @@ module.exports = function(startPosition, startHeading, playerId) {
             return false;
         }
 
-        // If all of the condition are satisfied, destroy the targerCharacter
-        game.destroyCharacter(targerCharacter);
+        // If all of the condition are satisfied, destroy the targetCharacter
+        game.destroyCharacter(targetCharacter);
         return true;
 	}
 };
