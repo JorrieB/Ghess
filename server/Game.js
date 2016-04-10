@@ -84,6 +84,10 @@ module.exports = function() {
     _this.destroyCharacter = function(character){
         return _destroyCharacter(character);
     }
+
+    _this.tileOnBoard = function(position) {
+        return position.x >= 0 && position.x < _boardSize && position.y >= 0 && position.y < _boardSize;
+    }
     //Handler for the moves that change the game state:
 
     _this.handleMove = function(startPosition, endPosition, playerId){
