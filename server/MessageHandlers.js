@@ -23,6 +23,20 @@ module.exports = {
         // Send message back to client
         socket.emit('game-joined', { gameId: data.gameId, gameParams: game.getParams() });
     },
+    'ready-player': function(socket, data) {
+        var game = GameStore.get(socket.gameId);
+        // TODO: make ready take arguments with initial placement of characters
+        game.ready(socket.playerId);
+        socket.emit('player-readied');
+        // If both players are ready, start the game & send game state to clients
+        if (game.canStart()) {
+            // To this player
+            socket.to(socket.playerId).emit('update-state', game.serialize(socket.playerId));
+            // To the other player
+            var otherPlayerId = game.getOtherPlayerId(socket.playerId);
+            socket.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
+        }
+    },
     'update-game': function(socket, data) {
     	var game = GameStore.get(socket.gameId);
     	var isValid = GameHandler(data, game, socket.playerId);
