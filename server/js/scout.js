@@ -10,7 +10,7 @@ module.exports  = function(startPosition, startHeading, playerId) {
 	_this.getVisibleCells = function(){
 		visibleCells = []
 		for (var i = 0; i <= scoutRange; i++) {
-			for (var j = 0; j <= scoutRange, j ++){
+			for (var j = 0; j <= scoutRange; j ++){
 				visibleCells.push({x:i, y:j});
 			}
 		}
@@ -22,6 +22,6 @@ module.exports  = function(startPosition, startHeading, playerId) {
 	};
 
 	_this.getAccessibleCells = function(){
-		return [_heading];
+		return [vectorUtils.vectorSum(_this.position, _this.heading)];
 	};
 };

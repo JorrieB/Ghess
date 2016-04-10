@@ -19,16 +19,15 @@ module.exports = function(startPosition, startHeading, playerId) {
 	};
 
 	_this.getAccessibleCells = function(){
-		return [_heading];
+		return [vectorUtils.vectorSum(_this.position, _this.heading)];
 	};
 
 	_this.attack = function(attackedPosition, game){
-		// TODO
-		// characters = game.getCharacters();
-		// charactersInLine = characters.filter(
-		// 	function(character){
-		// 		return 
-		// 	})
+		characters = game.getCharacters();
+		charactersInLine = characters.filter(
+			function(character){
+				return 
+			})
 		return false;
 	}
 };

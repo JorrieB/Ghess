@@ -1,3 +1,4 @@
+var vectorUtils = require('../utils/vectorUtils');
 var Character = require('./character');
 
 module.exports = function(startPosition, startHeading, playerId) {
@@ -7,39 +8,41 @@ module.exports = function(startPosition, startHeading, playerId) {
 	Character.call(_this, startPosition, startHeading,  playerId);
 
 	_this.getVisibleCells = function(){
-		var _right = turnRight(_heading);
-		var _left = turnLeft(_heading);
-		visibleCells = [_heading, _heading + _right, _heading + _left];
+		var right = turnRight(_this.heading);
+		var left = turnLeft(_this.heading);
+		visibleCells = [_this.position + _this.heading, 
+						_this.position + _this.heading + right,
+						_this.position +  _this.heading + left];
 		return visibleCells;
 	};
 
 	_this.getAttackableCells = function(){
-		return [_heading];
+		return [vectorUtils.vectorSum(_this.position, _this.heading)];
 	};
 
 	_this.getAccessibleCells = function(){
-		return [_heading];
+		return [vectorUtils.vectorSum(_this.position, _this.heading)];
 	};
 
 	_this.attack = function(attackedPosition, game){
 		// Is the endPosition occupied?
-        targetCharacter = (game.charactersAtPosition(endPosition);
+        targetCharacter = (game.getCharacterAtPosition(attackedPosition));
         if (targetCharacter == null){
             return false;
         }
 
         // Is the targetCharacter an adversary?
-        if (targetCharacter.getPlayerId() == _playerID){
+        if (targetCharacter.getPlayerId() == playerId){
             return false;
         }
 
         // Can the knight attack in that position?
-        if (!(endPosition in activeCharacter.getAttackableCells()){
+        if (! vectorUtils.inVectorList(activeCharacter.getAttackableCells(), attackedPosition)){
             return false;
         }
 
         // If all of the condition are satisfied, destroy the targerCharacter
-        game.destroyCharacter(targerCharacter);
+        game.destroyCharacter(targetCharacter);
         return true;
 	}
 };
