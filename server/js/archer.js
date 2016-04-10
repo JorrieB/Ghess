@@ -1,5 +1,5 @@
 var Character = require('./character');
-var utils = require('utils/vectorUtils.js')
+var utils = require('../utils/vectorUtils.js')
 
 module.exports = function(startPosition, startHeading, playerId) {
 	var _this = this;
@@ -26,7 +26,7 @@ module.exports = function(startPosition, startHeading, playerId) {
 	_this.attack = function(attackedPosition, game){
 		for (i = 1; i <= arrowRange; i++){
 			//get square arrow is currently in based on how far the arrow has flown and where the character is
-			var attackTile = utils.vectorSum(utils.vectorMultScalar(_heading, i),_position);
+			var attackTile = utils.vectorSum(utils.vectorMultScalar(_this.heading, i),_this.position);
 
 			//if the arrow has left the board, end the flight of the arrow
 			if (!game.tileOnBoard(attackTile)){
@@ -37,7 +37,7 @@ module.exports = function(startPosition, startHeading, playerId) {
 			var attackedCharacter = game.getCharacterAtPosition(attackTile);
 			if (attackedCharacter != null){
 				//char in square may be able to defend itself
-				var successfulDefend = attackedCharacter.defend('arrow', _heading);
+				var successfulDefend = attackedCharacter.defend('arrow', _this.heading);
 				//if not, kill the character
 				if (!successfulDefend){
 					game.destroyCharacter(attackedCharacter);
