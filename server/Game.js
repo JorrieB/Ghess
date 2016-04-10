@@ -9,12 +9,15 @@ module.exports = function() {
     var _maxTurnTime = 100;
     var _numberOfMoves = 0;     // Number of moves since the beginning of the game
     var _movePerTurn = 2;
+    var _playersId = []
 
     // Spooky modular arithmetic for eric
     // Return 1 if this is player's 1 turn, 2 if this is player 2 turn
     _getActivePlayerId = function(){
         var turnNumber = Math.floor(_numberOfMoves / _movePerTurn);
-         return (turnNumber % 2 ) + 1
+         activePlayerIndex =  (turnNumber % 2 )
+         activePlayerId = _playersId[activePlayerIndex];
+         return activePlayerId;
     }
 
    _isPlayerMove = function(playerId){
@@ -63,16 +66,25 @@ module.exports = function() {
     _this.addPlayer = function(playerId) {
         // TODO
         // This should store the given player id in the game
+        if (_playersId.length < 2){
+            _playersId.push(playerId);
+            return true;
+        };
+        return false;
     };
 
     _this.getOtherPlayerId = function(playerId) {
-        // TODO
-        // given a player id, should return the other one
+        if _this.canStart{
+            var thisIndex = _playersId.indexOf(playerId);
+            var otherIndex = (thisIndex + 1 ) % 2;
+            var otherPlayerId = _playersId[thisIndex];
+            return otherPlayerId;
+        }
+        return null;
     };
 
     _this.canStart = function() {
-        // TODO
-        // Returns true or false, if the game is ready to start
+        return (_playersId.length == 2);
     }
 
     _this.getActivePlayerId = function(){
