@@ -5,6 +5,9 @@ module.exports = function(startPosition, startHeading, playerId) {
 	_this.position = startPosition;
 	_this.heading = startHeading;
 
+	this._characterType = "Character";
+	this._alive = true;
+
 	_this.getPlayerId = function() {
 		return _this.playerId;
 	};
@@ -37,11 +40,31 @@ module.exports = function(startPosition, startHeading, playerId) {
 		return [];
 	};
 
+	_this.getCharacterType = function(){
+		return _characterType;
+	}
+
+	_this.getAliveness = function(){
+		return _alive;
+	}
+
 	_this.attack = function(){
 		return false;
 	};
 
 	_this.defend = function(attackType, attackHeading){
 		return false;
+	}
+
+	_this.serialize = function(){
+		var characterObject = getCharacterType() {
+			"team":getPlayerId(),
+			"position": getPosition(),
+    		"alive": getAliveness(),
+    		"visibility": getVisibleCells(),
+    		"attack": getAttackableCells(),
+   			"move": getAccessibleCells()
+		}
+		return characterObject;
 	}
 };
