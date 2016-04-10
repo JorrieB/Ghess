@@ -37,8 +37,7 @@ var Character = function(startPosition, startHeading, playerId) {
 		return [];
 	};
 
-	// Return a boolean that represent the validity of the attack
-	_this.attack = function(attackedPosition, characters){
+	_this.attack = function(){
 		return false;
-	}
+	};
 };

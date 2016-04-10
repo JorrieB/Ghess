@@ -4,14 +4,6 @@ var Archer = function(startPosition, startHeading, playerId) {
  
 	Character.call(_this, startPosition, startHeading, playerId);
 
-	_this.getPosition = function() {
-		return _position;
-	};
-
-	_this.getHeading = function(){
-		return _heading;
-	};
-
 	_this.getVisibleCells = function(){
 		return [{x:0, y:0}];		
 	};
@@ -27,4 +19,9 @@ var Archer = function(startPosition, startHeading, playerId) {
 	_this.getAccessibleCells = function(){
 		return [_heading];
 	};
+
+	_this.attack = function(){
+		// TODO
+		return true
+	}
 };

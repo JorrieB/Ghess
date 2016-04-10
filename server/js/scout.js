@@ -5,14 +5,6 @@ var Scout = function(startPosition, startHeading, playerId) {
 
 	Character.call(_this, startPosition, startHeading, playerId);
 
-	_this.getPosition = function() {
-		return _position;
-	};
-
-	_this.getHeading = function(){
-		return _heading;
-	};
-
 	_this.getVisibleCells = function(){
 		visibleCells = []
 		for (var i = 0; i <= scoutRange; i++) {

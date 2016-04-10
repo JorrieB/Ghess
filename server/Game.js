@@ -44,6 +44,30 @@ var Game = function() {
         return characterAtPosition;
     }
 
+    _destroyCharacter = function(character){
+        var characterIndex = _characters.indexOf(character);
+        // If there is no such character, return false
+        if (characterIndex == -1){
+            return false;
+        }
+
+        _characters.splice(characterIndex, 1);
+        return true;
+    }
+
+    // Public analog of functions above 
+    _this.getActivePlayerId = function(){
+        return _getActivePlayerId();
+    }
+
+    _this.isPlayerMove = function(playerID){
+        return _isPlayerMove(playerId);
+    }
+
+    _this.getCharacterAtPosition = function(position){
+        return _getCharacterAtPosition(position);   
+    }
+
     _this.insertCharacters = function(startCharacters){
         // For now, we just statically insert a list of characters
         _characters = startCharacters;
@@ -54,7 +78,9 @@ var Game = function() {
         return _characters;
     };
 
-
+    _this.destroyCharacter = function(character){
+        return _destroyCharacter(character);
+    }
     //Handler for the moves that change the game state:
 
     _this.handleMove = function(startPosition, endPosition, playerId){
@@ -129,23 +155,7 @@ var Game = function() {
             return false;
         }
 
-        // NOTE: This should probably happen inside Character.attack, with specific conditions for each character.
-        // // Is the endPosition occupied?
-        // targetCharacter = (charactersAtPosition(endPosition)
-        // if (targetCharacter == null){
-        //     return false;
-        // }
-
-        // if (targetCharacter.getPlayerId() == playerID){
-        //     return false;
-        // }
-
-        // // Can the activeCharacter attack in that position?
-        // if !(endPosition in activeCharacter.getAttackableCells()){
-        //     return false;
-        // }
-
-        isValid = activeCharacter.attack(attackedPosition, _characters);
+        isValid = activeCharacter.attack(attackedPosition, _this);
         _numberOfMoves += 1; 
         return isValid;
     };
