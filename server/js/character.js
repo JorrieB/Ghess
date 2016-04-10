@@ -17,7 +17,7 @@ module.exports = function(startPosition, startHeading, playerId) {
 	};
 
 	this.setPosition = function(newPosition) {
-		_thisposition = newPosition;
+		_this.position = newPosition;
 	};
 
 	_this.getHeading = function(){

@@ -4,7 +4,8 @@ var utils = require('../utils/vectorUtils.js')
 module.exports = function(startPosition, startHeading, playerId) {
 	var _this = this;
 	var arrowRange = 10;
- 
+ 	_this.characterType = "Archer";
+
 	Character.call(_this, startPosition, startHeading, playerId);
 
 	_this.getVisibleCells = function(){
@@ -20,7 +21,7 @@ module.exports = function(startPosition, startHeading, playerId) {
 	};
 
 	_this.getAccessibleCells = function(){
-		return [vectorUtils.vectorSum(_this.position, _this.heading)];
+		return [utils.vectorSum(_this.position, _this.heading)];
 	};
 
 	_this.attack = function(attackedPosition, game){

@@ -74,7 +74,7 @@ module.exports = function() {
     };
 
     _this.getOtherPlayerId = function(playerId) {
-        if _this.canStart{
+        if (_this.canStart()){
             var thisIndex = _playersId.indexOf(playerId);
             var otherIndex = (thisIndex + 1 ) % 2;
             var otherPlayerId = _playersId[thisIndex];
@@ -122,23 +122,23 @@ module.exports = function() {
             return false;
         }
         // Is there a character at startposition?
-        activeCharacter = characterAtPosition(startPosition);
+        activeCharacter = _getCharacterAtPosition(startPosition);
         if (activeCharacter == null){
             return false;
         }
 
         // Is that character controlled by playerID?
-        if (!activeCharacter.getPlayerId() == playerID){
+        if (!activeCharacter.getPlayerId() == playerId){
             return false;
         }
 
         // Is the endPosition empty?
-        if (!charactersAtPosition(endPosition) == null){
+        if (!(_getCharacterAtPosition(endPosition) == null)){
             return false
         }
 
         // Can the activeCharacter move in that position?
-        if (!endPosition in activeCharacter.getAccessibleCells()){
+        if (! vectorUtils.inVectorList(activeCharacter.getAccessibleCells(), endPosition)){
             return false;
         }
 
@@ -153,13 +153,13 @@ module.exports = function() {
         }
 
         // Is there a character at startposition?
-        activeCharacter = characterAtPosition(startPosition);
+        activeCharacter = _getCharacterAtPosition(startPosition);
         if (activeCharacter == null){
             return false;
         }
 
         // Is that character controlled by playerID?
-        if (!activeCharacter.getPlayerId() == playerID){
+        if (!activeCharacter.getPlayerId() == playerId){
             return false;
         }
 
