@@ -1,3 +1,6 @@
+var vectorUtils = require('./utils/vectorUtils');
+
+
 module.exports = function() {
 	var _this = this;
     var _characters = [];
@@ -23,22 +26,23 @@ module.exports = function() {
         characterAtPosition = null;
         charactersAtPosition = [];
 
-        for (character in _characters){
-            if (character.getPosition() == position){
+        for (characterIndex in _characters){
+            character = _characters[characterIndex];
+            if (vectorUtils.isEqual(character.getPosition(), position)){
                 charactersAtPosition.push(character);
             }
         }
 
         switch(charactersAtPosition.length) {
         case 0:
-            Console.log("Warning: There are no characters at this position");
+            console.log("Warning: There are no characters at this position");
             break;
         case 1:
             characterAtPosition = charactersAtPosition[0];
             break;
         default:
             // Weird case in wich there are more than one characters in one position 
-            Console.log("Warning: There are multiple character in this position")
+            console.log("Warning: There are multiple character in this position")
             characterAtPosition = charactersAtPosition[0];
         }
         return characterAtPosition;
@@ -71,7 +75,6 @@ module.exports = function() {
     _this.insertCharacters = function(startCharacters){
         // For now, we just statically insert a list of characters
         _characters = startCharacters;
-        turn = 1;
     };
 
     _this.getCharacters = function(){
@@ -145,16 +148,15 @@ module.exports = function() {
         }
 
         // Is there a character at startposition?
-        activeCharacter = characterAtPosition(startPosition);
+        activeCharacter = _getCharacterAtPosition(attackerPosition);
         if (activeCharacter == null){
             return false;
         }
 
         // Is that character controlled by playerID?
-        if (!activeCharacter.getPlayerId() == playerID){
+        if (!(activeCharacter.getPlayerId() == playerId)){
             return false;
         }
-
         isValid = activeCharacter.attack(attackedPosition, _this);
         _numberOfMoves += 1; 
         return isValid;

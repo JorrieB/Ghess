@@ -1,28 +1,28 @@
 module.exports = function(startPosition, startHeading, playerId) {
 	var _this = this;
 
-	var _playerId = _playerId;
-	var _position = startPosition;
-	var _heading = heading;
+	_this.playerId = playerId;
+	_this.position = startPosition;
+	_this.heading = startHeading;
 
 	_this.getPlayerId = function() {
-		return _playerId;
+		return _this.playerId;
 	};
 
 	_this.getPosition = function() {
-		return _position;
+		return _this.position;
 	};
 
-	this.setPosition = function(position) {
-		_position = position;
+	this.setPosition = function(newPosition) {
+		_thisposition = newPosition;
 	};
 
 	_this.getHeading = function(){
-		return _heading;
+		return _this.heading;
 	};
 
 	_this.setHeading = function(heading){
-		_heading = newHeading;
+		_this.heading = newHeading;
 	};
 
 	_this.getVisibleCells = function(){
@@ -40,4 +40,8 @@ module.exports = function(startPosition, startHeading, playerId) {
 	_this.attack = function(){
 		return false;
 	};
+
+	_this.defend = function(attackType, attackHeading){
+		return false;
+	}
 };
