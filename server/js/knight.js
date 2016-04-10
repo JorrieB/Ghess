@@ -10,9 +10,10 @@ module.exports = function(startPosition, startHeading, playerId) {
 	_this.getVisibleCells = function(){
 		var right = turnRight(_this.heading);
 		var left = turnLeft(_this.heading);
-		visibleCells = [_this.position + _this.heading, 
-						_this.position + _this.heading + right,
-						_this.position +  _this.heading + left];
+		var basePosition = vectorUtils.vectorSum(_this.position, _this.heading);
+		visibleCells = [basePosition, 
+						vectorUtils.vectorSum(basePosition, right),
+						vectorUtils.vectorSum(basePosition, left)];
 		return visibleCells;
 	};
 
