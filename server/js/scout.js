@@ -1,4 +1,6 @@
-var Scout = function(startPosition, startHeading, playerId) {
+var Character = require('./character');
+
+module.exports  = function(startPosition, startHeading, playerId) {
 	var _this = this;
 	var scoutRange = 2;
  	//The size of the square centerd at the scout is scoutRange + 1

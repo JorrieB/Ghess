@@ -1,4 +1,6 @@
-var Knight = function(startPosition, startHeading, playerId) {
+var Character = require('./character');
+
+module.exports = function(startPosition, startHeading, playerId) {
 	var _this = this;
  	//The size of the square centerd at the scout is scoutRange + 1
 
@@ -32,7 +34,7 @@ var Knight = function(startPosition, startHeading, playerId) {
         }
 
         // Can the knight attack in that position?
-        if !(endPosition in activeCharacter.getAttackableCells()){
+        if (!(endPosition in activeCharacter.getAttackableCells()){
             return false;
         }
 

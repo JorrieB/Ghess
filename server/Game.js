@@ -1,4 +1,4 @@
-var Game = function() {
+module.exports = function() {
 	var _this = this;
     var _characters = [];
     var _gameObjects = [];
@@ -84,7 +84,7 @@ var Game = function() {
     //Handler for the moves that change the game state:
 
     _this.handleMove = function(startPosition, endPosition, playerId){
-        if !(_isPlayerMove(playerId)){
+        if (!_isPlayerMove(playerId)){
             return false;
         }
         // Is there a character at startposition?
@@ -94,17 +94,17 @@ var Game = function() {
         }
 
         // Is that character controlled by playerID?
-        if !(activeCharacter.getPlayerId() == playerID){
+        if (!activeCharacter.getPlayerId() == playerID){
             return false;
         }
 
         // Is the endPosition empty?
-        if !(charactersAtPosition(endPosition) == null){
+        if (!charactersAtPosition(endPosition) == null){
             return false
         }
 
         // Can the activeCharacter move in that position?
-        if !(endPosition in activeCharacter.getAccessibleCells()){
+        if (!endPosition in activeCharacter.getAccessibleCells()){
             return false;
         }
 
@@ -114,7 +114,7 @@ var Game = function() {
     };
 
     _this.handleTurn = function(position, newHeading, playerId){
-        if !(_isPlayerMove(playerId)){
+        if (!_isPlayerMove(playerId)){
             return false;
         }
 
@@ -125,7 +125,7 @@ var Game = function() {
         }
 
         // Is that character controlled by playerID?
-        if !(activeCharacter.getPlayerId() == playerID){
+        if (!activeCharacter.getPlayerId() == playerID){
             return false;
         }
 
@@ -140,7 +140,7 @@ var Game = function() {
     };
 
     _this.handleAttack = function(attackerPosition, attackedPosition, playerId){
-        if !(_isPlayerMove(playerId)){
+        if (!_isPlayerMove(playerId)){
             return false;
         }
 
@@ -151,7 +151,7 @@ var Game = function() {
         }
 
         // Is that character controlled by playerID?
-        if !(activeCharacter.getPlayerId() == playerID){
+        if (!activeCharacter.getPlayerId() == playerID){
             return false;
         }
 
@@ -161,7 +161,7 @@ var Game = function() {
     };
 
     _this.handlePass  = function(playerId) {
-        if !(_isPlayerMove(playerId)){
+        if (!_isPlayerMove(playerId)){
             return false;
         }
         // More spooky arithmetic for eric

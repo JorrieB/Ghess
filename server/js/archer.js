@@ -1,4 +1,6 @@
-var Archer = function(startPosition, startHeading, playerId) {
+var Character = require('./character');
+
+module.exports = function(startPosition, startHeading, playerId) {
 	var _this = this;
 	var arrowRange = 10;
  
@@ -20,8 +22,13 @@ var Archer = function(startPosition, startHeading, playerId) {
 		return [_heading];
 	};
 
-	_this.attack = function(){
+	_this.attack = function(attackedPosition, game){
 		// TODO
-		return true
+		// characters = game.getCharacters();
+		// charactersInLine = characters.filter(
+		// 	function(character){
+		// 		return 
+		// 	})
+		return false;
 	}
 };

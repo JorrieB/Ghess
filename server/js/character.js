@@ -1,4 +1,4 @@
-var Character = function(startPosition, startHeading, playerId) {
+module.exports = function(startPosition, startHeading, playerId) {
 	var _this = this;
 
 	var _playerId = _playerId;
