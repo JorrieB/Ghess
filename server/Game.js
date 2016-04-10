@@ -59,7 +59,22 @@ module.exports = function() {
         return true;
     }
 
-    // Public analog of functions above 
+    // Public analog of functions above
+    _this.addPlayer = function(playerId) {
+        // TODO
+        // This should store the given player id in the game
+    };
+
+    _this.getOtherPlayerId = function(playerId) {
+        // TODO
+        // given a player id, should return the other one
+    };
+
+    _this.canStart = function() {
+        // TODO
+        // Returns true or false, if the game is ready to start
+    }
+
     _this.getActivePlayerId = function(){
         return _getActivePlayerId();
     }
@@ -173,5 +188,15 @@ module.exports = function() {
         // More spooky arithmetic for eric
         _numberOfMoves =  (Math.floor(_numberOfMoves / _movePerTurn) + 1) * _movePerTurn;
         return true;
+    };
+
+    _this.getParams = function() {
+        // TODO
+        // This function should return game parameters like available characters, board size, etc
+    };
+
+    _this.serialize = function(playerId) {
+        // given a player id, should return a JSON object of game state for that player
+        // (so it takes into account visibility)
     };
 };
