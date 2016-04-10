@@ -3,6 +3,10 @@ module.exports = {
 		return {x:(vec1.x + vec2.x), y:(vec1.y + vec2.y)};
 	},
 
+	vectorMultScalar: function(vector, scalar){
+		return {x:(vector.x * scalar), y:(vector.y * scalar)}
+	},
+
 	turnLeft: function(vec){
 		return {x: vec.y, y: - vec.x}
 	},

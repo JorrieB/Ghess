@@ -131,7 +131,7 @@ The result is a comic book art style. I think this is the best direction to go a
 ##Networking
 ###Server to client message
 ######Update state
-Client should go through characters and use their properties to figure to create the controller objects and to deduce what is visible.
+Client should go through characters and use their properties to create the controller objects and to deduce what is visible.
 
 ```
 Message name: "update-state"

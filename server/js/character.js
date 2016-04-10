@@ -40,4 +40,8 @@ module.exports = function(startPosition, startHeading, playerId) {
 	_this.attack = function(){
 		return false;
 	};
+
+	_this.defend = function(attackType, attackHeading){
+		return false;
+	}
 };
