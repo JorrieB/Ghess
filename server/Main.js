@@ -8,6 +8,7 @@ var io = require('socket.io')(http);
 var Constants = require('./Constants');
 var MessageHandlers = require('./MessageHandlers');
 var GameStore = require('./GameStore');
+var toBase64 = require('./utils/toBase64');
 
 // Handle routes
 app.get('/', function(req, res) {
@@ -18,6 +19,9 @@ app.use('/static', express.static('js'));
 
 // Handle Socket.io communication
 io.on('connection', function(socket) {
+    // Give the socket a unique player ID
+    socket.playerId = 'user_' + toBase64(Date.now());
+    socket.join(socket.playerId);
     // Listen for the proper message types
     var eventTypes = Object.keys(MessageHandlers);
     for (var i = 0; i < eventTypes.length; i++) {
