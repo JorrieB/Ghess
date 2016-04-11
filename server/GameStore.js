@@ -1,6 +1,6 @@
 // GameStore.js
 // Stores games
-
+var Game = require('./Game');
 var toBase64 = require('./utils/toBase64');
 
 var games = {};
