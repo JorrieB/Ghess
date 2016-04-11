@@ -42,6 +42,16 @@ $.fn.placeAt = function(vec) {
 
 dirToDegrees = {'up': 0, 'down': 180, 'left': 270, 'right': 90};
 vecToDegrees = {'0,-1': 0, '0,1': 180, '-1,0': 270, '1,0': 90};
+objToVec = function(obj){
+    if (obj) {
+        return [obj.x, obj.y];
+    }
+}
+vecToObj = function(vec){
+    if (vec) {
+        return {x: vec[0], y: vec[1]}
+    }
+}
 
 // returns []
 // animates from start element to end element with reference values:
