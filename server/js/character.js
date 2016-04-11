@@ -64,7 +64,8 @@ module.exports = function(startPosition, startHeading, playerId) {
     		"alive": _this.getAliveness(),
     		"visibility": _this.getVisibleCells(),
     		"attack": _this.getAttackableCells(),
-   			"move": _this.getAccessibleCells()
+   			"move": _this.getAccessibleCells(),
+   			"heading": _this.heading
 		}
 		return characterObject;
 	}

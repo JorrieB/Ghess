@@ -16,8 +16,8 @@ module.exports = function(startPosition, startHeading, playerId) {
 
 	_this.getAttackableCells = function(){
 		attackableCells = [];
-		for (var i = 0; i <= arrowRange; i++) {
-			attackableCells.push(startHeading * i);
+		for (var i = 0; i <= arrowRange; i++) {			
+			attackableCells.push(utils.vectorMultScalar(startHeading, i));
 		}
 		return attackableCells
 	};
