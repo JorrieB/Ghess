@@ -1,5 +1,8 @@
 var vectorUtils = require('./utils/vectorUtils');
-
+var Character = require('./js/character');
+var Archer = require('./js/archer');
+var Knight = require('./js/knight');
+var Scout = require('./js/scout');
 
 module.exports = function() {
 	var _this = this;
@@ -51,6 +54,26 @@ module.exports = function() {
         return characterAtPosition;
     }
 
+    //create the actual character objects based upon what json object somes in
+    _createCharacter = function(character){
+        var characterObject;
+        switch(character.characterType){
+            case "archer":
+            characterObject = new Archer(character.position,character.heading,character.playerId)
+            break;
+            case "knight":
+            characterObject = new Knight(character.position,character.heading,character.playerId)
+            break;
+            case "scout":
+            characterObject = new Scout(character.position,character.heading,character.playerId)
+            break;
+            default:
+            break;
+        }
+        console.log(characterObject.serialize());
+        return characterObject
+    }
+
     _destroyCharacter = function(character){
         var characterIndex = _characters.indexOf(character);
         // If there is no such character, return false
@@ -61,6 +84,26 @@ module.exports = function() {
         _characters.splice(characterIndex, 1);
         return true;
     }
+
+    _this.staticStart = function(){
+        characterJSONArray = [];
+        startCharacters = ["knight","archer","scout"];
+        headingsArray = [{x:0,y:1},{x:0,y:-1}];
+        positionsArray = [{x:0,y:0},{x:1,y:0},{x:2,y:0},{x:6,y:6},{x:5,y:6},{x:4,y:6}];
+        for (i = 0; i < _playersId.length; i++){
+            for (j = 0; j < startCharacters.length; j++){
+                characterJSONArray.push({
+                    "characterType":startCharacters[j],
+                    "position":positionsArray[i * 3 + j],
+                    "heading":headingsArray[i],
+                    "playerId":_playersId[i]
+                });
+            }
+        }
+        _this.insertCharacters(characterJSONArray);
+    }
+
+
 
     // Public analog of functions above
     _this.addPlayer = function(playerId) {
@@ -73,8 +116,12 @@ module.exports = function() {
         return false;
     };
 
+    _this.joinable = function(){
+        return _playersId.length == 1;
+    }
+
     _this.getOtherPlayerId = function(playerId) {
-        if _this.canStart{
+        if (_this.canStart()){
             var thisIndex = _playersId.indexOf(playerId);
             var otherIndex = (thisIndex + 1 ) % 2;
             var otherPlayerId = _playersId[thisIndex];
@@ -101,7 +148,15 @@ module.exports = function() {
 
     _this.insertCharacters = function(startCharacters){
         // For now, we just statically insert a list of characters
-        _characters = startCharacters;
+
+        // TODO: make it such that each player can insert their own characters, and there aren't duplicate inserts
+        _characters = startCharacters.map(function(character){
+            this._createCharacter(character);
+        });
+        console.log('1');
+        console.log(_characters);
+        console.log('2');
+
     };
 
     _this.getCharacters = function(){
@@ -202,8 +257,14 @@ module.exports = function() {
         return true;
     };
 
+
+
     _this.getParams = function() {
         // TODO
+        params = {
+            "board-size":_boardSize,
+            "available-characters":[] // need some way to find restrict available characters, or at least to provide them for the players' placements
+        }
         // This function should return game parameters like available characters, board size, etc
     };
 
@@ -217,15 +278,19 @@ module.exports = function() {
     //returns game state object dependent upon who is requesting it
     //player id can correspond to player 1, 2, or an observer
     _this.serialize = function(playerID){
-        //if (player id is observer){send full character array}
+        //if (player id is observer){full character array}
         //else {
             //characters = enemiesVisible
         //}
+        var serializedChars = _characters.map(function(character) {
+            return character.serialize();
+        });
+
 
         gameObj = {
             "message":"update-state",
             "turn":getActivePlayerId(),
-            "characters":_characters,
+            "characters":serializedChars,
             "animations":[]
         }
         return gameObj;

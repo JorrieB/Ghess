@@ -45,7 +45,7 @@ module.exports = function(startPosition, startHeading, playerId) {
 	}
 
 	_this.getAliveness = function(){
-		return _alive;
+		return this._alive;
 	}
 
 	_this.attack = function(){
@@ -58,13 +58,13 @@ module.exports = function(startPosition, startHeading, playerId) {
 
 	_this.serialize = function(){
 		var characterObject = {
-			"type": getCharacterType(),
-			"team":getPlayerId(),
-			"position": getPosition(),
-    		"alive": getAliveness(),
-    		"visibility": getVisibleCells(),
-    		"attack": getAttackableCells(),
-   			"move": getAccessibleCells()
+			"type": _this.getCharacterType(),
+			"team": _this.getPlayerId(),
+			"position": _this.getPosition(),
+    		"alive": _this.getAliveness(),
+    		"visibility": _this.getVisibleCells(),
+    		"attack": _this.getAttackableCells(),
+   			"move": _this.getAccessibleCells()
 		}
 		return characterObject;
 	}

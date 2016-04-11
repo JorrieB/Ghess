@@ -6,10 +6,12 @@ module.exports = function(startPosition, startHeading, playerId) {
  	//The size of the square centerd at the scout is scoutRange + 1
 
 	Character.call(_this, startPosition, startHeading,  playerId);
+	_this.characterType = "Knight";
+
 
 	_this.getVisibleCells = function(){
-		var right = turnRight(_this.heading);
-		var left = turnLeft(_this.heading);
+		var right = vectorUtils.turnRight(_this.heading);
+		var left = vectorUtils.turnLeft(_this.heading);
 		var basePosition = vectorUtils.vectorSum(_this.position, _this.heading);
 		visibleCells = [basePosition, 
 						vectorUtils.vectorSum(basePosition, right),

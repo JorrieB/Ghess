@@ -1,11 +1,13 @@
 var Character = require('./character');
-var utils = require('../utils/vectorUtils.js')
+var vectorUtils = require('../utils/vectorUtils');
 
 module.exports = function(startPosition, startHeading, playerId) {
 	var _this = this;
 	var arrowRange = 10;
  
 	Character.call(_this, startPosition, startHeading, playerId);
+	_this.characterType = "Archer";
+
 
 	_this.getVisibleCells = function(){
 		return [{x:0, y:0}];		
