@@ -1,7 +1,8 @@
 // GameStore.js
 // Stores games
-
+var Game = require('./Game');
 var toBase64 = require('./utils/toBase64');
+var Game = require('./Game');
 
 var games = {};
 
@@ -20,5 +21,16 @@ module.exports = {
     // Deletes the game with the given ID
     remove: function(id) {
         games[id] = null;
+    },
+    // Gets first game in dictionary
+    // TODO Replace this
+    getAny: function() {
+        try {
+            var gameId = Object.keys(games)[0];
+            return gameId;
+        }
+        catch(err) {
+            return undefined;
+        }
     },
 };
