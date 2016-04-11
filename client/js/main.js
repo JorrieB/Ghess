@@ -1,8 +1,12 @@
 $(function() {
-    var socket = io();
+    var socket = io('http://localhost:8000');
 
     // Selected Character Global
     var $curr_char;
+    // Current Game ID
+    var gameId;
+    // Client Id
+    var playerId;
 
     ///////////////
     // SCREEN FLOW
@@ -16,6 +20,7 @@ $(function() {
 
     $(document).on('click', '#player-button', function() {
     	$('.screen').replaceWith($(play_view));
+        socket.emit('join-any');
         $curr_char = $();
     });
 
@@ -29,9 +34,9 @@ $(function() {
     });
 
 
-    /////////////
-    // PLAY VIEW
-    /////////////
+    ////////////////////////////////////////
+    // PLAY VIEW PLAYER INITIATED MESSAGING
+    ////////////////////////////////////////
 
     $(document).on('click', '.turn-arrow', function() {
         var $arrow_clicked = $(this);
@@ -91,5 +96,31 @@ $(function() {
 
     $(document).on('click', '.sleep-button', function() {
         socket.emit('update-game', {'type': 'pass'});
+    });
+
+    /////////////////////////////////////////
+    // PLAY VIEW MESSAGE HANDLING FROM SERVER
+    /////////////////////////////////////////
+    socket.on('connected', function(message) {
+        console.log('connected', message);
+        playerId = message.playerId;
+    });
+
+    socket.on('game-created', function(message) {
+        console.log('game-created', message);
+    });
+
+    socket.on('game-joined', function(message) {
+        console.log('game-joined', message);
+        gameId = message.gameId;
+        socket.emit('ready-player');
+    });
+
+    socket.on('update-state', function(message) {
+        console.log('update-state', message);
+    });
+
+    socket.on('player-readied', function(message) {
+        console.log('player-readied', message);
     });
 });

@@ -44,7 +44,7 @@ module.exports = function() {
             characterAtPosition = charactersAtPosition[0];
             break;
         default:
-            // Weird case in wich there are more than one characters in one position 
+            // Weird case in wich there are more than one characters in one position
             console.log("Warning: There are multiple character in this position")
             characterAtPosition = charactersAtPosition[0];
         }
@@ -96,7 +96,7 @@ module.exports = function() {
     }
 
     _this.getCharacterAtPosition = function(position){
-        return _getCharacterAtPosition(position);   
+        return _getCharacterAtPosition(position);
     }
 
     _this.insertCharacters = function(startCharacters){
@@ -189,7 +189,7 @@ module.exports = function() {
             return false;
         }
         isValid = activeCharacter.attack(attackedPosition, _this);
-        _numberOfMoves += 1; 
+        _numberOfMoves += 1;
         return isValid;
     };
 
@@ -224,7 +224,7 @@ module.exports = function() {
 
         gameObj = {
             "message":"update-state",
-            "turn":getActivePlayerId(),
+            "turn": _getActivePlayerId(),
             "characters":_characters,
             "animations":[]
         }
