@@ -288,8 +288,8 @@ module.exports = function() {
 
         gameObj = {
             "message":"update-state",
-            "turn":getActivePlayerId(),
-            "characters":serializedChars,
+            "turn": _getActivePlayerId(),
+            "characters": serializedChars,
             "animations":[]
         }
         return gameObj;
