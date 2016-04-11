@@ -27,7 +27,7 @@ io.on('connection', function(socket) {
     for (var i = 0; i < eventTypes.length; i++) {
         var type = eventTypes[i];
         // We bind the socket to the handling function so it has a reference to it
-        socket.on(type, MessageHandlers[type].bind(null, socket));
+        socket.on(type, MessageHandlers[type].bind(io, socket));
     }
 });
 

@@ -31,10 +31,10 @@ module.exports = {
         // If both players are ready, start the game & send game state to clients
         if (game.canStart()) {
             // To this player
-            socket.to(socket.playerId).emit('update-state', game.serialize(socket.playerId));
+            socket.emit('update-state', game.serialize(socket.playerId));
             // To the other player
             var otherPlayerId = game.getOtherPlayerId(socket.playerId);
-            socket.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
+            this.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
         }
     },
     'update-game': function(socket, data) {
@@ -43,10 +43,10 @@ module.exports = {
    		// Send result back
         if (isValid) {
             // To this player
-            socket.to(socket.playerId).emit('update-state', game.serialize(socket.playerId));
+            socket.emit('update-state', game.serialize(socket.playerId));
             // To the other player
             var otherPlayerId = game.getOtherPlayerId(socket.playerId);
-            socket.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
+            this.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
         } else {
             // send back error
         }
