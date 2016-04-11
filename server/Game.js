@@ -77,7 +77,7 @@ module.exports = function() {
         if (_this.canStart()){
             var thisIndex = _playersId.indexOf(playerId);
             var otherIndex = (thisIndex + 1 ) % 2;
-            var otherPlayerId = _playersId[thisIndex];
+            var otherPlayerId = _playersId[otherIndex];
             return otherPlayerId;
         }
         return null;
