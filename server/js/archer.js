@@ -1,5 +1,5 @@
 var Character = require('./character');
-var vectorUtils = require('../utils/vectorUtils');
+var utils = require('../utils/vectorUtils');
 
 module.exports = function(startPosition, startHeading, playerId) {
 	var _this = this;

@@ -70,7 +70,8 @@ module.exports = function() {
             default:
             break;
         }
-        console.log(characterObject.serialize());
+        // THIS SERIALIZATION WORKS
+        // console.log(characterObject.serialize());
         return characterObject
     }
 
@@ -153,9 +154,7 @@ module.exports = function() {
         _characters = startCharacters.map(function(character){
             this._createCharacter(character);
         });
-        console.log('1');
         console.log(_characters);
-        console.log('2');
 
     };
 
