@@ -300,6 +300,10 @@ sprite {
     background-image: url('/img/archer.png');
 }
 
+.them {
+    opacity: .5;
+}
+
 .turn-arrow-container {
     position: absolute;
 }

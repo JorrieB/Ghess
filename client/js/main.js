@@ -41,7 +41,7 @@ $(function() {
 
     $(document).on('click', '.turn-arrow', function() {
         var $arrow_clicked = $(this);
-        var curr_char_pos = $curr_char.getPosition();
+        var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
             var direction;
             if ($arrow_clicked.hasClass('turn-arrow-left')) {
@@ -55,44 +55,48 @@ $(function() {
             }
 
             socket.emit('update-game', {
-                'objectPosition': curr_char_pos,
-                'newHeading': direction,
+                'objectPosition': vecToObj(curr_char_pos),
+                'newHeading': vecToObj(direction),
                 'type': 'turn',
             });
+        } else {
+            console.log('TURN ERROR - tried to turn without char');
         }
-        console.log('TURN ERROR - tried to turn without char');
     });
 
     $(document).on('click', '.attack-candidate', function() {
         var $attackable_square = $(this);
-        var curr_char_pos = $curr_char.getPosition();
+        var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
             var attack_x = $attackable_square.data('x');
             var attack_y = $attackable_square.data('y');
             var target_pos = [attack_x, attack_y];
             socket.emit('update-game', {
-                'objectPosition': curr_char_pos,
-                'targetPosition': target_pos,
+                'objectPosition': vecToObj(curr_char_pos),
+                'targetPosition': vecToObj(target_pos),
                 'type': 'attack',
             });
+        } else {
+            console.log('ATTACK CANDIDATE ERROR - tried to attack without char');
         }
-        console.log('ATTACK CANDIDATE ERROR - tried to attack without char');
     });
 
     $(document).on('click', '.move-candidate', function() {
         var $move_square = $(this);
-        var curr_char_pos = $curr_char.getPosition();
+        var curr_char_pos = $curr_char.data('position');
+        console.log('curr char pos', vecToObj(curr_char_pos));
         if (curr_char_pos) {
             var move_x = $move_square.data('x');
             var move_y = $move_square.data('y');
             var target_pos = [move_x, move_y];
             socket.emit('update-game', {
-                'objectPosition': curr_char_pos,
-                'targetPosition': target_pos,
+                'objectPosition': vecToObj(curr_char_pos),
+                'targetPosition': vecToObj(target_pos),
                 'type': 'move',
             });
+        } else {
+            console.log('MOVE CANDIDATE ERROR - tried to move without char');
         }
-        console.log('MOVE CANDIDATE ERROR - tried to move without char');
     });
 
     $(document).on('click', '.sleep-button', function() {
@@ -119,24 +123,31 @@ $(function() {
 
     socket.on('update-state', function(message) {
         console.log('update-state', message);
+        if (message.turn == playerId) {
+            $('#play-view').css('background-color', 'green');
+        } else {
+            $('#play-view').css('background-color', '');
+        }
         var $table = $(table);
         $('.ghess-table').replaceWith($table);
         var chars = message.characters;
         for (var i = 0; i < chars.length; i++) {
             var _char = chars[i];
-            var pos = [_char.position.x, _char.position.y];
             var $char = $('<sprite>')
-                .data('attack', _char.attack)
-                .data('move', _char.move)
-                .data('position', pos)
-                .data('visibility', _char.visibility)
+                .data('attack', _char.attack.map(objToVec))
+                .data('move', _char.move.map(objToVec))
+                .data('position', objToVec(_char.position))
+                .data('visibility', _char.visibility.map(objToVec))
                 .addClass(_char.type.toLowerCase());
             _char.visibility.forEach(function(vec) {
                 var $square = getSquare(vec);
                 $square.addClass('visible');
             });
+            if (_char.team != playerId) {
+                $char.addClass('them');
+            }
             $table.append($char);
-            $char.placeAt(pos);
+            $char.placeAt(objToVec(_char.position));
             $char.rotate(vecToDegrees[_char.heading]);
         };
     });
@@ -149,8 +160,18 @@ $(function() {
     // Play View Feedback
     //////////////////////////////////
 
-    $(document).on('click', 'sprite', function() {
-        var $curr_char = $(this);
+    $(document).on('click', 'sprite', function(evt) {
+        var $clicked = $(this);
+        if ($clicked.hasClass('them')) {
+            $clicked.hide();
+            real_clicked = document.elementFromPoint(evt.clientX, evt.clientY);
+            $clicked.show();
+            $(real_clicked).click();
+        } else {
+            $('.glow').removeClass('glow');
+            $curr_char = $clicked;
+            $curr_char.addClass('glow');
+        }
     });
 
     var cleanSquares = function() {
@@ -160,6 +181,7 @@ $(function() {
 
     $(document).on('click', '.attack-button', function() {
         cleanSquares();
+        a = $curr_char;
         $curr_char.data('attack').forEach(function(vec) {
             var $square = getSquare(vec);
             $square.addClass('attack-candidate');
