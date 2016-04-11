@@ -25,7 +25,7 @@ module.exports = function(startPosition, startHeading, playerId) {
 	};
 
 	_this.setHeading = function(heading){
-		_this.heading = newHeading;
+		_this.heading = heading;
 	};
 
 	_this.getVisibleCells = function(){

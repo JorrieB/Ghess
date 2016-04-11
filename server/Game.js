@@ -153,7 +153,7 @@ module.exports = function() {
         }
 
         // Is there a character at startposition?
-        activeCharacter = _getCharacterAtPosition(startPosition);
+        activeCharacter = _getCharacterAtPosition(position);
         if (activeCharacter == null){
             return false;
         }
