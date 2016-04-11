@@ -12,6 +12,7 @@ $(function() {
     // SCREEN FLOW
     ///////////////
 	var start_view = nunjucks.render('/templates/start_view.html');
+    var table = nunjucks.render('/templates/table.html', {'width': 7, 'height': 7});
     var play_view = nunjucks.render('/templates/play_view.html');
 	var spectator_view = nunjucks.render('/templates/spectator_view.html');
 
@@ -118,9 +119,63 @@ $(function() {
 
     socket.on('update-state', function(message) {
         console.log('update-state', message);
+        var $table = $(table);
+        $('.ghess-table').replaceWith($table);
+        var chars = message.characters;
+        for (var i = 0; i < chars.length; i++) {
+            var _char = chars[i];
+            var pos = [_char.position.x, _char.position.y];
+            var $char = $('<sprite>')
+                .data('attack', _char.attack)
+                .data('move', _char.move)
+                .data('position', pos)
+                .data('visibility', _char.visibility)
+                .addClass(_char.type.toLowerCase());
+            _char.visibility.forEach(function(vec) {
+                var $square = getSquare(vec);
+                $square.addClass('visible');
+            });
+            $table.append($char);
+            $char.placeAt(pos);
+            $char.rotate(vecToDegrees[_char.heading]);
+        };
     });
 
     socket.on('player-readied', function(message) {
         console.log('player-readied', message);
+    });
+
+    //////////////////////////////////
+    // Play View Feedback
+    //////////////////////////////////
+
+    $(document).on('click', 'sprite', function() {
+        var $curr_char = $(this);
+    });
+
+    var cleanSquares = function() {
+        $('.ghess-td').removeClass('attack-candidate').removeClass('move-candidate');
+        $('.turn-arrow-container').hide();
+    };
+
+    $(document).on('click', '.attack-button', function() {
+        cleanSquares();
+        $curr_char.data('attack').forEach(function(vec) {
+            var $square = getSquare(vec);
+            $square.addClass('attack-candidate');
+        });
+    });
+
+    $(document).on('click', '.turn-button', function() {
+        cleanSquares();
+        $('.turn-arrow-container').show().placeAt($curr_char.data('position'));
+    });
+
+    $(document).on('click', '.move-button', function() {
+        cleanSquares();
+        $curr_char.data('move').forEach(function(vec) {
+            var $square = getSquare(vec);
+            $square.addClass('move-candidate');
+        });
     });
 });
