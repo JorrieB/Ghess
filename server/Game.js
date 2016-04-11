@@ -59,16 +59,16 @@ module.exports = function() {
         var characterObject;
         switch(character.characterType){
             case "archer":
-            characterObject = new Archer(character.position,character.heading,character.playerId)
-            break;
+                characterObject = new Archer(character.position,character.heading,character.playerId)
+                break;
             case "knight":
-            characterObject = new Knight(character.position,character.heading,character.playerId)
-            break;
+                characterObject = new Knight(character.position,character.heading,character.playerId)
+                break;
             case "scout":
-            characterObject = new Scout(character.position,character.heading,character.playerId)
-            break;
+                characterObject = new Scout(character.position,character.heading,character.playerId)
+                break;
             default:
-            break;
+                break;
         }
         // THIS SERIALIZATION WORKS
         // console.log(characterObject.serialize());
@@ -152,9 +152,8 @@ module.exports = function() {
 
         // TODO: make it such that each player can insert their own characters, and there aren't duplicate inserts
         _characters = startCharacters.map(function(character){
-            this._createCharacter(character);
+            return this._createCharacter(character);
         });
-        console.log(_characters);
 
     };
 
