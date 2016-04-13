@@ -90,7 +90,7 @@ module.exports = function() {
         characterJSONArray = [];
         startCharacters = ["knight","archer","scout"];
         headingsArray = [{x:0,y:1},{x:0,y:-1}];
-        positionsArray = [{x:0,y:0},{x:4,y:5},{x:2,y:0},{x:6,y:6},{x:5,y:6},{x:4,y:6}];
+        positionsArray = [{x:0,y:0},{x:4,y:5},{x:2,y:0},{x:5,y:6},{x:6,y:6},{x:4,y:6}];
         for (i = 0; i < _playersId.length; i++){
             for (j = 0; j < startCharacters.length; j++){
                 characterJSONArray.push({
@@ -292,17 +292,13 @@ module.exports = function() {
                 }
             }
         }
-
         return friendlyChars;
     }
 
     //returns game state object dependent upon who is requesting it
     //player id can correspond to player 1, 2, or an observer
     _this.serialize = function(playerID){
-        //if (player id is observer){full character array}
-        //else {
-            //characters = enemiesVisible
-        //}
+
         var serializedChars = charactersVisibleTo(playerID).map(function(character) {
             return character.serialize();
         });
