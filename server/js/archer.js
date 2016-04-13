@@ -11,7 +11,7 @@ module.exports = function(startPosition, startHeading, playerId) {
 
 
 	_this.getVisibleCells = function(){
-		return [{x:0, y:0}];		
+		return [_this.getPosition(),utils.vectorSum(_this.getPosition(), _this.getHeading())];
 	};
 
 	_this.getAttackableCells = function(){

@@ -90,7 +90,7 @@ module.exports = function() {
         characterJSONArray = [];
         startCharacters = ["knight","archer","scout"];
         headingsArray = [{x:0,y:1},{x:0,y:-1}];
-        positionsArray = [{x:0,y:0},{x:1,y:0},{x:2,y:0},{x:6,y:6},{x:5,y:6},{x:4,y:6}];
+        positionsArray = [{x:0,y:0},{x:4,y:5},{x:2,y:0},{x:5,y:6},{x:6,y:6},{x:4,y:6}];
         for (i = 0; i < _playersId.length; i++){
             for (j = 0; j < startCharacters.length; j++){
                 characterJSONArray.push({
@@ -268,19 +268,38 @@ module.exports = function() {
 
     //takes player ID and returns all enemy characters that lie within visibility of player's characters
     var charactersVisibleTo = function(playerID){
-        //filter character array on player id
-        //find union of visibility of player's characters
-        //find all characters visible to players characters
+        if (playerID == "OBSERVER"){
+            return _characters;
+        }
+
+        var friendlyChars = _characters.filter(function(character) {
+            return character.getPlayerId() == playerID;
+        });
+        var cumulativeVisibility = [];
+        for (i = 0; i < friendlyChars.length; i++){
+            cumulativeVisibility = cumulativeVisibility.concat(friendlyChars[i].getVisibleCells());
+        }
+
+        var enemyChars = _characters.filter(function(character) {
+            return character.getPlayerId() != playerID;
+        });
+
+        for (i = 0; i < enemyChars.length; i++){
+            for (j = 0; j < cumulativeVisibility.length; j++){
+                if (vectorUtils.isEqual(enemyChars[i].getPosition(), cumulativeVisibility[j])){
+                    friendlyChars.push(enemyChars[i]);
+                    break;
+                }
+            }
+        }
+        return friendlyChars;
     }
 
     //returns game state object dependent upon who is requesting it
     //player id can correspond to player 1, 2, or an observer
     _this.serialize = function(playerID){
-        //if (player id is observer){full character array}
-        //else {
-            //characters = enemiesVisible
-        //}
-        var serializedChars = _characters.map(function(character) {
+
+        var serializedChars = charactersVisibleTo(playerID).map(function(character) {
             return character.serialize();
         });
 

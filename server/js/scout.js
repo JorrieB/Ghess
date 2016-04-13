@@ -13,9 +13,9 @@ module.exports  = function(startPosition, startHeading, playerId) {
 
 	_this.getVisibleCells = function(){
 		visibleCells = []
-		for (var i = 0; i <= scoutRange; i++) {
-			for (var j = 0; j <= scoutRange; j ++){
-				visibleCells.push({x:i, y:j});
+		for (var i = -scoutRange; i <= scoutRange; i++) {
+			for (var j = -scoutRange; j <= scoutRange; j++){
+				visibleCells.push(vectorUtils.vectorSum({x:i, y:j}, _this.getPosition()));
 			}
 		}
 		return visibleCells;
