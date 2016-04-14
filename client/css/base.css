@@ -289,15 +289,15 @@ sprite {
 }
 
 .knight {
-    background-image: url('/img/knight.png');
+    background-image: url('/img/characters/swordsman/front.png');
 }
 
 .scout {
-    background-image: url('/img/scout.png');
+    background-image: url('/img/characters/scout/front.png');
 }
 
 .archer {
-    background-image: url('/img/archer.png');
+    background-image: url('/img/characters/archer/front.png');
 }
 
 .them {
