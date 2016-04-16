@@ -343,6 +343,14 @@ sprite {
     padding-bottom: 100%;
 }
 
+.action-overlay {
+    position: absolute;
+}
+
+.action-button-relative-container {
+    position: relative;
+}
+
 .action-button {
     position: absolute;
     width: 20%;

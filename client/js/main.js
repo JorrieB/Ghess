@@ -43,7 +43,7 @@ $(function() {
     // var chars = message.characters;
     // var headingStr = getHeadingStrFromVec(chars[0].heading);
     // $('character-portrait').css('background-image', "url('/img/characters/" + chars[0].type.toLowerCase() + "/" + headingStr + "/red.png')");
-    
+
 
 
     ////////////////////////////////////////
@@ -81,7 +81,7 @@ $(function() {
         if (curr_char_pos) {
             var attack_x = $attackable_square.data('x');
             var attack_y = $attackable_square.data('y');
-            var target_pos = [attack_x, attack_y];
+            var target_pos = {'x': attack_x, 'y': attack_y};
             socket.emit('update-game', {
                 'objectPosition': curr_char_pos,
                 'targetPosition': target_pos,
@@ -98,7 +98,7 @@ $(function() {
         if (curr_char_pos) {
             var move_x = $move_square.data('x');
             var move_y = $move_square.data('y');
-            var target_pos = [move_x, move_y];
+            var target_pos = {'x': move_x, 'y': move_y};
             socket.emit('update-game', {
                 'objectPosition': curr_char_pos,
                 'targetPosition': target_pos,
@@ -175,7 +175,7 @@ $(function() {
 
     $(document).on('click', 'sprite', function(evt) {
         var $clicked = $(this);
-        
+
         if ($clicked.hasClass('them')) {
             $clicked.hide();
             real_clicked = document.elementFromPoint(evt.clientX, evt.clientY);
@@ -184,6 +184,9 @@ $(function() {
         } else {
             $('.glow').removeClass('glow');
             $curr_char = $clicked;
+            var curr_headingStr = getHeadingStrFromVec($curr_char.data('heading'));
+            $('.action-overlay').placeAt($curr_char.data('position'));
+            $('.action-overlay').show();
             $curr_char.addClass('glow');
             $('.character-portrait').css('background-image', "url('/img/characters/" + $curr_char.data('type').toLowerCase() + "/down/red.png')");
         }
@@ -192,6 +195,7 @@ $(function() {
     var cleanSquares = function() {
         $('.ghess-td').removeClass('attack-candidate').removeClass('move-candidate');
         $('.turn-arrow-container').hide();
+        $('.action-overlay').hide();
     };
 
     $(document).on('click', '.attack-button', function() {
