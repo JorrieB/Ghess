@@ -4,7 +4,6 @@ var utils = require('../utils/vectorUtils');
 module.exports = function(startPosition, startHeading, playerId) {
 	var _this = this;
 	var arrowRange = 10;
- 	_this.characterType = "Archer";
 
 	Character.call(_this, startPosition, startHeading, playerId);
 	_this.characterType = "Archer";
@@ -16,7 +15,7 @@ module.exports = function(startPosition, startHeading, playerId) {
 
 	_this.getAttackableCells = function(){
 		attackableCells = [];
-		for (var i = 0; i <= arrowRange; i++) {			
+		for (var i = 0; i <= arrowRange; i++) {
 			attackableCells.push(utils.vectorSum(utils.vectorMultScalar(_this.heading, i),_this.position));
 		}
 		return attackableCells

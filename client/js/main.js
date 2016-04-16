@@ -53,13 +53,13 @@ $(function() {
         if (curr_char_pos) {
             var direction;
             if ($arrow_clicked.hasClass('turn-arrow-left')) {
-                direction = [-1, 0];
+                direction = {'x': -1, 'y': 0};
             } else if ($arrow_clicked.hasClass('turn-arrow-right')) {
-                direction = [1, 0];
+                direction = {'x': 1, 'y': 0};
             } else if ($arrow_clicked.hasClass('turn-arrow-up')) {
-                direction = [0, -1];
+                direction = {'x': 0, 'y': -1};
             } else if ($arrow_clicked.hasClass('turn-arrow-down')) {
-                direction = [0, 1];
+                direction = {'x': 0, 'y': 1};
             }
 
             socket.emit('update-game', {
@@ -80,8 +80,8 @@ $(function() {
             var attack_y = $attackable_square.data('y');
             var target_pos = [attack_x, attack_y];
             socket.emit('update-game', {
-                'objectPosition': vecToObj(curr_char_pos),
-                'targetPosition': vecToObj(target_pos),
+                'objectPosition': curr_char_pos,
+                'targetPosition': target_pos,
                 'type': 'attack',
             });
         } else {
@@ -97,8 +97,8 @@ $(function() {
             var move_y = $move_square.data('y');
             var target_pos = [move_x, move_y];
             socket.emit('update-game', {
-                'objectPosition': vecToObj(curr_char_pos),
-                'targetPosition': vecToObj(target_pos),
+                'objectPosition': curr_char_pos,
+                'targetPosition': target_pos,
                 'type': 'move',
             });
         } else {
