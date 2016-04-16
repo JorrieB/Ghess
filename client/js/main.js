@@ -182,9 +182,9 @@ $(function() {
             $clicked.show();
             $(real_clicked).click();
         } else {
+            cleanSquares();
             $('.glow').removeClass('glow');
             $curr_char = $clicked;
-            var curr_headingStr = getHeadingStrFromVec($curr_char.data('heading'));
             $('.action-overlay').placeAt($curr_char.data('position'));
             $('.action-overlay').show();
             $curr_char.addClass('glow');
@@ -193,10 +193,25 @@ $(function() {
     });
 
     var cleanSquares = function() {
+
         $('.ghess-td').removeClass('attack-candidate').removeClass('move-candidate');
         $('.turn-arrow-container').hide();
         $('.action-overlay').hide();
     };
+
+    $(document).on('mouseover', '.attack-button', function() {
+        $curr_char.data('attack').forEach(function(vec) {
+            var $square = getSquare(vec);
+            $square.addClass('attack-candidate-hover');
+        });
+    });
+
+    $(document).on('mouseout', '.attack-button', function() {
+        $curr_char.data('attack').forEach(function(vec) {
+            var $square = getSquare(vec);
+            $square.removeClass('attack-candidate-hover');
+        });
+    });
 
     $(document).on('click', '.attack-button', function() {
         cleanSquares();
@@ -206,11 +221,36 @@ $(function() {
         });
     });
 
+    $(document).on('mouseover', '.turn-button', function() {
+        $('.turn-arrow-container').placeAt($curr_char.data('position')).addClass('transparent').show();
+    });
+
+    $(document).on('mouseout', '.turn-button', function() {
+        var $turn_arrow_container = $('.turn-arrow-container');
+        if ($turn_arrow_container.hasClass('transparent')) {
+            $('.turn-arrow-container').hide().removeClass('transparent');
+        }
+    });
+
     $(document).on('click', '.turn-button', function() {
         cleanSquares();
         if ($curr_char.length) {
-            $('.turn-arrow-container').show().placeAt($curr_char.data('position'));
+            $('.turn-arrow-container').removeClass('transparent').placeAt($curr_char.data('position')).show();
         }
+    });
+
+    $(document).on('mouseover', '.move-button', function() {
+        $curr_char.data('move').forEach(function(vec) {
+            var $square = getSquare(vec);
+            $square.addClass('move-candidate-hover');
+        });
+    });
+
+    $(document).on('mouseout', '.move-button', function() {
+        $curr_char.data('move').forEach(function(vec) {
+            var $square = getSquare(vec);
+            $square.removeClass('move-candidate-hover');
+        });
     });
 
     $(document).on('click', '.move-button', function() {

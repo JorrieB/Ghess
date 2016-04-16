@@ -297,7 +297,6 @@ module.exports = function() {
     _this.serialize = function(playerID){
 
         var serializedChars = charactersVisibleTo(playerID).map(function(character) {
-            console.log(character.serialize());
             return character.serialize();
         });
 
