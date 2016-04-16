@@ -1,12 +1,17 @@
-module.exports = function(startPosition, startHeading, playerId) {
+module.exports = function(startPosition, startHeading, playerId, charID, startColor) {
 	var _this = this;
-
 	_this.playerId = playerId;
 	_this.position = startPosition;
 	_this.heading = startHeading;
+	_this.charID = charID; // charID identifies character for HUD rendering
+	_this.charColor = startColor;
 
 	_this.characterType = "Character";
 	_this.alive = true;
+
+	_this.getColor = function() {
+		return startColor;
+	}
 
 	_this.getPlayerId = function() {
 		return _this.playerId;
@@ -65,7 +70,8 @@ module.exports = function(startPosition, startHeading, playerId) {
     		"visibility": _this.getVisibleCells(),
     		"attack": _this.getAttackableCells(),
    			"move": _this.getAccessibleCells(),
-   			"heading": _this.heading
+   			"heading": _this.heading,
+   			"color": _this.charColor
 		}
 		return characterObject;
 	}

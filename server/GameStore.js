@@ -22,7 +22,7 @@ module.exports = {
     remove: function(id) {
         games[id] = null;
     },
-    // Gets first available game, and returns its ID and the game instance
+    // Gets first available game, and returns its ID and the game instance (or null if none exists)
     getFirstAvailable: function() {
         var gameIds = Object.keys(games);
         for (var i = 0; i < gameIds.length; i++) {

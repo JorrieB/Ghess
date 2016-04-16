@@ -294,6 +294,7 @@ sprite {
 
 .turn-arrow-container {
     position: absolute;
+    z-index: 2;
 }
 
 .turn-arrow-relative-container{

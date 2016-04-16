@@ -13,6 +13,7 @@ module.exports = function() {
     var _numberOfMoves = 0;     // Number of moves since the beginning of the game
     var _movePerTurn = 2;
     var _playersId = []
+    // TODO: concept of color for each player
 
     // Spooky modular arithmetic for eric
     // Return 1 if this is player's 1 turn, 2 if this is player 2 turn
@@ -55,23 +56,22 @@ module.exports = function() {
     }
 
     //create the actual character objects based upon what json object somes in
-    _createCharacter = function(character){
+    _createCharacter = function(character,charID){
+        var characterColor = (_playersId.indexOf(character.playerId) == 1) ? "red" : "blue";
         var characterObject;
         switch(character.characterType){
             case "archer":
-                characterObject = new Archer(character.position,character.heading,character.playerId)
+                characterObject = new Archer(character.position,character.heading,character.playerId,charID,characterColor);
                 break;
             case "swordsman":
-                characterObject = new Swordsman(character.position,character.heading,character.playerId)
+                characterObject = new Swordsman(character.position,character.heading,character.playerId,charID,characterColor);
                 break;
             case "scout":
-                characterObject = new Scout(character.position,character.heading,character.playerId)
+                characterObject = new Scout(character.position,character.heading,character.playerId,charID,characterColor);
                 break;
             default:
                 break;
         }
-        // THIS SERIALIZATION WORKS
-        // console.log(characterObject.serialize());
         return characterObject
     }
 
@@ -104,13 +104,10 @@ module.exports = function() {
         _this.insertCharacters(characterJSONArray);
     }
 
-
-
     // Public analog of functions above
     _this.addPlayer = function(playerId) {
-        // TODO
-        // This should store the given player id in the game
         if (_playersId.length < 2){
+            var player = playerId;
             _playersId.push(playerId);
             return true;
         };
@@ -152,7 +149,7 @@ module.exports = function() {
 
         // TODO: make it such that each player can insert their own characters, and there aren't duplicate inserts
         _characters = startCharacters.map(function(character){
-            return this._createCharacter(character);
+            return this._createCharacter(character,startCharacters.indexOf(character));
         });
 
     };
@@ -300,15 +297,21 @@ module.exports = function() {
     _this.serialize = function(playerID){
 
         var serializedChars = charactersVisibleTo(playerID).map(function(character) {
+            console.log(character.serialize());
             return character.serialize();
         });
-
 
         gameObj = {
             "message":"update-state",
             "turn":_this.getActivePlayerId(),
             "characters":serializedChars,
-            "animations":[]
+            "animations":[],
+            "HUD":{
+                "myChars":[],
+                "enemyChars":[],
+                "myID":"",
+                "enemyID":""
+            }
         }
         return gameObj;
     }
