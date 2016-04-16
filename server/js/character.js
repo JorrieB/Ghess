@@ -29,7 +29,7 @@ module.exports = function(startPosition, startHeading, playerId) {
 	};
 
 	_this.getVisibleCells = function(){
-		return [{x:0, y:0}];		
+		return [{x:0, y:0}];
 	};
 
 	_this.getAttackableCells = function(){
