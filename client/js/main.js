@@ -40,9 +40,12 @@ $(function() {
     ////////////////////////////////////////
     // PLAY VIEW PLAYER INFORMATION LOAD
     ////////////////////////////////////////
-    var chars = message.characters;
-    var headingStr = getHeadingStrFromVec(chars[0].heading);
-    $('character-portrait').css('background-image', "url('/img/characters/" + chars[0].type.toLowerCase() + "/" + headingStr + "/red.png')");
+    // var chars = message.characters;
+    // var headingStr = getHeadingStrFromVec(chars[0].heading);
+    // $('character-portrait').css('background-image', "url('/img/characters/" + chars[0].type.toLowerCase() + "/" + headingStr + "/red.png')");
+    
+
+
     ////////////////////////////////////////
     // PLAY VIEW PLAYER INITIATED MESSAGIN
     ////////////////////////////////////////
@@ -172,8 +175,6 @@ $(function() {
 
     $(document).on('click', 'sprite', function(evt) {
         var $clicked = $(this);
-        var chars = message.characters;
-        var headingStr = getHeadingStrFromVec(chars[0].heading);
         
         if ($clicked.hasClass('them')) {
             $clicked.hide();
@@ -183,8 +184,9 @@ $(function() {
         } else {
             $('.glow').removeClass('glow');
             $curr_char = $clicked;
+            var curr_headingStr = getHeadingStrFromVec($curr_char.heading);
             $curr_char.addClass('glow');
-            $('.character-portrait').css('background-image', "url('/img/characters/" + chars[0].type.toLowerCase() + "/" + headingStr + "/red.png')");
+            $('.character-portrait').css('background-image', "url('/img/characters/" + $curr_char.type.toLowerCase() + "/" + curr_headingStr + "/red.png')");
         }
     });
 
