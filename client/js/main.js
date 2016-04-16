@@ -17,7 +17,6 @@ $(function() {
     var play_view = nunjucks.render('/templates/play_view.html');
 	var spectator_view = nunjucks.render('/templates/spectator_view.html');
 
-
 	// Initialize with start_view
     $('body').append($(start_view));
 
@@ -41,10 +40,11 @@ $(function() {
     ////////////////////////////////////////
     // PLAY VIEW PLAYER INFORMATION LOAD
     ////////////////////////////////////////
-    $('#play-view').css('background-image', 'url(../images/backgrounds/header-top.jpg)');
-
+    var chars = message.characters;
+    var headingStr = getHeadingStrFromVec(chars[0].heading);
+    $('character-portrait').css('background-image', "url('/img/characters/" + chars[0].type.toLowerCase() + "/" + headingStr + "/red.png')");
     ////////////////////////////////////////
-    // PLAY VIEW PLAYER INITIATED MESSAGING
+    // PLAY VIEW PLAYER INITIATED MESSAGIN
     ////////////////////////////////////////
 
     $(document).on('click', '.turn-arrow', function() {
@@ -172,6 +172,9 @@ $(function() {
 
     $(document).on('click', 'sprite', function(evt) {
         var $clicked = $(this);
+        var chars = message.characters;
+        var headingStr = getHeadingStrFromVec(chars[0].heading);
+        
         if ($clicked.hasClass('them')) {
             $clicked.hide();
             real_clicked = document.elementFromPoint(evt.clientX, evt.clientY);
@@ -181,6 +184,7 @@ $(function() {
             $('.glow').removeClass('glow');
             $curr_char = $clicked;
             $curr_char.addClass('glow');
+            $('.character-portrait').css('background-image', "url('/img/characters/" + chars[0].type.toLowerCase() + "/" + headingStr + "/red.png')");
         }
     });
 
