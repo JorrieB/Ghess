@@ -1,13 +1,14 @@
 var vectorUtils = require('../utils/vectorUtils');
 var Character = require('./character');
 
-module.exports = function(startPosition, startHeading, playerId) {
+module.exports = function(startPosition, startHeading, playerId, charID, startColor) {
 	var _this = this;
 
  	//The size of the square centerd at the scout is scoutRange + 1
 
-	Character.call(_this, startPosition, startHeading,  playerId);
+	Character.call(_this, startPosition, startHeading,  playerId, charID, startColor);
 	_this.characterType = "Swordsman";
+
 
 	_this.getVisibleCells = function(){
 		var right = vectorUtils.turnRight(_this.heading);

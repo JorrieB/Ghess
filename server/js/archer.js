@@ -1,11 +1,11 @@
 var Character = require('./character');
 var utils = require('../utils/vectorUtils');
 
-module.exports = function(startPosition, startHeading, playerId) {
+module.exports = function(startPosition, startHeading, playerId, charID, startColor) {
 	var _this = this;
 	var arrowRange = 10;
 
-	Character.call(_this, startPosition, startHeading, playerId);
+	Character.call(_this, startPosition, startHeading, playerId, charID, startColor);
 	_this.characterType = "Archer";
 
 
