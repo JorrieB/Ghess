@@ -3,16 +3,16 @@ var GameHandler = require('./GameHandler');
 
 // The socket message handlers.
 // The first argument of each must be the socket
+// The 'this' reference is bound to the main socket.io instance
 module.exports = {
     'create-game': function(socket, data) {
         // TODO: let users customize by passing parameters
-        var gameId = GameStore.create();
-        var game = GameStore.get(gameId);
-        game.addPlayer(socket.playerId);
+        var created = GameStore.create();
+        created.game.addPlayer(socket.playerId);
         // Store the gameId on the socket
-        socket.gameId = gameId;
+        socket.gameId = created.id;
         // Send message back to client
-        socket.emit('game-created', { gameId: gameId, gameParams: game.getParams() });
+        socket.emit('game-created', { gameId: created.id, gameParams: created.game.getParams() });
     },
     'join-game': function(socket, data) {
         var game = GameStore.get(data.gameId);
@@ -24,12 +24,16 @@ module.exports = {
         socket.emit('game-joined', { gameId: data.gameId, gameParams: game.getParams() });
     },
     'join-any': function(socket) {
-        var gameId = GameStore.getAny();
-        var game = GameStore.get(gameId);;
-        if (!gameId) {
-            gameId = GameStore.create();
-            game = GameStore.get(gameId);
-            socket.emit('game-created', { gameId: gameId, gameParams: game.getParams() });
+        var available = GameStore.getFirstAvailable();
+        var gameId;
+        var game;
+        if (!available) {
+            var created = GameStore.create();
+            gameId = created.id;
+            game = created.game;
+        } else {
+            gameId = available.id;
+            game = available.game;
         }
         game.addPlayer(socket.playerId);
         socket.gameId = gameId;

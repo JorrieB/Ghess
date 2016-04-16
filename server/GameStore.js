@@ -7,12 +7,12 @@ var Game = require('./Game');
 var games = {};
 
 module.exports = {
-    // Creates a new game and returns the ID of the created game
+    // Creates a new game and returns the game ID and the created game
     create: function() {
         // Use current time to make the ID unique, and convert to base 64 to shorten it
         var newId = toBase64(Date.now());
         games[newId] = new Game();
-        return newId;
+        return { id: newId, game: games[newId] };
     },
     // Gets a game given an ID
     get: function(id) {
@@ -22,15 +22,15 @@ module.exports = {
     remove: function(id) {
         games[id] = null;
     },
-    // Gets first game in dictionary
-    // TODO Replace this
-    getAny: function() {
-        try {
-            var gameId = Object.keys(games)[0];
-            return gameId;
+    // Gets first available game, and returns its ID and the game instance
+    getFirstAvailable: function() {
+        var gameIds = Object.keys(games);
+        for (var i = 0; i < gameIds.length; i++) {
+            var id = gameIds[i];
+            if (games[id].joinable()) {
+                return { id: id, game: games[id] };
+            }
         }
-        catch(err) {
-            return undefined;
-        }
+        return null;
     },
 };
