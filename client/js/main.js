@@ -84,7 +84,6 @@ $(function() {
     $(document).on('click', '.move-candidate', function() {
         var $move_square = $(this);
         var curr_char_pos = $curr_char.data('position');
-        console.log('curr char pos', vecToObj(curr_char_pos));
         if (curr_char_pos) {
             var move_x = $move_square.data('x');
             var move_y = $move_square.data('y');
@@ -122,6 +121,7 @@ $(function() {
     });
 
     socket.on('update-state', function(message) {
+        $curr_char = $();
         console.log('update-state', message);
         if (message.turn == playerId) {
             $('#play-view').css('background-color', 'green');
@@ -181,7 +181,6 @@ $(function() {
 
     $(document).on('click', '.attack-button', function() {
         cleanSquares();
-        a = $curr_char;
         $curr_char.data('attack').forEach(function(vec) {
             var $square = getSquare(vec);
             $square.addClass('attack-candidate');
@@ -190,7 +189,9 @@ $(function() {
 
     $(document).on('click', '.turn-button', function() {
         cleanSquares();
-        $('.turn-arrow-container').show().placeAt($curr_char.data('position'));
+        if ($curr_char.length) {
+            $('.turn-arrow-container').show().placeAt($curr_char.data('position'));
+        }
     });
 
     $(document).on('click', '.move-button', function() {
