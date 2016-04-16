@@ -26,11 +26,6 @@ module.exports = {
     'join-any': function(socket) {
         var gameId = GameStore.getAny();
         var game = GameStore.get(gameId);;
-        if (!gameId) {
-            gameId = GameStore.create();
-            game = GameStore.get(gameId);
-            socket.emit('game-created', { gameId: gameId, gameParams: game.getParams() });
-        }
         game.addPlayer(socket.playerId);
         socket.gameId = gameId;
         socket.emit('game-joined', { gameId: gameId, gameParams: game.getParams() });
