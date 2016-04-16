@@ -12,15 +12,18 @@ $(function() {
     // SCREEN FLOW
     ///////////////
 	var start_view = nunjucks.render('/templates/start_view.html');
+    var loading_view = nunjucks.render('/templates/loading_view.html');
     var table = nunjucks.render('/templates/table.html', {'width': 7, 'height': 7});
     var play_view = nunjucks.render('/templates/play_view.html');
 	var spectator_view = nunjucks.render('/templates/spectator_view.html');
+
 
 	// Initialize with start_view
     $('body').append($(start_view));
 
     $(document).on('click', '#player-button', function() {
-    	$('.screen').replaceWith($(play_view));
+    	// $('.screen').replaceWith($(loading_view));
+        $('.screen').replaceWith($(play_view));
         socket.emit('join-any');
         $curr_char = $();
     });
@@ -34,6 +37,11 @@ $(function() {
     	$('.screen').replaceWith($(start_view));
     });
 
+
+    ////////////////////////////////////////
+    // PLAY VIEW PLAYER INFORMATION LOAD
+    ////////////////////////////////////////
+    $('#play-view').css('background-image', 'url(../images/backgrounds/header-top.jpg)');
 
     ////////////////////////////////////////
     // PLAY VIEW PLAYER INITIATED MESSAGING
