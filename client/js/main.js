@@ -184,9 +184,10 @@ $(function() {
         } else {
             $('.glow').removeClass('glow');
             $curr_char = $clicked;
-            var curr_headingStr = getHeadingStrFromVec($curr_char.heading);
+            // console.log($curr_char.data('heading'));
+            var curr_headingStr = getHeadingStrFromVec($curr_char.data('heading'));
             $curr_char.addClass('glow');
-            $('.character-portrait').css('background-image', "url('/img/characters/" + $curr_char.type.toLowerCase() + "/" + curr_headingStr + "/red.png')");
+            $('.character-portrait').css('background-image', "url('/img/characters/" + $curr_char.data('type').toLowerCase() + "/" + curr_headingStr + "/red.png')");
         }
     });
 
