@@ -80,8 +80,8 @@ $(function() {
             var attack_y = $attackable_square.data('y');
             var target_pos = [attack_x, attack_y];
             socket.emit('update-game', {
-                'objectPosition': vecToObj(curr_char_pos),
-                'targetPosition': vecToObj(target_pos),
+                'objectPosition': curr_char_pos,
+                'targetPosition': target_pos,
                 'type': 'attack',
             });
         } else {
@@ -97,8 +97,8 @@ $(function() {
             var move_y = $move_square.data('y');
             var target_pos = [move_x, move_y];
             socket.emit('update-game', {
-                'objectPosition': vecToObj(curr_char_pos),
-                'targetPosition': vecToObj(target_pos),
+                'objectPosition': curr_char_pos,
+                'targetPosition': target_pos,
                 'type': 'move',
             });
         } else {
