@@ -288,18 +288,6 @@ sprite {
     background-size: 100%;
 }
 
-.knight {
-    background-image: url('/img/characters/swordsman/front.png');
-}
-
-.scout {
-    background-image: url('/img/characters/scout/front.png');
-}
-
-.archer {
-    background-image: url('/img/characters/archer/front.png');
-}
-
 .them {
     opacity: .5;
 }

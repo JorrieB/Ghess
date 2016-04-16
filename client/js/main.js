@@ -55,8 +55,8 @@ $(function() {
             }
 
             socket.emit('update-game', {
-                'objectPosition': vecToObj(curr_char_pos),
-                'newHeading': vecToObj(direction),
+                'objectPosition': curr_char_pos,
+                'newHeading': direction,
                 'type': 'turn',
             });
         } else {
@@ -133,22 +133,24 @@ $(function() {
         var chars = message.characters;
         for (var i = 0; i < chars.length; i++) {
             var _char = chars[i];
+            var headingStr = getHeadingStrFromVec(_char.heading);
             var $char = $('<sprite>')
-                .data('attack', _char.attack.map(objToVec))
-                .data('move', _char.move.map(objToVec))
-                .data('position', objToVec(_char.position))
-                .data('visibility', _char.visibility.map(objToVec))
-                .addClass(_char.type.toLowerCase());
-            _char.visibility.forEach(function(vec) {
+                .data('attack', _char.attack)
+                .data('move', _char.move)
+                .data('position', _char.position)
+                .data('visibility', _char.visibility)
+                .data('type', _char.type.toLowerCase())
+                .data('heading', headingStr)
+                .css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + headingStr + "/red.png')");
+            /*_char.visibility.forEach(function(vec) {
                 var $square = getSquare(vec);
                 $square.addClass('visible');
-            });
+            });*/
             if (_char.team != playerId) {
                 $char.addClass('them');
             }
             $table.append($char);
-            $char.placeAt(objToVec(_char.position));
-            $char.rotate(vecToDegrees[_char.heading]);
+            $char.placeAt(_char.position);
         };
     });
 

@@ -26,10 +26,8 @@ $.fn.rotate = function(degrees) {
 };
 
 getSquare = function(vec) {
-    var x = vec[0];
-    var y = vec[1];
     return $('.ghess-td').filter(function() {
-        return ($(this).data('x') == x) && ($(this).data('y') == y);
+        return ($(this).data('x') == vec.x) && ($(this).data('y') == vec.y);
     });
 };
 
@@ -41,17 +39,20 @@ $.fn.placeAt = function(vec) {
 }
 
 dirToDegrees = {'up': 0, 'down': 180, 'left': 270, 'right': 90};
-vecToDegrees = {'0,-1': 0, '0,1': 180, '-1,0': 270, '1,0': 90};
-objToVec = function(obj){
-    if (obj) {
-        return [obj.x, obj.y];
+
+getHeadingStrFromVec = function(vec) {
+    if ((vec.x == 0) && (vec.y == 1)) {
+        return 'down';
+    } else if ((vec.x == 0) && (vec.y == -1)) {
+        return 'up';
+    } else if ((vec.x == 1) && (vec.y == 0)) {
+        return 'right';
+    } else if ((vec.x == -1) && (vec.y == 0)) {
+        return 'left';
     }
+    console.log('Bad heading passed in', vec);
 }
-vecToObj = function(vec){
-    if (vec) {
-        return {x: vec[0], y: vec[1]}
-    }
-}
+
 
 // returns []
 // animates from start element to end element with reference values:
@@ -113,6 +114,3 @@ $.fn.animateProjectile = function($targetContainer, start, end, speed, callback)
     }, speed*length, 'linear', callback);
     return this;
 };
-
-
-

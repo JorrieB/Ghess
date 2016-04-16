@@ -1,7 +1,7 @@
 var vectorUtils = require('./utils/vectorUtils');
 var Character = require('./js/character');
 var Archer = require('./js/archer');
-var Knight = require('./js/knight');
+var Swordsman = require('./js/swordsman');
 var Scout = require('./js/scout');
 
 module.exports = function() {
@@ -61,8 +61,8 @@ module.exports = function() {
             case "archer":
                 characterObject = new Archer(character.position,character.heading,character.playerId)
                 break;
-            case "knight":
-                characterObject = new Knight(character.position,character.heading,character.playerId)
+            case "swordsman":
+                characterObject = new Swordsman(character.position,character.heading,character.playerId)
                 break;
             case "scout":
                 characterObject = new Scout(character.position,character.heading,character.playerId)
@@ -88,7 +88,7 @@ module.exports = function() {
 
     _this.staticStart = function(){
         characterJSONArray = [];
-        startCharacters = ["knight","archer","scout"];
+        startCharacters = ["swordsman","archer","scout"];
         headingsArray = [{x:0,y:1},{x:0,y:-1}];
         positionsArray = [{x:0,y:0},{x:4,y:5},{x:2,y:0},{x:5,y:6},{x:6,y:6},{x:4,y:6}];
         for (i = 0; i < _playersId.length; i++){
