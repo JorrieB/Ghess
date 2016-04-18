@@ -129,7 +129,7 @@ module.exports = function() {
 
     _this.getOtherPlayerId = function(playerId) {
         if (_this.canStart()){
-            var thisIndex = _playersId.indexOf(playerId);
+            var thisIndex = _playersId.findIndex(x => x.getID()==playerId);
             var otherIndex = (thisIndex + 1 ) % 2;
             var otherPlayerId = _playersId[otherIndex].getID();
             return otherPlayerId;
