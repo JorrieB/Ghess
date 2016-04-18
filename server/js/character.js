@@ -50,7 +50,7 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 	}
 
 	_this.getAliveness = function(){
-		return this._alive;
+		return this.alive;
 	}
 
 	_this.attack = function(){

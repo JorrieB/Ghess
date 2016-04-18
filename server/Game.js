@@ -3,6 +3,7 @@ var Character = require('./js/character');
 var Archer = require('./js/archer');
 var Swordsman = require('./js/swordsman');
 var Scout = require('./js/scout');
+var Player = require('./js/player');
 
 module.exports = function() {
 	var _this = this;
@@ -13,14 +14,15 @@ module.exports = function() {
     var _numberOfMoves = 0;     // Number of moves since the beginning of the game
     var _movePerTurn = 2;
     var _playersId = []
-    // TODO: concept of color for each player
+
+    var _roundNumber = 0; 
 
     // Spooky modular arithmetic for eric
     // Return 1 if this is player's 1 turn, 2 if this is player 2 turn
     _getActivePlayerId = function(){
         var turnNumber = Math.floor(_numberOfMoves / _movePerTurn);
          activePlayerIndex =  (turnNumber % 2 )
-         activePlayerId = _playersId[activePlayerIndex];
+         activePlayerId = _playersId[activePlayerIndex].getID();
          return activePlayerId;
     }
 
@@ -57,7 +59,7 @@ module.exports = function() {
 
     //create the actual character objects based upon what json object somes in
     _createCharacter = function(character,charID){
-        var characterColor = (_playersId.indexOf(character.playerId) == 1) ? "red" : "blue";
+        var characterColor = (_playersId.findIndex(x => x.getID()==character.playerId) == 1) ? "red" : "blue";
         var characterObject;
         switch(character.characterType){
             case "archer":
@@ -86,6 +88,13 @@ module.exports = function() {
         return true;
     }
 
+    _getPlayerFromID = function(playerID){
+        // console.log("trying to get player from id:", playerID);
+        // console.log(_playersId);
+        index = _playersId.findIndex(x => x.getID()==playerID);
+        return _playersId[index];
+    }
+
     _this.staticStart = function(){
         characterJSONArray = [];
         startCharacters = ["swordsman","archer","scout"];
@@ -97,7 +106,7 @@ module.exports = function() {
                     "characterType":startCharacters[j],
                     "position":positionsArray[i * 3 + j],
                     "heading":headingsArray[i],
-                    "playerId":_playersId[i]
+                    "playerId":_playersId[i].getID()
                 });
             }
         }
@@ -107,8 +116,8 @@ module.exports = function() {
     // Public analog of functions above
     _this.addPlayer = function(playerId) {
         if (_playersId.length < 2){
-            var player = playerId;
-            _playersId.push(playerId);
+            var player = new Player(playerId);
+            _playersId.push(player);
             return true;
         };
         return false;
@@ -122,7 +131,7 @@ module.exports = function() {
         if (_this.canStart()){
             var thisIndex = _playersId.indexOf(playerId);
             var otherIndex = (thisIndex + 1 ) % 2;
-            var otherPlayerId = _playersId[otherIndex];
+            var otherPlayerId = _playersId[otherIndex].getID();
             return otherPlayerId;
         }
         return null;
@@ -152,7 +161,39 @@ module.exports = function() {
             return this._createCharacter(character,startCharacters.indexOf(character));
         });
 
+        // TODO: call initialize round at the correct time
+        initializeRound();
+
     };
+
+    //gets called at the beginning of each round
+    //reset all round variables
+    //reset player information
+    initializeRound = function(){
+        _roundNumber++;
+        _numberOfMoves = 0;
+        var player0Chars = _characters.filter(function(character){
+
+            if (character.getPlayerId() == _playersId[0].getID()){
+                return character
+            }
+        });
+
+        var player1Chars = _characters.filter(function(character){
+            if (character.getPlayerId() == _playersId[1].getID()){
+                return character
+            }
+        });
+
+        initPlayerArrays(_playersId[0],player0Chars,player1Chars);
+        initPlayerArrays(_playersId[1],player1Chars,player0Chars);
+
+    }
+
+    initPlayerArrays = function(player,allies,enemies){
+        player.initMyArray(allies);
+        player.initEnemyArray(enemies);
+    }
 
     _this.getCharacters = function(){
         return _characters;
@@ -285,6 +326,7 @@ module.exports = function() {
             for (j = 0; j < cumulativeVisibility.length; j++){
                 if (vectorUtils.isEqual(enemyChars[i].getPosition(), cumulativeVisibility[j])){
                     friendlyChars.push(enemyChars[i]);
+                    _getPlayerFromID(playerID).seeEnemyCharacter(enemyChars[i]);
                     break;
                 }
             }
@@ -300,16 +342,18 @@ module.exports = function() {
             return character.serialize();
         });
 
+        console.log("player id in serialize is :", playerID);
+
         gameObj = {
             "message":"update-state",
             "turn":_this.getActivePlayerId(),
             "characters":serializedChars,
             "animations":[],
             "HUD":{
-                "myChars":[],
-                "enemyChars":[],
-                "myID":"",
-                "enemyID":""
+                "selfChars":_getPlayerFromID(playerID).getHUDInfoSelf(),
+                "enemyChars":_getPlayerFromID(playerID).getHUDInfoEnemy(),
+                "selfWins":_getPlayerFromID(playerID).getNumWins(),
+                "enemyWins":((_roundNumber-1) - _getPlayerFromID(playerID).getNumWins())
             }
         }
         return gameObj;

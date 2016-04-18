@@ -130,6 +130,15 @@ The result is a comic book art style. I think this is the best direction to go a
 
 ##Networking
 ###Server to client message
+######Roster selection
+```
+Message name: "roster-selection"
+
+Message data: {
+	characters: [characterObjects]
+}
+
+```
 ######Update state
 Client should go through characters and use their properties to create the controller objects and to deduce what is visible.
 

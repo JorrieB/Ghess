@@ -45,7 +45,7 @@ module.exports = {
         socket.emit('player-readied');
         // If both players are ready, start the game & send game state to clients
         if (game.canStart()) {
-            game.staticStart();
+            game.staticStart(); // TODO: replace with actual start function
             // To this player
             socket.emit('update-state', game.serialize(socket.playerId));
             // To the other player
