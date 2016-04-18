@@ -148,10 +148,28 @@ Message name: "update-state"
 Message data: {
 	turn: playerID,
 	characters: [characterObjects],
-	animations: [animationObjects]
+	animations: [animationObjects],
+	"HUD": {
+		"selfChars": [HUDCharObject],
+		"enemyChars": [HUDCharObject],
+		"selfWins": int,
+		"enemyWins": int
+	}
 }
 
 ```
+######HUDCharObject
+Used to display the HUD icons.
+
+
+```
+HUDCharObject:{
+	alive: bool,
+	charType: "character type",
+	HUDID: int
+}
+```
+
 ######Round over
 Updates HUD on details to do round over/game over animations.
 
