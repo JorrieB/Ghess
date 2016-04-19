@@ -1,6 +1,6 @@
 module.exports = function(ID) {
 	var _this = this;
-
+	
 	var playerID = ID;
 	var myArray = [];
 	var enemyArray = [];

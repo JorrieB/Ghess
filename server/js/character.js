@@ -53,6 +53,16 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 		return this.alive;
 	}
 
+	//TODO: Implement for different characters
+	//Returns an object with arbitrary fields
+	//Used to display pertinent information in the character panel
+	//Things like line of sight images, descriptions of attacks/defends, and bio go here
+	//The fields are arbitrary, but should remain consistent for consistent things-
+	////Some characters don't have clear attack range, so they won't have an attack range photo, etc.
+	_this.getInfo = function(){
+		return {};
+	}
+
 	_this.attack = function(){
 		return false;
 	};
@@ -71,7 +81,8 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
     		"attack": _this.getAttackableCells(),
    			"move": _this.getAccessibleCells(),
    			"heading": _this.heading,
-   			"color": _this.charColor
+   			"color": _this.charColor,
+   			"info": _this.getInfo()
 		}
 		return characterObject;
 	}
