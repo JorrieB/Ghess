@@ -15,6 +15,8 @@ module.exports = function() {
     var _movePerTurn = 2;
     var _playersId = []
 
+    var _animations = [];
+
     var _roundNumber = 0; 
 
     // Spooky modular arithmetic for eric
@@ -234,6 +236,7 @@ module.exports = function() {
         }
 
         activeCharacter.setPosition(endPosition);
+        _animations = [];
         _numberOfMoves += 1;
         return true;
     };
@@ -260,6 +263,7 @@ module.exports = function() {
         }
 
         activeCharacter.setHeading(newHeading);
+        _animations = [];
         _numberOfMoves += 1;
         return true;
     };
@@ -279,9 +283,10 @@ module.exports = function() {
         if (!(activeCharacter.getPlayerId() == playerId)){
             return false;
         }
-        isValid = activeCharacter.attack(attackedPosition, _this);
+        attack = activeCharacter.attack(attackedPosition, _this);
+        _animations = [attack]; //add the attack animation information
         _numberOfMoves += 1;
-        return isValid;
+        return attack.isValid;
     };
 
     _this.handlePass  = function(playerId) {
@@ -290,6 +295,7 @@ module.exports = function() {
         }
         // More spooky arithmetic for eric
         _numberOfMoves =  (Math.floor(_numberOfMoves / _movePerTurn) + 1) * _movePerTurn;
+        _animations = []; 
         return true;
     };
 
@@ -342,13 +348,11 @@ module.exports = function() {
             return character.serialize();
         });
 
-        console.log("player id in serialize is :", playerID);
-
         gameObj = {
             "message":"update-state",
             "turn":_this.getActivePlayerId(),
             "characters":serializedChars,
-            "animations":[],
+            "animations":_animations,
             "HUD":{
                 "selfChars":_getPlayerFromID(playerID).getHUDInfoSelf(),
                 "enemyChars":_getPlayerFromID(playerID).getHUDInfoEnemy(),

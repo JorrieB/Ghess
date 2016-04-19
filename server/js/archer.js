@@ -35,6 +35,8 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 				break;
 			}
 
+			attackedPosition = attackTile;
+
 			//check if a character is in the current attacked square
 			var attackedCharacter = game.getCharacterAtPosition(attackTile);
 			if (attackedCharacter != null){
@@ -47,8 +49,12 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 				break;
 			}
 		}
-
-		return true;
+		return {
+			"isValid":true,
+			"attack":"arrow",
+			"startPos":_this.getPosition(),
+			"endPos":attackedPosition
+			};
 
 	}
 };

@@ -63,8 +63,14 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 		return {};
 	}
 
+	//attack should return its animation information
 	_this.attack = function(){
-		return false;
+		return {
+			"isValid":false,
+			"attack":"undefined",
+			"startPos":{x:0,y:0},
+			"endPos":{x:0,y:0}
+		};
 	};
 
 	_this.defend = function(attackType, attackHeading){

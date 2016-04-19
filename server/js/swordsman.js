@@ -47,6 +47,11 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 
         // If all of the condition are satisfied, destroy the targerCharacter
         game.destroyCharacter(targetCharacter);
-        return true;
+        return {
+			"isValid":true,
+			"attack":"sword",
+			"startPos":_this.getPosition(),
+			"endPos":attackedPosition
+		};
 	}
 };
