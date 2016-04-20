@@ -122,7 +122,7 @@ $(function() {
                 var charCell = document.createElement("div");
                 charCell.className = "rosterCell";
                 charCell.innerText = character.type.toLowerCase();
-                charCell.css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + headingStr + "/" + _char.color + ".png");
+                charCell.css('background-image', "url('/img/characters/" + character.type.toLowerCase() + "/down/red.png");
                 row.appendChild(charCell); 
             }
             document.getElementById("characters-list").appendChild(row);
@@ -155,6 +155,20 @@ $(function() {
         } else {
             $('#play-view').css('background-color', '');
         }
+
+        // Player Stat
+        var selfChars = message.HUD.selfChars;
+        for (var c=0; c < selfChars; c++) {
+            var selfChar = document.createElement("div");
+            selfChar.className = "selfCharCell";
+            selfChar.css('background-image', "url('/img/characters/" + selfChars[c].charType.toLowerCase() + "/down/red.png");
+            $('#player-stat').html(selfChar);
+        }                
+
+        // Enemy Stat
+        $('#enemy-stat').html(message.HUD.enemyChars.length);
+
+        // Board State
         var $table = $(table);
         $('.ghess-table').replaceWith($table);
         var chars = message.characters;
@@ -177,7 +191,6 @@ $(function() {
             if (_char.team != playerId) {
                 $char.addClass('them');
             }
-            
             $table.append($char);
             $char.placeAt(_char.position);
         };
