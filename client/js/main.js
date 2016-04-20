@@ -23,13 +23,13 @@ $(function() {
     $(document).on('click', '#player-button', function() {
     	$('.screen').replaceWith($(loading_view));
         socket.emit('team-selection');
-        socket.emit('join-any');
     });
 
     $(document).on('click', '#ready-button', function() {
         $('.screen').replaceWith($(play_view));
         $('#player-id').html(playerId);
         $curr_char = $();
+        socket.emit('join-any');
     });
 
     $(document).on('click', '#spectator-button', function() {
@@ -148,41 +148,39 @@ $(function() {
     });
 
     socket.on('update-state', function(message) {
-        if($('.screen')==$('play_view')) {
-            $curr_char = $();
-            console.log('update-state', message);
-            if (message.turn == playerId) {
-                $('#play-view').css('background-color', 'green');
-            } else {
-                $('#play-view').css('background-color', '');
-            }
-            var $table = $(table);
-            $('.ghess-table').replaceWith($table);
-            var chars = message.characters;
-            for (var i = 0; i < chars.length; i++) {
-                var _char = chars[i];
-                var headingStr = getHeadingStrFromVec(_char.heading);
-                var $char = $('<sprite>')
-                    .data('attack', _char.attack)
-                    .data('move', _char.move)
-                    .data('position', _char.position)
-                    .data('visibility', _char.visibility)
-                    .data('type', _char.type.toLowerCase())
-                    .data('heading', headingStr)
-                    .css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + headingStr + "/" + _char.color + ".png')");
-                _char.visibility.forEach(function(vec) {
-                    var $square = getSquare(vec);
-                    $square.addClass('visible');
-                });
-                
-                if (_char.team != playerId) {
-                    $char.addClass('them');
-                }
-                // TODO (nayeon): message.HUD updates here
-                $table.append($char);
-                $char.placeAt(_char.position);
-            };
+        $curr_char = $();
+        console.log('update-state', message);
+        if (message.turn == playerId) {
+            $('#play-view').css('background-color', 'green');
+        } else {
+            $('#play-view').css('background-color', '');
         }
+        var $table = $(table);
+        $('.ghess-table').replaceWith($table);
+        var chars = message.characters;
+        for (var i = 0; i < chars.length; i++) {
+            var _char = chars[i];
+            var headingStr = getHeadingStrFromVec(_char.heading);
+            var $char = $('<sprite>')
+                .data('attack', _char.attack)
+                .data('move', _char.move)
+                .data('position', _char.position)
+                .data('visibility', _char.visibility)
+                .data('type', _char.type.toLowerCase())
+                .data('heading', headingStr)
+                .css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + headingStr + "/" + _char.color + ".png')");
+            _char.visibility.forEach(function(vec) {
+                var $square = getSquare(vec);
+                $square.addClass('visible');
+            });
+            
+            if (_char.team != playerId) {
+                $char.addClass('them');
+            }
+            
+            $table.append($char);
+            $char.placeAt(_char.position);
+        };
     });
 
     socket.on('player-readied', function(message) {
