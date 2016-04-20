@@ -22,10 +22,10 @@ $(function() {
 
     $(document).on('click', '#player-button', function() {
     	$('.screen').replaceWith($(loading_view));
-        socket.emit('join-any');
     });
 
     $(document).on('click', '#ready-button', function() {
+        socket.emit('join-any');
         $('.screen').replaceWith($(play_view));
         $('#player-id').html(playerId);
         $curr_char = $();
@@ -122,6 +122,19 @@ $(function() {
     });
 
     /////////////////////////////////////////
+    // PLAY VIEW ANIMATIONS
+    /////////////////////////////////////////
+
+    var animateArrow = function(animation, callback) {
+        var $arrow = $('<sprite />').addClass('projectile').css('background-image', "url('/img/characters/archer/attack/red.png')");
+        $arrow.animateProjectile($('.ghess-table'), animation.startPos, animation.endPos, 200, callback);
+    };
+
+    var animationFuncMap = {
+        'arrow': animateArrow
+    };
+
+    /////////////////////////////////////////
     // PLAY VIEW MESSAGE HANDLING FROM SERVER
     /////////////////////////////////////////
     socket.on('connected', function(message) {
@@ -139,17 +152,7 @@ $(function() {
         socket.emit('ready-player');
     });
 
-    socket.on('update-state', function(message) {
-        $curr_char = $();
-        console.log('update-state', message);
-        if (message.turn == playerId) {
-            $('#play-view').css('background-color', 'green');
-        } else {
-            $('#play-view').css('background-color', '');
-        }
-        var $table = $(table);
-        $('.ghess-table').replaceWith($table);
-        var chars = message.characters;
+    var handleCharacters = function($table, chars) {
         for (var i = 0; i < chars.length; i++) {
             var _char = chars[i];
             var headingStr = getHeadingStrFromVec(_char.heading);
@@ -164,12 +167,7 @@ $(function() {
             _char.visibility.forEach(function(vec) {
                 var $square = getSquare(vec);
                 $square.addClass('visible');
-<<<<<<< HEAD
-            });*/
-            
-=======
             });
->>>>>>> 893acbdfd2783426ee78c9e99fe4f3c28f700874
             if (_char.team != playerId) {
                 $char.addClass('them');
             }
@@ -177,6 +175,40 @@ $(function() {
             $table.append($char);
             $char.placeAt(_char.position);
         };
+    };
+
+    var handleAnimations = function(animations, callback) {
+        cleanSquares();
+        var animationList = [];
+        for (var i = animations.length - 1; i > -1; i--) {
+            try {
+                animationList.push(animationFuncMap[animations[i].attack].bind(null, animations[i], animationList[i+1] || callback));
+            } catch(err) {
+            }
+        }
+        if (animationList.length) {
+            animationList[animationList.length-1]();
+        } else {
+            callback();
+        }
+    };
+
+    socket.on('update-state', function(message) {
+        $curr_char = $();
+        console.log('update-state', message);
+
+        if (message.turn == playerId) {
+            $('#play-view').css('background-color', 'green');
+        } else {
+            $('#play-view').css('background-color', '');
+        }
+
+        handleAnimations(message.animations, function() {
+            var $table = $(table);
+            $('.ghess-table').replaceWith($table);
+            handleCharacters($table, message.characters);
+        });
+
     });
 
     socket.on('player-readied', function(message) {

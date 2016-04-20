@@ -71,17 +71,33 @@ var getAnimCoords = function($start_elem, $end_elem,
 // get vector direction 'up', 'down', 'left', 'right'
 
 var getDirAndLen = function(start, end) {
-    var vert = end[1] - start[1];
-    var horiz = end[0] - start[0];
+    var vert = end.y - start.y;
+    var horiz = end.x - start.x;
     var out = {'len': Math.abs(vert || horiz)};
     if (vert > 0) {
         out.dir = 'down';
+        out.next = {
+            'x': start.x,
+            'y': start.y + 1
+        };
     } else if (vert < 0) {
         out.dir = 'up';
+        out.next = {
+            'x': start.x,
+            'y': start.y - 1
+        };
     } else if (horiz < 0) {
         out.dir = 'left';
+        out.next = {
+            'x': start.x - 1,
+            'y': start.y
+        };
     } else if (horiz > 0) {
         out.dir = 'right';
+        out.next = {
+            'x': start.x + 1,
+            'y': start.y
+        };
     } else {
         throw 'no direction';
     }
@@ -92,12 +108,13 @@ $.fn.animateProjectile = function($targetContainer, start, end, speed, callback)
     this.hide();
     $targetContainer.append(this);
 
-    var $start = $targetContainer.getSquare(start);
-    var $end = $targetContainer.getSquare(end);
     var dl = getDirAndLen(start, end);
     var direction = dl.dir;
     var length = dl.len;
     this.rotate(dirToDegrees[direction]);
+
+    var $start = getSquare(dl.next);
+    var $end = getSquare(end);
 
     var start_vert = direction=='up' ? 'bottom' : 'top';
     var end_vert = direction=='down' ? 'bottom' : 'top';
