@@ -21,9 +21,13 @@ $(function() {
     $('body').append($(start_view));
 
     $(document).on('click', '#player-button', function() {
-    	// $('.screen').replaceWith($(loading_view));
-        $('.screen').replaceWith($(play_view));
+    	$('.screen').replaceWith($(loading_view));
         socket.emit('join-any');
+    });
+
+    $(document).on('click', '#ready-button', function() {
+        $('.screen').replaceWith($(play_view));
+        $('#player-id').html(playerId);
         $curr_char = $();
     });
 
@@ -35,16 +39,6 @@ $(function() {
         console.log('click!');
     	$('.screen').replaceWith($(start_view));
     });
-
-
-    ////////////////////////////////////////
-    // PLAY VIEW PLAYER INFORMATION LOAD
-    ////////////////////////////////////////
-    // var chars = message.characters;
-    // var headingStr = getHeadingStrFromVec(chars[0].heading);
-    // $('character-portrait').css('background-image', "url('/img/characters/" + chars[0].type.toLowerCase() + "/" + headingStr + "/red.png')");
-
-
 
     ////////////////////////////////////////
     // PLAY VIEW PLAYER INITIATED MESSAGIN
@@ -114,6 +108,20 @@ $(function() {
     });
 
     /////////////////////////////////////////
+    // LOAD VIEW MESSAGE HANDLING FROM SERVER
+    /////////////////////////////////////////
+    socket.on('team-selection', function(message) {
+        console.log('team select', message);
+        var chars = message.characters;
+        for (var i = 0; i < chars.length; i++) {
+            var character = chars[i];
+            var row = document.createElement("div");
+            row.className = "rosterRow";
+            charcterDiv.css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + headingStr + "/" + _char.color + ".pn
+        }
+    });
+
+    /////////////////////////////////////////
     // PLAY VIEW MESSAGE HANDLING FROM SERVER
     /////////////////////////////////////////
     socket.on('connected', function(message) {
@@ -157,9 +165,11 @@ $(function() {
                 var $square = getSquare(vec);
                 $square.addClass('visible');
             });*/
+            
             if (_char.team != playerId) {
                 $char.addClass('them');
             }
+            // TODO (nayeon): message.HUD updates here
             $table.append($char);
             $char.placeAt(_char.position);
         };

@@ -227,6 +227,34 @@
 
 }
 
+/* LOAD VIEW SELECT PANE */
+.character-roster {
+    overflow: scroll;
+    padding: 15px 100px 15px 15px;
+
+}
+
+#selected-characters {
+    margin-top: 20px !important;
+    position: fixed;
+    top: 0;
+    right: 200px;
+    z-index: 10000;
+    background-color: #05acce;
+    width: 100px;
+    height: 360px;
+    padding: 10px;
+    text-align: center;
+    color:white;
+}
+.selected-character-slot {
+    margin: 15px 0;
+    width: 80px;
+    height: 80px;
+    border-radius:40px; 
+    background-color: white;
+}
+
 
 /* PLAY VIEW INFO PANE */
 

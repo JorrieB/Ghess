@@ -1,14 +1,15 @@
 <div id="loading-view" class="screen">
 
-    {% set width = 10 %}
-    {% set height = 10 %}
-    {% include '/templates/table.html' %}
-
     <div id="player-pane" class="loadView-column">
     	<!-- User selects unique playerID before entering play view -->
+
         <!-- User selects a team of characters before entering play view -->
+        <div id="characters-list">
+            
+        </div>
+
         {% include '/templates/character_roster.html' %}
-		<button type="button" id="ready-button" class="h2 basic-button redBtn">Ready</button>
+		
 
 	</div>
     
