@@ -33,6 +33,10 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 		_this.heading = heading;
 	};
 
+	_this.getDynamicVisibility = function(){
+		return  _this.getAliveness() ? _this.getVisibleCells() : [];
+	}
+
 	_this.getVisibleCells = function(){
 		return [{x:0, y:0}];
 	};
@@ -51,6 +55,11 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 
 	_this.getAliveness = function(){
 		return this.alive;
+	}
+
+	_this.kill = function(){
+		console.log("death and despair");
+		_this.alive = false;
 	}
 
 	//TODO: Implement for different characters
@@ -83,12 +92,16 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 			"team": _this.getPlayerId(),
 			"position": _this.getPosition(),
     		"alive": _this.getAliveness(),
-    		"visibility": _this.getVisibleCells(),
+    		"visibility": _this.getDynamicVisibility(),
     		"attack": _this.getAttackableCells(),
    			"move": _this.getAccessibleCells(),
    			"heading": _this.heading,
    			"color": _this.charColor,
    			"info": _this.getInfo()
+		}
+		if (!(characterObject.alive)){
+			console.log("VIsibility better be fucking empty");
+			console.log(characterObject.visibility);
 		}
 		return characterObject;
 	}
