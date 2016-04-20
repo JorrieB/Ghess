@@ -86,7 +86,12 @@ module.exports = function() {
             return false;
         }
 
-        _characters.splice(characterIndex, 1);
+        // If the character is already dead return false, something bad is happening
+        if (!(character.getAliveness())){
+            console.log("You are trying to kill the deads. Fix your bugs son.")
+            return false;
+        }
+        character.kill();
         return true;
     }
 
@@ -225,9 +230,13 @@ module.exports = function() {
             return false;
         }
 
-        // Is the endPosition empty?
+        // Is the endPosition empty? 
+        characterAtEndPosition =  _getCharacterAtPosition(endPosition);
         if (!(_getCharacterAtPosition(endPosition) == null)){
-            return false
+            // Is the character dead? NOT PROUD OF THIS
+             if (characterAtEndPosition.getAliveness()){
+                return false;
+            }
         }
 
         // Can the activeCharacter move in that position?
@@ -321,7 +330,7 @@ module.exports = function() {
         });
         var cumulativeVisibility = [];
         for (i = 0; i < friendlyChars.length; i++){
-            cumulativeVisibility = cumulativeVisibility.concat(friendlyChars[i].getVisibleCells());
+            cumulativeVisibility = cumulativeVisibility.concat(friendlyChars[i].getDynamicVisibility());
         }
 
         var enemyChars = _characters.filter(function(character) {

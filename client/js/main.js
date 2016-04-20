@@ -22,6 +22,7 @@ $(function() {
 
     $(document).on('click', '#player-button', function() {
     	$('.screen').replaceWith($(loading_view));
+        socket.emit('team-selection');
     });
 
     $(document).on('click', '#ready-button', function() {
@@ -29,6 +30,7 @@ $(function() {
         $('.screen').replaceWith($(play_view));
         $('#player-id').html(playerId);
         $curr_char = $();
+        socket.emit('join-any');
     });
 
     $(document).on('click', '#spectator-button', function() {
@@ -117,7 +119,14 @@ $(function() {
             var character = chars[i];
             var row = document.createElement("div");
             row.className = "rosterRow";
-            charcterDiv.css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + headingStr + "/" + _char.color + ".png");
+            for (var j = 0; j < chars.length; j++) {
+                var charCell = document.createElement("div");
+                charCell.className = "rosterCell";
+                charCell.innerText = character.type.toLowerCase();
+                charCell.css('background-image', "url('/img/characters/" + character.type.toLowerCase() + "/down/red.png");
+                row.appendChild(charCell);
+            }
+            document.getElementById("characters-list").appendChild(row);
         }
     });
 
@@ -164,14 +173,16 @@ $(function() {
                 .data('type', _char.type.toLowerCase())
                 .data('heading', headingStr)
                 .css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + headingStr + "/" + _char.color + ".png')");
+
             _char.visibility.forEach(function(vec) {
                 var $square = getSquare(vec);
                 $square.addClass('visible');
             });
+
             if (_char.team != playerId) {
                 $char.addClass('them');
             }
-            // TODO (nayeon): message.HUD updates here
+
             $table.append($char);
             $char.placeAt(_char.position);
         };
@@ -202,6 +213,18 @@ $(function() {
         } else {
             $('#play-view').css('background-color', '');
         }
+
+        // Player Stat
+        var selfChars = message.HUD.selfChars;
+        for (var c=0; c < selfChars; c++) {
+            var selfChar = document.createElement("div");
+            selfChar.className = "selfCharCell";
+            selfChar.css('background-image', "url('/img/characters/" + selfChars[c].charType.toLowerCase() + "/down/red.png");
+            $('#player-stat').html(selfChar);
+        }
+
+        // Enemy Stat
+        $('#enemy-stat').html(message.HUD.enemyChars.length);
 
         handleAnimations(message.animations, function() {
             var $table = $(table);

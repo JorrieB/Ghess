@@ -130,15 +130,28 @@ The result is a comic book art style. I think this is the best direction to go a
 
 ##Networking
 ###Server to client message
+
 ######Roster selection
 ```
 Message name: "roster-selection"
 
 Message data: {
-	characters: [characterObjects]
+	characters: [characterObjects],
+	rosterSize: int //# of chars you can have on your team
 }
 
 ```
+######Character info object
+
+```
+CharacterInfoObject = {
+	charType: string,
+	visibility: [position], //relative to user
+	movement: [position], //relative to user
+	attack: [position] //relative to user
+}
+```
+
 ######Update state
 Client should go through characters and use their properties to create the controller objects and to deduce what is visible.
 
@@ -178,7 +191,9 @@ Message name: "round-over"
 
 Message data: {
 	winner: playerID,
-	match-score: [score1, score2],
+	round: round number,
+	player1ID: score,
+	player2ID: score,
 	game-over: bool
 }
 ```
@@ -196,10 +211,15 @@ character: {
 ```
 
 ######Animation object
+
+Animation startPositions and end positions will be in order - so if some character produces multiple objects (say multiple arrows) then it will be from startPositions[0] to endPositions[0], then startPositions[1] to endPositions[1], etc.
+
 ```
 animation: {
 	type: string,
-	positions: [position]
+	startPositions: [position],
+	endPositions: [position],
+	heading: headingVector
 }
 ```
 
@@ -217,5 +237,3 @@ Message data:	 {
 	(optl) newHeading: 'turn'
 }
 ```
-
-

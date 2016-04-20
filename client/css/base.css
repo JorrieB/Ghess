@@ -255,6 +255,15 @@
     background-color: white;
 }
 
+.rosterRow {
+    height: 50px;
+    background-color: yellow;
+}
+
+.rosterCell {
+    width: 20px;
+}
+
 
 /* PLAY VIEW INFO PANE */
 
