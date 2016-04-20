@@ -153,10 +153,10 @@ $(function() {
                 .data('type', _char.type.toLowerCase())
                 .data('heading', headingStr)
                 .css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + headingStr + "/" + _char.color + ".png')");
-            /*_char.visibility.forEach(function(vec) {
+            _char.visibility.forEach(function(vec) {
                 var $square = getSquare(vec);
                 $square.addClass('visible');
-            });*/
+            });
             if (_char.team != playerId) {
                 $char.addClass('them');
             }

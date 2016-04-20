@@ -261,16 +261,11 @@
 }
 
 /* PLAY VIEW TABLE */
-.ghess-table, .ghess-td {
-    border-style: solid;
-    border-color: black;
-}
 
 .ghess-table {
-    border-width: 0 0 1px 1px;
     float: left;
     position: relative;
-    background: #EAE171;
+    background-color: transparent;
     width: 500px;
     height: 500px;
 }
@@ -283,7 +278,26 @@
 .ghess-td {
     float: left;
     height: 100%;
-    border-width: 1px 1px 0 0;
+    border: 1px solid black;
+    position: relative;
+}
+
+.ghess-td .panel{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: .6;
+    display: none;
+}
+
+.ghess-td:not(.visible):before{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color:black;
+    opacity: .7;
+    display: block;
 }
 
 sprite {
@@ -291,10 +305,6 @@ sprite {
     height: 70px;
     position: absolute;
     background-size: 100%;
-}
-
-.them {
-    opacity: .5;
 }
 
 .turn-arrow-container {
@@ -390,24 +400,25 @@ sprite {
     height: 20%;
 }
 
-.attack-candidate {
+.attack-candidate .panel {
+    display: block;
     background-color: rgb(215, 110, 110);
 }
 
-.attack-candidate-hover {
+.attack-candidate-hover .panel {
+    display: block;
     background-color: rgb(215, 110, 110);
-    opacity: .5;
+    opacity: .4;
 }
 
-.move-candidate {
+.move-candidate .panel {
+    display: block;
     background-color: rgb(110, 110, 215);
 }
 
-.move-candidate-hover {
+.move-candidate-hover .panel {
+    display: block;
     background-color: rgb(110, 110, 215);
-    opacity: .5;
+    opacity: .4;
 }
 
-.visible {
-    border-color: pink;
-}
