@@ -164,12 +164,8 @@ $(function() {
             _char.visibility.forEach(function(vec) {
                 var $square = getSquare(vec);
                 $square.addClass('visible');
-<<<<<<< HEAD
-            });*/
-            
-=======
             });
->>>>>>> 893acbdfd2783426ee78c9e99fe4f3c28f700874
+            
             if (_char.team != playerId) {
                 $char.addClass('them');
             }
