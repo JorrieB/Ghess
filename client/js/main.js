@@ -117,7 +117,7 @@ $(function() {
             var character = chars[i];
             var row = document.createElement("div");
             row.className = "rosterRow";
-            charcterDiv.css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + headingStr + "/" + _char.color + ".pn
+            charcterDiv.css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + headingStr + "/" + _char.color + ".png");
         }
     });
 
@@ -161,11 +161,15 @@ $(function() {
                 .data('type', _char.type.toLowerCase())
                 .data('heading', headingStr)
                 .css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + headingStr + "/" + _char.color + ".png')");
-            /*_char.visibility.forEach(function(vec) {
+            _char.visibility.forEach(function(vec) {
                 var $square = getSquare(vec);
                 $square.addClass('visible');
+<<<<<<< HEAD
             });*/
             
+=======
+            });
+>>>>>>> 893acbdfd2783426ee78c9e99fe4f3c28f700874
             if (_char.team != playerId) {
                 $char.addClass('them');
             }
