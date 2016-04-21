@@ -42,8 +42,42 @@ $(function() {
     	$('.screen').replaceWith($(start_view));
     });
 
+///////////////////////////////////////////
+//****************************************
+// LOAD VIEW
+//****************************************
+//////////////////////////////////////////
+
+    /////////////////////////////////////////
+    // LOAD VIEW MESSAGE HANDLING FROM SERVER
+    /////////////////////////////////////////
+    socket.on('team-selection', function(message) {
+        console.log('team select', message);
+        var chars = message.characters;
+        for (var i = 0; i < chars.length; i++) {
+            var character = chars[i];
+            var row = document.createElement("div");
+            row.className = "rosterRow";
+            for (var j = 0; j < chars.length; j++) {
+                var charCell = document.createElement("div");
+                charCell.className = "rosterCell";
+                charCell.innerText = character.type.toLowerCase();
+                charCell.css('background-image', "url('/img/characters/" + character.type.toLowerCase() + "/down/red.png");
+                row.appendChild(charCell);
+            }
+            document.getElementById("characters-list").appendChild(row);
+        }
+    });
+
+
+///////////////////////////////////////////
+//****************************************
+// PLAY VIEW
+//****************************************
+//////////////////////////////////////////
+
     ////////////////////////////////////////
-    // PLAY VIEW PLAYER INITIATED MESSAGIN
+    // PLAY VIEW PLAYER INITIATED MESSAGING
     ////////////////////////////////////////
 
     $(document).on('click', '.turn-arrow', function() {
@@ -107,27 +141,6 @@ $(function() {
 
     $(document).on('click', '.sleep-button', function() {
         socket.emit('update-game', {'type': 'pass'});
-    });
-
-    /////////////////////////////////////////
-    // LOAD VIEW MESSAGE HANDLING FROM SERVER
-    /////////////////////////////////////////
-    socket.on('team-selection', function(message) {
-        console.log('team select', message);
-        var chars = message.characters;
-        for (var i = 0; i < chars.length; i++) {
-            var character = chars[i];
-            var row = document.createElement("div");
-            row.className = "rosterRow";
-            for (var j = 0; j < chars.length; j++) {
-                var charCell = document.createElement("div");
-                charCell.className = "rosterCell";
-                charCell.innerText = character.type.toLowerCase();
-                charCell.css('background-image', "url('/img/characters/" + character.type.toLowerCase() + "/down/red.png");
-                row.appendChild(charCell);
-            }
-            document.getElementById("characters-list").appendChild(row);
-        }
     });
 
     /////////////////////////////////////////
