@@ -102,6 +102,7 @@ $(function() {
         } else {
             console.log('TURN ERROR - tried to turn without char');
         }
+        return false;
     });
 
     $(document).on('click', '.attack-candidate', function() {
@@ -119,6 +120,7 @@ $(function() {
         } else {
             console.log('ATTACK CANDIDATE ERROR - tried to attack without char');
         }
+        return false;
     });
 
     $(document).on('click', '.move-candidate', function() {
@@ -136,10 +138,12 @@ $(function() {
         } else {
             console.log('MOVE CANDIDATE ERROR - tried to move without char');
         }
+        return false;
     });
 
     $(document).on('click', '.sleep-button', function() {
         socket.emit('update-game', {'type': 'pass'});
+        return false;
     });
 
     /////////////////////////////////////////
@@ -178,6 +182,9 @@ $(function() {
             var _char = chars[i];
             var headingStr = getHeadingStrFromVec(_char.heading);
             var $char = $('<sprite>')
+                .addClass('character')
+                .addClass(_char.alive ? 'alive' : 'dead')
+                .data('color', _char.color)
                 .data('attack', _char.attack)
                 .data('move', _char.move)
                 .data('position', _char.position)
@@ -193,6 +200,8 @@ $(function() {
 
             if (_char.team != playerId) {
                 $char.addClass('them');
+            } else {
+                $char.addClass('mine');
             }
 
             $table.append($char);
@@ -254,10 +263,10 @@ $(function() {
     // Play View Feedback
     //////////////////////////////////
 
-    $(document).on('click', 'sprite', function(evt) {
+    $(document).on('click', 'sprite.character', function(evt) {
         var $clicked = $(this);
 
-        if ($clicked.hasClass('them')) {
+        if ($clicked.hasClass('them') || $clicked.hasClass('dead')) {
             $clicked.hide();
             real_clicked = document.elementFromPoint(evt.clientX, evt.clientY);
             $clicked.show();
@@ -269,16 +278,36 @@ $(function() {
             $('.action-overlay').placeAt($curr_char.data('position'));
             $('.action-overlay').show();
             $curr_char.addClass('glow');
-            $('.character-portrait').css('background-image', "url('/img/characters/" + $curr_char.data('type').toLowerCase() + "/down/red.png')");
+            $('.character-portrait').css('background-image', "url('/img/characters/" + $curr_char.data('type').toLowerCase() + "/down/" + $curr_char.data('color') + ".png')");
         }
+
+        return false;
     });
 
     var cleanSquares = function() {
 
-        $('.ghess-td').removeClass('attack-candidate').removeClass('move-candidate');
+        $('.ghess-td')
+            .removeClass('attack-candidate')
+            .removeClass('move-candidate')
+            .removeClass('visibility-hover');
         $('.turn-arrow-container').hide();
         $('.action-overlay').hide();
     };
+
+    $(document).on('mouseover', 'sprite.alive.mine:not(.glow)', function() {
+        $(this).data('visibility').forEach(function(vec) {
+            var $square = getSquare(vec);
+            $square.addClass('visibility-hover');
+        });
+    });
+
+    $(document).on('mouseout', 'sprite.alive.mine', function() {
+        $(this).data('visibility').forEach(function(vec) {
+            var $square = getSquare(vec);
+            $square.removeClass('visibility-hover');
+        });
+    });
+
 
     $(document).on('mouseover', '.attack-button', function() {
         $curr_char.data('attack').forEach(function(vec) {
@@ -300,6 +329,7 @@ $(function() {
             var $square = getSquare(vec);
             $square.addClass('attack-candidate');
         });
+        return false;
     });
 
     $(document).on('mouseover', '.turn-button', function() {
@@ -318,6 +348,7 @@ $(function() {
         if ($curr_char.length) {
             $('.turn-arrow-container').removeClass('transparent').placeAt($curr_char.data('position')).show();
         }
+        return false;
     });
 
     $(document).on('mouseover', '.move-button', function() {
@@ -340,5 +371,12 @@ $(function() {
             var $square = getSquare(vec);
             $square.addClass('move-candidate');
         });
+        return false;
+    });
+
+    $(document).on('click', '#play-view', function() {
+        $curr_char = $();
+        cleanSquares();
+        $('.glow').removeClass('glow');
     });
 });

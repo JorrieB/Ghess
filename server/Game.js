@@ -317,6 +317,7 @@ module.exports = function() {
             "available-characters":[] // need some way to find restrict available characters, or at least to provide them for the players' placements
         }
         // This function should return game parameters like available characters, board size, etc
+        return params;
     };
 
     //takes player ID and returns all enemy characters that lie within visibility of player's characters
