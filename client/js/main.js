@@ -26,7 +26,6 @@ $(function() {
     });
 
     $(document).on('click', '#ready-button', function() {
-        socket.emit('join-any');
         $('.screen').replaceWith($(play_view));
         $('#player-id').html(playerId);
         $curr_char = $();

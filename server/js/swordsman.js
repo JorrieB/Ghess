@@ -14,7 +14,7 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 		var right = vectorUtils.turnRight(_this.heading);
 		var left = vectorUtils.turnLeft(_this.heading);
 		var basePosition = vectorUtils.vectorSum(_this.position, _this.heading);
-		visibleCells = [basePosition,
+		visibleCells = [_this.position, basePosition,
 						vectorUtils.vectorSum(basePosition, right),
 						vectorUtils.vectorSum(basePosition, left)];
 		return visibleCells;

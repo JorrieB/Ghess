@@ -17,7 +17,7 @@ module.exports = function() {
 
     var _animations = [];
 
-    var _roundNumber = 0; 
+    var _roundNumber = 0;
 
     // Spooky modular arithmetic for eric
     // Return 1 if this is player's 1 turn, 2 if this is player 2 turn
@@ -122,7 +122,7 @@ module.exports = function() {
 
     // Public analog of functions above
     _this.addPlayer = function(playerId) {
-        if (_playersId.length < 2){
+        if (_playersId.length < 2 && (_playersId.findIndex(x => x.getID() == playerId) == -1)){
             var player = new Player(playerId);
             _playersId.push(player);
             return true;
@@ -230,9 +230,9 @@ module.exports = function() {
             return false;
         }
 
-        // Is the endPosition empty? 
+        // Is the endPosition empty?
         characterAtEndPosition =  _getCharacterAtPosition(endPosition);
-        if (!(_getCharacterAtPosition(endPosition) == null)){
+        if (!(characterAtEndPosition == null)){
             // Is the character dead? NOT PROUD OF THIS
              if (characterAtEndPosition.getAliveness()){
                 return false;
@@ -304,7 +304,7 @@ module.exports = function() {
         }
         // More spooky arithmetic for eric
         _numberOfMoves =  (Math.floor(_numberOfMoves / _movePerTurn) + 1) * _movePerTurn;
-        _animations = []; 
+        _animations = [];
         return true;
     };
 
