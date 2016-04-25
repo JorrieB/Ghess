@@ -34,7 +34,6 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
         if (targetCharacter == null){
             return false;
         }
-
        	// Is the targetCharacter dead
        	if (!(targetCharacter.getAliveness())){
        		return false;
@@ -49,7 +48,6 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
         if (! vectorUtils.inVectorList(activeCharacter.getAttackableCells(), attackedPosition)){
             return false;
         }
-
         // If all of the condition are satisfied, destroy the targerCharacter
         game.destroyCharacter(targetCharacter);
         return {
