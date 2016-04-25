@@ -47,10 +47,11 @@ module.exports = {
         // var game = GameStore.get(socket.gameId);
 
         // var roster = game.getRoster();
-        var roster = ["archer","swordsman","scout"];
+        
+        // Nayeon: made roster repeat for testing >3 chars
+        var roster = ["archer","swordsman","scout", "archer","swordsman","scout"];
         // var numChars = game.getNumChars();
         var numChars = 3;
-
         socket.emit('team-selection', {roster:roster, numChars:numChars});
     },
     'ready-player': function(socket, data) {

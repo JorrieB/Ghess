@@ -22,6 +22,7 @@ $(function() {
 
     $(document).on('click', '#player-button', function() {
     	$('.screen').replaceWith($(loading_view));
+        console.log("emit team-select");
         socket.emit('team-selection');
     });
 
@@ -52,22 +53,42 @@ $(function() {
     /////////////////////////////////////////
     socket.on('team-selection', function(message) {
         console.log('team select', message);
-        var chars = message.characters;
-        for (var i = 0; i < chars.length; i++) {
-            var character = chars[i];
+        var numCol = 3;
+        var roster = message.roster;
+        // Each row has 3 cells
+        for (var i = 0; i < Math.ceil(roster.length/numCol); i++) {
             var row = document.createElement("div");
-            row.className = "rosterRow";
-            for (var j = 0; j < chars.length; j++) {
+            row.className = "roster-row";
+            for (var j = 0; j < numCol; j++) {
+                var character = roster[ numCol*i + j];
                 var charCell = document.createElement("div");
-                charCell.className = "rosterCell";
-                charCell.innerText = character.type.toLowerCase();
-                charCell.css('background-image', "url('/img/characters/" + character.type.toLowerCase() + "/down/red.png");
+                charCell.className = "roster-cell";
+                charCell.innerText = character.toLowerCase();
+                $(charCell).css('background-image', "url('/img/characters/"+character+"/down/red.png')");
                 row.appendChild(charCell);
             }
             document.getElementById("characters-list").appendChild(row);
         }
     });
 
+    /////////////////////////////////////////
+    // LOAD VIEW INTERACTIONS
+    /////////////////////////////////////////
+
+    $(document).on('mouseover', ".roster-cell", function() {
+        var cell =  $(this);
+        cell.addClass('roster-cell-hover');
+    });
+
+    $(document).on('mouseout', ".roster-cell", function() {
+        var cell =  $(this);
+        cell.removeClass('roster-cell-hover');
+    });
+
+    $(document).on('click', ".roster-cell", function() {
+        var cellClicked =  $(this);
+        cellClicked.addClass('clicked-cell');
+    });
 
 ///////////////////////////////////////////
 //****************************************
