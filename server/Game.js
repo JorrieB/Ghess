@@ -52,12 +52,12 @@ module.exports = function() {
             console.log("Warning: There are no characters at this position");
             break;
         case 1:
-            characterAtPosition = charactersAtPosition[0];
+            characterAtPosition = charactersAtPosition[charactersAtPosition.length - 1];
             break;
         default:
             // Weird case in wich there are more than one characters in one position
             console.log("Warning: There are multiple character in this position")
-            characterAtPosition = charactersAtPosition[0];
+            characterAtPosition = charactersAtPosition[charactersAtPosition.length - 1];
         }
         return characterAtPosition;
     }
