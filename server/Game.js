@@ -377,7 +377,7 @@ module.exports = function() {
     //TEAM-SELECTION
     //returns an array of character objects used during roster selection
     _this.getRoster = function(){
-        var archer = new Archer
+        return ["archer","swordsman","scout"];
     }
 
     //property of the game

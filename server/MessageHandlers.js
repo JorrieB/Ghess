@@ -40,12 +40,18 @@ module.exports = {
         socket.emit('game-joined', { gameId: gameId, gameParams: game.getParams() });
     },    
     'team-selection': function(socket, data){
-        var game = GameStore.get(socket.gameId);
+        // console.log('1');
+        // console.log(socket);
+        // console.log(socket.gameId);
+        // console.log('2');
+        // var game = GameStore.get(socket.gameId);
 
         // var roster = game.getRoster();
+        var roster = ["archer","swordsman","scout"];
         // var numChars = game.getNumChars();
+        var numChars = 5;
 
-        // socket.emit('team-selection', {roster:roster, numChars:numChars});
+        socket.emit('team-selection', {roster:roster, numChars:numChars});
     },
     'ready-player': function(socket, data) {
         var game = GameStore.get(socket.gameId);
