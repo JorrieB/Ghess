@@ -42,10 +42,10 @@ module.exports = {
     'team-selection': function(socket, data){
         var game = GameStore.get(socket.gameId);
 
-        var roster = game.getRoster();
-        var numChars = game.getNumChars();
+        // var roster = game.getRoster();
+        // var numChars = game.getNumChars();
 
-        socket.emit('team-selection', {roster:roster, numChars:})
+        // socket.emit('team-selection', {roster:roster, numChars:numChars});
     },
     'ready-player': function(socket, data) {
         var game = GameStore.get(socket.gameId);
