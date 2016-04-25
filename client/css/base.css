@@ -229,20 +229,14 @@
 
 /* LOAD VIEW SELECT PANE */
 .character-roster {
-    overflow: scroll;
     padding: 15px 100px 15px 15px;
-
 }
 
 #selected-characters {
     margin-top: 20px !important;
-    position: fixed;
-    top: 0;
-    left: 700px;
-    z-index: 10000;
+    float: right;
     background-color: #05acce;
     width: 100px;
-    height: 360px;
     padding: 10px;
     text-align: center;
     color:white;
@@ -256,6 +250,7 @@
 }
 
 .roster-row {
+    float:left;
     height: 120px;
     margin-right: 100px;
     margin-bottom: 10px;
