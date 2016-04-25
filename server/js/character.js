@@ -105,4 +105,16 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 		}
 		return characterObject;
 	}
+
+	//This is for roster HUD purposes
+	_this.infoSerialize = function(){
+		var info = {
+			"charType":_this.getCharacterType(),
+			"movement":[],
+			"visibility":[],
+			"attack":[]
+		}
+		return info;
+	}
+
 };

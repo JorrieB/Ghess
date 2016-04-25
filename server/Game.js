@@ -6,6 +6,9 @@ var Scout = require('./js/scout');
 var Player = require('./js/player');
 
 module.exports = function() {
+
+    var numCharsForEachPlayer = 5;
+
 	var _this = this;
     var _characters = [];
     var _gameObjects = [];
@@ -96,8 +99,6 @@ module.exports = function() {
     }
 
     _getPlayerFromID = function(playerID){
-        // console.log("trying to get player from id:", playerID);
-        // console.log(_playersId);
         index = _playersId.findIndex(x => x.getID()==playerID);
         return _playersId[index];
     }
@@ -371,5 +372,18 @@ module.exports = function() {
             }
         }
         return gameObj;
+    }
+
+    //TEAM-SELECTION
+    //returns an array of character objects used during roster selection
+    _this.getRoster = function(){
+        var archer = new Archer
+    }
+
+    //property of the game
+    //defines how many characters each player gets to have
+    //TODO: make this number customizable when creating a game
+    _this.getNumChars = function(){
+        return numCharsForEachPlayer;
     }
 };

@@ -38,6 +38,14 @@ module.exports = {
         game.addPlayer(socket.playerId);
         socket.gameId = gameId;
         socket.emit('game-joined', { gameId: gameId, gameParams: game.getParams() });
+    },    
+    'team-selection': function(socket, data){
+        var game = GameStore.get(socket.gameId);
+
+        var roster = game.getRoster();
+        var numChars = game.getNumChars();
+
+        socket.emit('team-selection', {roster:roster, numChars:})
     },
     'ready-player': function(socket, data) {
         var game = GameStore.get(socket.gameId);
