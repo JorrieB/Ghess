@@ -78,6 +78,7 @@ $(function() {
     $(document).on('mouseover', ".roster-cell", function() {
         var cell =  $(this);
         cell.addClass('roster-cell-hover');
+        //TODO: function to display stats here & make stats div on left
     });
 
     $(document).on('mouseout', ".roster-cell", function() {
