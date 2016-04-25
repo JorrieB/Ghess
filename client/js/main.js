@@ -212,17 +212,17 @@ $(function() {
                 .data('visibility', _char.visibility)
                 .data('type', _char.type.toLowerCase())
                 .data('heading', headingStr)
-                .css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + headingStr + "/" + _char.color + ".png')");
+                .css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + (_char.alive ? headingStr : 'dead') + "/" + _char.color + ".png')");
 
-            _char.visibility.forEach(function(vec) {
-                var $square = getSquare(vec);
-                $square.addClass('visible');
-            });
 
             if (_char.team != playerId) {
                 $char.addClass('them');
             } else {
                 $char.addClass('mine');
+                _char.visibility.forEach(function(vec) {
+                    var $square = getSquare(vec);
+                    $square.addClass('visible');
+                });
             }
 
             $table.append($char);
@@ -288,10 +288,7 @@ $(function() {
         var $clicked = $(this);
 
         if ($clicked.hasClass('them') || $clicked.hasClass('dead')) {
-            $clicked.hide();
-            real_clicked = document.elementFromPoint(evt.clientX, evt.clientY);
-            $clicked.show();
-            $(real_clicked).click();
+            getSquare($clicked.data('position')).click();
         } else {
             cleanSquares();
             $('.glow').removeClass('glow');
