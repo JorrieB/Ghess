@@ -39,15 +39,20 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 
 			//check if a character is in the current attacked square
 			var attackedCharacter = game.getCharacterAtPosition(attackTile);
-			if (attackedCharacter != null){
-				//char in square may be able to defend itself
-				var successfulDefend = attackedCharacter.defend('arrow', _this.heading);
-				//if not, kill the character
-				if (!successfulDefend){
-					game.destroyCharacter(attackedCharacter);
-				}
-				break;
+
+			// If there is no character, skip to next cell
+			if (attackedCharacter == null){ continue }
+
+			// If the character is dead, skip to next cell
+			if (!(attackedCharacter.getAliveness())){ continue}
+
+			//char in square may be able to defend itself
+			var successfulDefend = attackedCharacter.defend('arrow', _this.heading);
+			//if not, kill the character
+			if (!successfulDefend){
+				game.destroyCharacter(attackedCharacter);
 			}
+			break;
 		}
 		return {
 			"isValid":true,

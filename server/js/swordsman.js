@@ -35,6 +35,11 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
             return false;
         }
 
+       	// Is the targetCharacter dead
+       	if (!(targetCharacter.getAliveness())){
+       		return false;
+       	}
+
         // Is the targetCharacter an adversary?
         if (targetCharacter.getPlayerId() == playerId){
             return false;
