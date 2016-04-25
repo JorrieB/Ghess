@@ -49,7 +49,7 @@ module.exports = {
         // var roster = game.getRoster();
         var roster = ["archer","swordsman","scout"];
         // var numChars = game.getNumChars();
-        var numChars = 5;
+        var numChars = 3;
 
         socket.emit('team-selection', {roster:roster, numChars:numChars});
     },
