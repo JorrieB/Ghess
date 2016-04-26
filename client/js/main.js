@@ -53,21 +53,15 @@ $(function() {
     /////////////////////////////////////////
     socket.on('team-selection', function(message) {
         console.log('team select', message);
-        var numCol = 3;
         var roster = message.roster;
-        // Each row has 3 cells
-        for (var i = 0; i < Math.ceil(roster.length/numCol); i++) {
-            var row = document.createElement("div");
-            row.className = "roster-row";
-            for (var j = 0; j < numCol; j++) {
-                var character = roster[ numCol*i + j];
-                var charCell = document.createElement("div");
-                charCell.className = "roster-cell";
-                charCell.innerText = character.toLowerCase();
-                $(charCell).css('background-image', "url('/img/characters/"+character+"/down/red.png')");
-                row.appendChild(charCell);
-            }
-            document.getElementById("characters-list").appendChild(row);
+        var $charList = $('#characters-list');
+        for (var i = 0; i < roster.length; i++) {
+            var character = roster[i];
+            var $charCell = $('<div />')
+                .addClass('roster-cell')
+                .text(character.toLowerCase())
+                .css('background-image', "url('/img/characters/" + character + "/down/red.png')");
+            $charList.append($charCell);
         }
     });
 

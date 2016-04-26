@@ -228,39 +228,44 @@
 }
 
 /* LOAD VIEW SELECT PANE */
+
+#characters-list {
+    width: 330px;
+    float: left;
+    background-color: grey;
+}
+
+.loading-view-table.ghess-table {
+    width: 298px;
+    height: 298px;
+    width: 40%;
+}
+
 .character-roster {
     padding: 15px 100px 15px 15px;
 }
 
 #selected-characters {
-    margin-top: 20px !important;
-    float: right;
+    margin-top: 20px;
+    float: left;
     background-color: #05acce;
     width: 100px;
     padding: 10px;
     text-align: center;
-    color:white;
+    color: white;
 }
+
 .selected-character-slot {
     margin: 15px 0;
     width: 80px;
     height: 80px;
-    border-radius:40px;
+    border-radius: 40px;
     background-color: white;
-}
-
-.roster-row {
-    float:left;
-    height: 120px;
-    margin-right: 100px;
-    margin-bottom: 10px;
-    background-color: yellow;
-    color:white;
 }
 
 .roster-cell {
     padding: 10px;
-    float: right;
+    float: left;
     width: 100px;
     height: 100px;
     margin: 10px 5px;
