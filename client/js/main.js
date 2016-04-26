@@ -115,11 +115,18 @@ $(function() {
 //****************************************
 ///////////////////////////////////////////
 
+    var cleanUpFloatingChar = function($floating) {
+        var $slot = $($floating.data('selection-slot'));
+        $slot.css('background-image', $slot.data('img'));
+        $floating.remove();
+        $placementSquare.removeClass('placement-square');
+        $placementSquare.data('character', '');
+        $placementSquare = $();
+        $('#ready-button').hide();
+    };
 
     $(document).on('click', '#placement-view .selected-character-slot', function(evt) {
-        $('.floating').remove();
-        $placementSquare.removeClass('placement-square');
-        $placementSquare = $();
+        cleanUpFloatingChar($('.floating'));
         var $this = $(this);
         $($this.data('character-obj')).remove();
         $this
@@ -167,11 +174,7 @@ $(function() {
         if ($placementSquare) {
             $placementSquare.click();
         } else {
-            var $slot = $this.data('selection-slot');
-            $slot.css('background-image', $slot.data('img'));
-            $this.remove();
-            $placementSquare.removeClass('placement-square');
-            $placementSquare = $();
+            cleanUpFloatingChar($this);
         }
     });
 
@@ -224,6 +227,8 @@ $(function() {
             $('.turn-arrow-container').hide();
             if ($('.selected-character-slot').length == $('sprite:not(.floating)').length) {
                 $('#ready-button').show();
+            } else {
+                $('#ready-button').hide();
             }
         } else {
             console.log('TURN ERROR - tried to turn without char');
@@ -232,16 +237,23 @@ $(function() {
     });
 
     $(document).on('click', '#placement-view sprite:not(.floating)', function(evt) {
-        var $this = $(this);
-        getSquare($this.data('position')).data('character', '');
-        $to_place_character = $this;
-        var $placementView = $('#placement-view');
-        var screen_pos = $placementView.position();
-        $this.addClass('floating')
+        if ($('.turn-arrow-container:visible').length == 0) {
+            var $this = $(this);
+            if ($to_place_character.length == 0) {
+                getSquare($this.data('position')).data('character', '');
+                $to_place_character = $this;
+                var $placementView = $('#placement-view');
+                var screen_pos = $placementView.position();
+                $this.addClass('floating')
 
-                .css('top', evt.pageY - screen_pos.top)
-                .css('left', evt.pageX - screen_pos.left)
-        $placementView.append($this);
+                        .css('top', evt.pageY - screen_pos.top)
+                        .css('left', evt.pageX - screen_pos.left)
+                $placementView.append($this);
+                $('#ready-button').hide();
+            } else {
+                getSquare($this.data('position')).click();
+            }
+        }
     });
 
 
