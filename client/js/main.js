@@ -7,6 +7,11 @@ $(function() {
     var gameId;
     // Client Id
     var playerId;
+    // Selected Characters
+    var selectedCharacters = ['archer', 'swordsman', 'scout'];
+    // floating character on placement screen
+    var $to_place_character = $();
+    var $placementSquare = $();
 
     ///////////////
     // SCREEN FLOW
@@ -16,6 +21,7 @@ $(function() {
     var table = nunjucks.render('/templates/table.html', {'width': 7, 'height': 7});
     var play_view = nunjucks.render('/templates/play_view.html');
 	var spectator_view = nunjucks.render('/templates/spectator_view.html');
+    var placement_view = nunjucks.render('/templates/placement_view.html');
 
 	// Initialize with start_view
     $('body').append($(start_view));
@@ -26,7 +32,22 @@ $(function() {
         socket.emit('team-selection');
     });
 
-    $(document).on('click', '#ready-button', function() {
+    $(document).on('click', '#loading-view #ready-button', function() {
+        var $placement_view = $(placement_view);
+        $placement_view.find('#ready-button').hide();
+        $placement_view.find('.ghess-td').addClass('visible');
+        $('.screen').replaceWith($placement_view);
+        var $slots = $placement_view.find('.selected-character-slot');
+        for (var i = 0; i < selectedCharacters.length; i++) {
+            var $slot = $slots.eq(i);
+            var character = selectedCharacters[i];
+            $slot.css('background-image', "url('/img/characters/" + character + "/down/red.png')")
+                .data('type', character);
+        }
+        $curr_char = $();
+    });
+
+    $(document).on('click', '#placement-view #ready-button', function() {
         $('.screen').replaceWith($(play_view));
         $('#player-id').html(playerId);
         $curr_char = $();
@@ -53,21 +74,15 @@ $(function() {
     /////////////////////////////////////////
     socket.on('team-selection', function(message) {
         console.log('team select', message);
-        var numCol = 3;
         var roster = message.roster;
-        // Each row has 3 cells
-        for (var i = 0; i < Math.ceil(roster.length/numCol); i++) {
-            var row = document.createElement("div");
-            row.className = "roster-row";
-            for (var j = 0; j < numCol; j++) {
-                var character = roster[ numCol*i + j];
-                var charCell = document.createElement("div");
-                charCell.className = "roster-cell";
-                charCell.innerText = character.toLowerCase();
-                $(charCell).css('background-image', "url('/img/characters/"+character+"/down/red.png')");
-                row.appendChild(charCell);
-            }
-            document.getElementById("characters-list").appendChild(row);
+        var $charList = $('#characters-list');
+        for (var i = 0; i < roster.length; i++) {
+            var character = roster[i];
+            var $charCell = $('<div />')
+                .addClass('roster-cell')
+                .text(character.toLowerCase())
+                .css('background-image', "url('/img/characters/" + character + "/down/red.png')");
+            $charList.append($charCell);
         }
     });
 
@@ -84,13 +99,152 @@ $(function() {
     $(document).on('mouseout', ".roster-cell", function() {
         var hoverCell =  $(this);
         hoverCell.removeClass('roster-cell-hover');
+
     });
 
-    $(document).on('click', ".roster-cell", function() {
+    $(document).on('click', '.roster-cell', function() {
         var cellClicked =  $(this);
         console.log("click!!!");
         cellClicked.addClass('clicked-cell');
     });
+
+
+///////////////////////////////////////////
+//****************************************
+// PLACEMENT VIEW
+//****************************************
+///////////////////////////////////////////
+
+
+    $(document).on('click', '#placement-view .selected-character-slot', function(evt) {
+        $('.floating').remove();
+        $placementSquare.removeClass('placement-square');
+        $placementSquare = $();
+        var $this = $(this);
+        $($this.data('character-obj')).remove();
+        $this
+            .data('img', $this.css('background-image'))
+            .css('background-image', '');
+        var character_type = $this.data('type');
+        var $placement_view = $('#placement-view');
+        var screen_pos = $placement_view.position();
+        var default_direction = {'x': 0, 'y': 1};
+        var $char = $('<sprite>')
+                .addClass('character')
+                .addClass('floating')
+                .addClass('alive')
+                .data('color', 'red')
+                .data('selection-slot', $this)
+                /*.data('attack', _char.attack)
+                .data('move', _char.move)
+                .data('visibility', _char.visibility)*/
+                .data('type', character_type.toLowerCase())
+                .data('heading', 'down')
+                .data('direction', default_direction)
+                .css('background-image', "url('/img/characters/" + character_type.toLowerCase() + "/down/red.png')")
+                .css('top', evt.pageY - screen_pos.top)
+                .css('left', evt.pageX - screen_pos.left)
+                .attr('disabled', 'true');
+        $this.data('character-obj', $char);
+        $placement_view.append($char);
+        $to_place_character = $char;
+    });
+
+    $(document).on('mousemove', '#placement-view', function(evt){
+        if ($to_place_character.length) {
+            var screen_pos = $(this).position();
+            $to_place_character
+                .css('top', evt.pageY - screen_pos.top)
+                .css('left', evt.pageX - screen_pos.left);
+            $placementSquare.removeClass('placement-square');
+            $placementSquare = $(document.elementsFromPoint(evt.clientX, evt.clientY)).filter('.ghess-td.visible').addClass('placement-square');
+        }
+        return false;
+    });
+
+    $(document).on('click', '#placement-view .floating', function(evt){
+        var $this = $(this);
+        if ($placementSquare) {
+            $placementSquare.click();
+        } else {
+            var $slot = $this.data('selection-slot');
+            $slot.css('background-image', $slot.data('img'));
+            $this.remove();
+            $placementSquare.removeClass('placement-square');
+            $placementSquare = $();
+        }
+    });
+
+    $(document).on('click', '.placement-square', function(){
+        var $existingChar = $($placementSquare.data('character'));
+        var $slot = $($existingChar.data('selection-slot'));
+        $slot.css('background-image', $slot.data('img'));
+        $existingChar.remove();
+
+        var $char = $to_place_character;
+        $to_place_character = $();
+
+
+        $('.ghess-table').append($char);
+        $char.data('position', {
+            'x': $placementSquare.data('x'),
+            'y': $placementSquare.data('y')
+        });
+
+        $char
+            .placeAt($char.data('position'))
+            .removeClass('floating');
+
+        $('.turn-arrow-container').placeAt($char.data('position')).show();
+        $('.character-roster').hide();
+        $curr_char = $char;
+        $placementSquare.data('character', $char);
+        $placementSquare.removeClass('placement-square');
+        $placementSquare = $();
+    });
+
+    $(document).on('click', '#placement-view .turn-arrow', function() {
+        var $arrow_clicked = $(this);
+        var curr_char_pos = $curr_char.data('position');
+        if (curr_char_pos) {
+            var direction;
+            if ($arrow_clicked.hasClass('turn-arrow-left')) {
+                direction = {'x': -1, 'y': 0};
+            } else if ($arrow_clicked.hasClass('turn-arrow-right')) {
+                direction = {'x': 1, 'y': 0};
+            } else if ($arrow_clicked.hasClass('turn-arrow-up')) {
+                direction = {'x': 0, 'y': -1};
+            } else if ($arrow_clicked.hasClass('turn-arrow-down')) {
+                direction = {'x': 0, 'y': 1};
+            }
+            $curr_char.data('heading', getHeadingStrFromVec(direction));
+            $curr_char.data('direction', direction).css('background-image', "url('/img/characters/" + $curr_char.data('type') + "/" + $curr_char.data('heading') + "/" + $curr_char.data('color') + ".png')")
+            $curr_char = $();
+            $('.character-roster').show();
+            $('.turn-arrow-container').hide();
+            if ($('.selected-character-slot').length == $('sprite:not(.floating)').length) {
+                $('#ready-button').show();
+            }
+        } else {
+            console.log('TURN ERROR - tried to turn without char');
+        }
+        return false;
+    });
+
+    $(document).on('click', '#placement-view sprite:not(.floating)', function(evt) {
+        var $this = $(this);
+        getSquare($this.data('position')).data('character', '');
+        $to_place_character = $this;
+        var $placementView = $('#placement-view');
+        var screen_pos = $placementView.position();
+        $this.addClass('floating')
+
+                .css('top', evt.pageY - screen_pos.top)
+                .css('left', evt.pageX - screen_pos.left)
+        $placementView.append($this);
+    });
+
+
 
 ///////////////////////////////////////////
 //****************************************
@@ -102,7 +256,7 @@ $(function() {
     // PLAY VIEW PLAYER INITIATED MESSAGING
     ////////////////////////////////////////
 
-    $(document).on('click', '.turn-arrow', function() {
+    $(document).on('click', '#play-view .turn-arrow', function() {
         var $arrow_clicked = $(this);
         var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
@@ -128,7 +282,7 @@ $(function() {
         return false;
     });
 
-    $(document).on('click', '.attack-candidate', function() {
+    $(document).on('click', '#play-view .attack-candidate', function() {
         var $attackable_square = $(this);
         var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
@@ -146,7 +300,7 @@ $(function() {
         return false;
     });
 
-    $(document).on('click', '.move-candidate', function() {
+    $(document).on('click', '#play-view .move-candidate', function() {
         var $move_square = $(this);
         var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
@@ -164,7 +318,7 @@ $(function() {
         return false;
     });
 
-    $(document).on('click', '.sleep-button', function() {
+    $(document).on('click', '#play-view .sleep-button', function() {
         socket.emit('update-game', {'type': 'pass'});
         return false;
     });
@@ -286,7 +440,7 @@ $(function() {
     // Play View Feedback
     //////////////////////////////////
 
-    $(document).on('click', 'sprite.character', function(evt) {
+    $(document).on('click', '#play-view sprite.character', function() {
         var $clicked = $(this);
 
         if ($clicked.hasClass('them') || $clicked.hasClass('dead')) {

@@ -228,9 +228,23 @@
 }
 
 /* LOAD VIEW SELECT PANE */
+<<<<<<< HEAD
 #characters-list {
     float:left;
     width: 70%;
+=======
+
+#characters-list {
+    width: 330px;
+    float: left;
+    background-color: grey;
+}
+
+.loading-view-table.ghess-table {
+    width: 298px;
+    height: 298px;
+    width: 40%;
+>>>>>>> cf57f8670f4f26c20870b52119587ace3068e887
 }
 
 .character-roster {
@@ -238,33 +252,31 @@
 }
 
 #selected-characters {
+<<<<<<< HEAD
     float: right;
+=======
+    margin-top: 20px;
+    float: left;
+>>>>>>> cf57f8670f4f26c20870b52119587ace3068e887
     background-color: #05acce;
     width: 110px;
     padding: 10px;
     text-align: center;
-    color:white;
+    color: white;
 }
+
 .selected-character-slot {
     margin: 15px 5px;
     width: 80px;
     height: 80px;
-    border-radius:40px;
+    border-radius: 40px;
     background-color: white;
-}
-
-.roster-row {
-    float:left;
-    height: 120px;
-    margin-right: 100px;
-    margin-bottom: 10px;
-    background-color: yellow;
-    color:white;
+    background-size: 100% 100%;
 }
 
 .roster-cell {
     padding: 10px;
-    float: right;
+    float: left;
     width: 100px;
     height: 100px;
     margin: 10px 5px;
@@ -283,6 +295,15 @@
 
 .clicked-cell {
     border: 5px solid white;
+}
+
+/* PLACEMENT VIEW */
+#placement-view {
+    position: relative;
+}
+
+.placement-square {
+   border: 1px dashed yellow !important;
 }
 
 /* PLAY VIEW INFO PANE */
