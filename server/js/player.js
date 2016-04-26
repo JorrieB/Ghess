@@ -1,6 +1,6 @@
 module.exports = function(ID) {
 	var _this = this;
-	
+
 	var playerID = ID;
 	var myArray = [];
 	var enemyArray = [];
@@ -21,6 +21,14 @@ module.exports = function(ID) {
 
 	_this.getID = function(){
 		return playerID;
+	}
+
+	_this.readyToStart = function(){
+		return Boolean(myArray.length);
+	}
+
+	_this.getMyCharacters = function() {
+		return myArray;
 	}
 
 	simplifyCharacter = function(characterObject){

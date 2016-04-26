@@ -29,7 +29,8 @@ $(function() {
     $(document).on('click', '#player-button', function() {
     	$('.screen').replaceWith($(loading_view));
         console.log("emit team-select");
-        socket.emit('team-selection');
+        // socket.emit('team-selection');
+        socket.emit('join-any');
     });
 
     $(document).on('click', '#loading-view #ready-button', function() {
@@ -76,12 +77,12 @@ $(function() {
         console.log('team select', message);
         var roster = message.roster;
         var $charList = $('#characters-list');
-        for (var i = 0; i < roster.length; i++) {
-            var character = roster[i];
+        for (var i = 0; i < message.gameParams.roster.length; i++) {
+            var character = message.gameParams.roster[i];
             var $charCell = $('<div />')
                 .addClass('roster-cell')
                 .text(character.toLowerCase())
-                .css('background-image', "url('/img/characters/" + character + "/down/red.png')");
+                .css('background-image', "url('/img/characters/" + character + "/down/" + message.gameParams.color + ".png')");
             $charList.append($charCell);
         }
     });

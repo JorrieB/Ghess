@@ -15,6 +15,9 @@ module.exports = {
         socket.emit('game-created', { gameId: created.id, gameParams: created.game.getParams() });
     },
     'join-game': function(socket, data) {
+
+        console.log("JOIN-GAME");
+
         var game = GameStore.get(data.gameId);
         // TODO: check if player can actually join game (e.g. game doesn't already have 2 players, etc)
         game.addPlayer(socket.playerId);
@@ -27,24 +30,32 @@ module.exports = {
         var available = GameStore.getFirstAvailable();
         var gameId;
         var game;
+        console.log("JOIN-ANY");
         if (!available) {
+            console.log("CREATING A GAME");
+            //create one!
             var created = GameStore.create();
             gameId = created.id;
             game = created.game;
+            game.addPlayer(socket.playerId);
+            socket.gameId = gameId;
+            
+            socket.emit('team-selection', { gameId: gameId, gameParams: game.getParams(socket.playerId) });
+
+
         } else {
+            console.log("JOINING A GAME");
+            //join the one currently available
             gameId = available.id;
             game = available.game;
+            game.addPlayer(socket.playerId);
+            socket.gameId = gameId;
+
+            socket.emit('team-selection', { gameId: gameId, gameParams: game.getParams(socket.playerId) });
         }
-        game.addPlayer(socket.playerId);
-        socket.gameId = gameId;
-        socket.emit('game-joined', { gameId: gameId, gameParams: game.getParams() });
+
     },    
     'team-selection': function(socket, data){
-        // console.log('1');
-        // console.log(socket);
-        // console.log(socket.gameId);
-        // console.log('2');
-        // var game = GameStore.get(socket.gameId);
 
         // var roster = game.getRoster();
         
@@ -58,14 +69,25 @@ module.exports = {
         var game = GameStore.get(socket.gameId);
         // TODO: make ready take arguments with initial placement of characters
         socket.emit('player-readied');
-        // If both players are ready, start the game & send game state to clients
-        if (game.canStart()) {
+
+        
+        game.insertCharacters(socket.playerId);
+        if (data == 'undefined' && game.canStart()){
             game.staticStart(); // TODO: replace with actual start function
             // To this player
             socket.emit('update-state', game.serialize(socket.playerId));
             // To the other player
             var otherPlayerId = game.getOtherPlayerId(socket.playerId);
             this.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
+        } else {
+            game.insertCharacters(socket.playerId);
+
+        }
+
+        // If both players are ready, start the game & send game state to clients
+        if (game.canStart()) {
+
+
         }
     },
     'update-game': function(socket, data) {
