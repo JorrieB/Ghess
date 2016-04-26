@@ -11,6 +11,7 @@ $(function() {
     var selectedCharacters = ['archer', 'swordsman', 'scout'];
     // floating character on placement screen
     var $to_place_character = $();
+    var $placementSquare = $();
 
     ///////////////
     // SCREEN FLOW
@@ -33,6 +34,8 @@ $(function() {
 
     $(document).on('click', '#loading-view #ready-button', function() {
         var $placement_view = $(placement_view);
+        $placement_view.find('#ready-button').hide();
+        $placement_view.find('.ghess-td').addClass('visible');
         $('.screen').replaceWith($placement_view);
         var $slots = $placement_view.find('.selected-character-slot');
         for (var i = 0; i < selectedCharacters.length; i++) {
@@ -110,28 +113,38 @@ $(function() {
 //****************************************
 ///////////////////////////////////////////
 
+
     $(document).on('click', '#placement-view .selected-character-slot', function(evt) {
         $('.floating').remove();
+        $placementSquare.removeClass('placement-square');
+        $placementSquare = $();
         var $this = $(this);
+        $($this.data('character-obj')).remove();
+        $this
+            .data('img', $this.css('background-image'))
+            .css('background-image', '');
         var character_type = $this.data('type');
         var $placement_view = $('#placement-view');
         var screen_pos = $placement_view.position();
+        var default_direction = {'x': 0, 'y': 1};
         var $char = $('<sprite>')
                 .addClass('character')
                 .addClass('floating')
                 .addClass('alive')
                 .data('color', 'red')
+                .data('selection-slot', $this)
                 /*.data('attack', _char.attack)
                 .data('move', _char.move)
                 .data('visibility', _char.visibility)*/
                 .data('type', character_type.toLowerCase())
                 .data('heading', 'down')
+                .data('direction', default_direction)
                 .css('background-image', "url('/img/characters/" + character_type.toLowerCase() + "/down/red.png')")
                 .css('top', evt.pageY - screen_pos.top)
                 .css('left', evt.pageX - screen_pos.left)
                 .attr('disabled', 'true');
+        $this.data('character-obj', $char);
         $placement_view.append($char);
-        console.log(evt);
         $to_place_character = $char;
     });
 
@@ -141,14 +154,93 @@ $(function() {
             $to_place_character
                 .css('top', evt.pageY - screen_pos.top)
                 .css('left', evt.pageX - screen_pos.left);
+            $placementSquare.removeClass('placement-square');
+            $placementSquare = $(document.elementsFromPoint(evt.clientX, evt.clientY)).filter('.ghess-td.visible').addClass('placement-square');
         }
         return false;
     });
 
     $(document).on('click', '#placement-view .floating', function(evt){
+        var $this = $(this);
+        if ($placementSquare) {
+            $placementSquare.click();
+        } else {
+            var $slot = $this.data('selection-slot');
+            $slot.css('background-image', $slot.data('img'));
+            $this.remove();
+            $placementSquare.removeClass('placement-square');
+            $placementSquare = $();
+        }
     });
 
+    $(document).on('click', '.placement-square', function(){
+        var $existingChar = $($placementSquare.data('character'));
+        var $slot = $($existingChar.data('selection-slot'));
+        $slot.css('background-image', $slot.data('img'));
+        $existingChar.remove();
 
+        var $char = $to_place_character;
+        $to_place_character = $();
+
+
+        $('.ghess-table').append($char);
+        $char.data('position', {
+            'x': $placementSquare.data('x'),
+            'y': $placementSquare.data('y')
+        });
+
+        $char
+            .placeAt($char.data('position'))
+            .removeClass('floating');
+
+        $('.turn-arrow-container').placeAt($char.data('position')).show();
+        $('.character-roster').hide();
+        $curr_char = $char;
+        $placementSquare.data('character', $char);
+        $placementSquare.removeClass('placement-square');
+        $placementSquare = $();
+    });
+
+    $(document).on('click', '#placement-view .turn-arrow', function() {
+        var $arrow_clicked = $(this);
+        var curr_char_pos = $curr_char.data('position');
+        if (curr_char_pos) {
+            var direction;
+            if ($arrow_clicked.hasClass('turn-arrow-left')) {
+                direction = {'x': -1, 'y': 0};
+            } else if ($arrow_clicked.hasClass('turn-arrow-right')) {
+                direction = {'x': 1, 'y': 0};
+            } else if ($arrow_clicked.hasClass('turn-arrow-up')) {
+                direction = {'x': 0, 'y': -1};
+            } else if ($arrow_clicked.hasClass('turn-arrow-down')) {
+                direction = {'x': 0, 'y': 1};
+            }
+            $curr_char.data('heading', getHeadingStrFromVec(direction));
+            $curr_char.data('direction', direction).css('background-image', "url('/img/characters/" + $curr_char.data('type') + "/" + $curr_char.data('heading') + "/" + $curr_char.data('color') + ".png')")
+            $curr_char = $();
+            $('.character-roster').show();
+            $('.turn-arrow-container').hide();
+            if ($('.selected-character-slot').length == $('sprite:not(.floating)').length) {
+                $('#ready-button').show();
+            }
+        } else {
+            console.log('TURN ERROR - tried to turn without char');
+        }
+        return false;
+    });
+
+    $(document).on('click', '#placement-view sprite:not(.floating)', function(evt) {
+        var $this = $(this);
+        getSquare($this.data('position')).data('character', '');
+        $to_place_character = $this;
+        var $placementView = $('#placement-view');
+        var screen_pos = $placementView.position();
+        $this.addClass('floating')
+
+                .css('top', evt.pageY - screen_pos.top)
+                .css('left', evt.pageX - screen_pos.left)
+        $placementView.append($this);
+    });
 
 
 
@@ -346,7 +438,7 @@ $(function() {
     // Play View Feedback
     //////////////////////////////////
 
-    $(document).on('click', 'sprite.character:not(.floating)', function() {
+    $(document).on('click', '#play-view sprite.character', function() {
         var $clicked = $(this);
 
         if ($clicked.hasClass('them') || $clicked.hasClass('dead')) {

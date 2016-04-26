@@ -293,6 +293,10 @@
     position: relative;
 }
 
+.placement-square {
+   border: 1px dashed yellow !important;
+}
+
 /* PLAY VIEW INFO PANE */
 
 .playView-info {
