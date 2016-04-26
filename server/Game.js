@@ -134,9 +134,7 @@ module.exports = function() {
 
     // Public analog of functions above
     _this.addPlayer = function(playerId) {
-        console.log('adding player');
         if (_playersId.length < 2 && (_playersId.findIndex(x => x.getID() == playerId) == -1)){
-            console.log("and we got here");
             var player = new Player(playerId);
             _playersId.push(player);
             return true;

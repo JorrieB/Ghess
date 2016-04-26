@@ -16,8 +16,6 @@ module.exports = {
     },
     'join-game': function(socket, data) {
 
-        console.log("JOIN-GAME");
-
         var game = GameStore.get(data.gameId);
         // TODO: check if player can actually join game (e.g. game doesn't already have 2 players, etc)
         game.addPlayer(socket.playerId);
@@ -30,9 +28,7 @@ module.exports = {
         var available = GameStore.getFirstAvailable();
         var gameId;
         var game;
-        console.log("JOIN-ANY");
         if (!available) {
-            console.log("CREATING A GAME");
             //create one!
             var created = GameStore.create();
             gameId = created.id;
@@ -44,7 +40,6 @@ module.exports = {
 
 
         } else {
-            console.log("JOINING A GAME");
             //join the one currently available
             gameId = available.id;
             game = available.game;
