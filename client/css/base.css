@@ -228,11 +228,6 @@
 }
 
 /* LOAD VIEW SELECT PANE */
-<<<<<<< HEAD
-#characters-list {
-    float:left;
-    width: 70%;
-=======
 
 #characters-list {
     width: 330px;
@@ -244,7 +239,6 @@
     width: 298px;
     height: 298px;
     width: 40%;
->>>>>>> cf57f8670f4f26c20870b52119587ace3068e887
 }
 
 .character-roster {
@@ -252,12 +246,8 @@
 }
 
 #selected-characters {
-<<<<<<< HEAD
-    float: right;
-=======
     margin-top: 20px;
     float: left;
->>>>>>> cf57f8670f4f26c20870b52119587ace3068e887
     background-color: #05acce;
     width: 110px;
     padding: 10px;
