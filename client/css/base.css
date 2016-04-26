@@ -261,6 +261,7 @@
     height: 80px;
     border-radius: 40px;
     background-color: white;
+    background-size: 100% 100%;
 }
 
 .roster-cell {
@@ -285,6 +286,11 @@
 .clicked-cell {
     border: 2px;
     border-color: white;
+}
+
+/* PLACEMENT VIEW */
+#placement-view {
+    position: relative;
 }
 
 /* PLAY VIEW INFO PANE */

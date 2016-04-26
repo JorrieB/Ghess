@@ -7,6 +7,10 @@ $(function() {
     var gameId;
     // Client Id
     var playerId;
+    // Selected Characters
+    var selectedCharacters = ['archer', 'swordsman', 'scout'];
+    // floating character on placement screen
+    var $to_place_character = $();
 
     ///////////////
     // SCREEN FLOW
@@ -16,6 +20,7 @@ $(function() {
     var table = nunjucks.render('/templates/table.html', {'width': 7, 'height': 7});
     var play_view = nunjucks.render('/templates/play_view.html');
 	var spectator_view = nunjucks.render('/templates/spectator_view.html');
+    var placement_view = nunjucks.render('/templates/placement_view.html');
 
 	// Initialize with start_view
     $('body').append($(start_view));
@@ -26,7 +31,20 @@ $(function() {
         socket.emit('team-selection');
     });
 
-    $(document).on('click', '#ready-button', function() {
+    $(document).on('click', '#loading-view #ready-button', function() {
+        var $placement_view = $(placement_view);
+        $('.screen').replaceWith($placement_view);
+        var $slots = $placement_view.find('.selected-character-slot');
+        for (var i = 0; i < selectedCharacters.length; i++) {
+            var $slot = $slots.eq(i);
+            var character = selectedCharacters[i];
+            $slot.css('background-image', "url('/img/characters/" + character + "/down/red.png')")
+                .data('type', character);
+        }
+        $curr_char = $();
+    });
+
+    $(document).on('click', '#placement-view #ready-button', function() {
         $('.screen').replaceWith($(play_view));
         $('#player-id').html(playerId);
         $curr_char = $();
@@ -69,21 +87,70 @@ $(function() {
     // LOAD VIEW INTERACTIONS
     /////////////////////////////////////////
 
-    $(document).on('mouseover', ".roster-cell", function() {
+    $(document).on('mouseover', '.roster-cell', function() {
         var cell =  $(this);
         cell.addClass('roster-cell-hover');
         //TODO: function to display stats here & make stats div on left
     });
 
-    $(document).on('mouseout', ".roster-cell", function() {
+    $(document).on('mouseout', '.roster-cell', function() {
         var cell =  $(this);
         cell.removeClass('roster-cell-hover');
     });
 
-    $(document).on('click', ".roster-cell", function() {
+    $(document).on('click', '.roster-cell', function() {
         var cellClicked =  $(this);
         cellClicked.addClass('clicked-cell');
     });
+
+
+///////////////////////////////////////////
+//****************************************
+// PLACEMENT VIEW
+//****************************************
+///////////////////////////////////////////
+
+    $(document).on('click', '#placement-view .selected-character-slot', function(evt) {
+        $('.floating').remove();
+        var $this = $(this);
+        var character_type = $this.data('type');
+        var $placement_view = $('#placement-view');
+        var screen_pos = $placement_view.position();
+        var $char = $('<sprite>')
+                .addClass('character')
+                .addClass('floating')
+                .addClass('alive')
+                .data('color', 'red')
+                /*.data('attack', _char.attack)
+                .data('move', _char.move)
+                .data('visibility', _char.visibility)*/
+                .data('type', character_type.toLowerCase())
+                .data('heading', 'down')
+                .css('background-image', "url('/img/characters/" + character_type.toLowerCase() + "/down/red.png')")
+                .css('top', evt.pageY - screen_pos.top)
+                .css('left', evt.pageX - screen_pos.left)
+                .attr('disabled', 'true');
+        $placement_view.append($char);
+        console.log(evt);
+        $to_place_character = $char;
+    });
+
+    $(document).on('mousemove', '#placement-view', function(evt){
+        if ($to_place_character.length) {
+            var screen_pos = $(this).position();
+            $to_place_character
+                .css('top', evt.pageY - screen_pos.top)
+                .css('left', evt.pageX - screen_pos.left);
+        }
+        return false;
+    });
+
+    $(document).on('click', '#placement-view .floating', function(evt){
+    });
+
+
+
+
 
 ///////////////////////////////////////////
 //****************************************
@@ -95,7 +162,7 @@ $(function() {
     // PLAY VIEW PLAYER INITIATED MESSAGING
     ////////////////////////////////////////
 
-    $(document).on('click', '.turn-arrow', function() {
+    $(document).on('click', '#play-view .turn-arrow', function() {
         var $arrow_clicked = $(this);
         var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
@@ -121,7 +188,7 @@ $(function() {
         return false;
     });
 
-    $(document).on('click', '.attack-candidate', function() {
+    $(document).on('click', '#play-view .attack-candidate', function() {
         var $attackable_square = $(this);
         var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
@@ -139,7 +206,7 @@ $(function() {
         return false;
     });
 
-    $(document).on('click', '.move-candidate', function() {
+    $(document).on('click', '#play-view .move-candidate', function() {
         var $move_square = $(this);
         var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
@@ -157,7 +224,7 @@ $(function() {
         return false;
     });
 
-    $(document).on('click', '.sleep-button', function() {
+    $(document).on('click', '#play-view .sleep-button', function() {
         socket.emit('update-game', {'type': 'pass'});
         return false;
     });
@@ -279,7 +346,7 @@ $(function() {
     // Play View Feedback
     //////////////////////////////////
 
-    $(document).on('click', 'sprite.character', function(evt) {
+    $(document).on('click', 'sprite.character:not(.floating)', function() {
         var $clicked = $(this);
 
         if ($clicked.hasClass('them') || $clicked.hasClass('dead')) {
