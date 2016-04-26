@@ -76,18 +76,19 @@ $(function() {
     /////////////////////////////////////////
 
     $(document).on('mouseover', ".roster-cell", function() {
-        var cell =  $(this);
-        cell.addClass('roster-cell-hover');
+        var hoverCell =  $(this);
+        hoverCell.addClass('roster-cell-hover');
         //TODO: function to display stats here & make stats div on left
     });
 
     $(document).on('mouseout', ".roster-cell", function() {
-        var cell =  $(this);
-        cell.removeClass('roster-cell-hover');
+        var hoverCell =  $(this);
+        hoverCell.removeClass('roster-cell-hover');
     });
 
     $(document).on('click', ".roster-cell", function() {
         var cellClicked =  $(this);
+        console.log("click!!!");
         cellClicked.addClass('clicked-cell');
     });
 

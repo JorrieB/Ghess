@@ -228,21 +228,25 @@
 }
 
 /* LOAD VIEW SELECT PANE */
+#characters-list {
+    float:left;
+    width: 70%;
+}
+
 .character-roster {
     padding: 15px 100px 15px 15px;
 }
 
 #selected-characters {
-    margin-top: 20px !important;
     float: right;
     background-color: #05acce;
-    width: 100px;
+    width: 110px;
     padding: 10px;
     text-align: center;
     color:white;
 }
 .selected-character-slot {
-    margin: 15px 0;
+    margin: 15px 5px;
     width: 80px;
     height: 80px;
     border-radius:40px;
@@ -278,8 +282,7 @@
 }
 
 .clicked-cell {
-    border: 2px;
-    border-color: white;
+    border: 5px solid white;
 }
 
 /* PLAY VIEW INFO PANE */
