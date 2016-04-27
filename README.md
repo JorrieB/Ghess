@@ -131,15 +131,19 @@ The result is a comic book art style. I think this is the best direction to go a
 ##Networking
 ###Server to client message
 
-######Roster selection
+######Game parameters
 ```
-Message name: "roster-selection"
+Message name: "team-selection"
 
 Message data: {
-	characters: [characterObjects],
-	rosterSize: int //# of chars you can have on your team
+	gameID: string, // I assume it's a string
+	gameParams : {
+		board-size:int,//length of square board
+		available-characters:[string], //character types
+		color: string, //color that player is
+		validPlacementSquares: [positions], 		numChars:int //number of chars player can choose
+	}
 }
-
 ```
 ######Character info object
 

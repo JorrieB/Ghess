@@ -7,11 +7,16 @@ $(function() {
     var gameId;
     // Client Id
     var playerId;
+    // team info
+    var playerColor;
+    var playerNumber;
     // Selected Characters
     var selectedCharacters = ['archer', 'swordsman', 'scout'];
     // floating character on placement screen
     var $to_place_character = $();
     var $placementSquare = $();
+    // squares that are available for placement
+    var validPlacementSquares;
 
     ///////////////
     // SCREEN FLOW
@@ -29,29 +34,45 @@ $(function() {
     $(document).on('click', '#player-button', function() {
     	$('.screen').replaceWith($(loading_view));
         console.log("emit team-select");
-        socket.emit('team-selection');
+        // socket.emit('team-selection');
+        socket.emit('join-any');
     });
 
     $(document).on('click', '#loading-view #ready-button', function() {
         var $placement_view = $(placement_view);
         $placement_view.find('#ready-button').hide();
-        $placement_view.find('.ghess-td').addClass('visible');
         $('.screen').replaceWith($placement_view);
+
+        validPlacementSquares.forEach(function(vec) {
+            getSquare(vec).addClass('visible');
+        });
+
         var $slots = $placement_view.find('.selected-character-slot');
         for (var i = 0; i < selectedCharacters.length; i++) {
             var $slot = $slots.eq(i);
             var character = selectedCharacters[i];
-            $slot.css('background-image', "url('/img/characters/" + character + "/down/red.png')")
+            $slot.css('background-image', "url('/img/characters/" + character + "/down/" + playerColor + ".png')")
                 .data('type', character);
         }
         $curr_char = $();
     });
 
     $(document).on('click', '#placement-view #ready-button', function() {
+        var $placementView = $('#placement-view');
+        var $chars = $placementView.find('sprite.character');
+        var charList = []
+        for (var i = 0; i < $chars.length; i++) {
+            var $char = $chars.eq(i);
+            charList.push({
+                'type': $char.data('type'),
+                'position': $char.data('position'),
+                'heading': $char.data('direction'),
+            });
+        }
+        socket.emit('ready-player', {'characters': charList});
         $('.screen').replaceWith($(play_view));
         $('#player-id').html(playerId);
         $curr_char = $();
-        socket.emit('join-any');
     });
 
     $(document).on('click', '#spectator-button', function() {
@@ -75,13 +96,16 @@ $(function() {
     socket.on('team-selection', function(message) {
         console.log('team select', message);
         var roster = message.roster;
+        playerColor = message.gameParams.color;
+        playerNumber = message.gameParams.playerNumber;
+        validPlacementSquares = message.gameParams.validSquares;
         var $charList = $('#characters-list');
-        for (var i = 0; i < roster.length; i++) {
-            var character = roster[i];
+        for (var i = 0; i < message.gameParams.roster.length; i++) {
+            var character = message.gameParams.roster[i];
             var $charCell = $('<div />')
                 .addClass('roster-cell')
                 .text(character.toLowerCase())
-                .css('background-image', "url('/img/characters/" + character + "/down/red.png')");
+                .css('background-image', "url('/img/characters/" + character + "/down/" + message.gameParams.color + ".png')");
             $charList.append($charCell);
         }
     });
@@ -115,11 +139,18 @@ $(function() {
 //****************************************
 ///////////////////////////////////////////
 
+    var cleanUpFloatingChar = function($floating) {
+        var $slot = $($floating.data('selection-slot'));
+        $slot.css('background-image', $slot.data('img'));
+        $floating.remove();
+        $placementSquare.removeClass('placement-square');
+        $placementSquare.data('character', '');
+        $placementSquare = $();
+        $('#ready-button').hide();
+    };
 
     $(document).on('click', '#placement-view .selected-character-slot', function(evt) {
-        $('.floating').remove();
-        $placementSquare.removeClass('placement-square');
-        $placementSquare = $();
+        cleanUpFloatingChar($('.floating'));
         var $this = $(this);
         $($this.data('character-obj')).remove();
         $this
@@ -133,7 +164,7 @@ $(function() {
                 .addClass('character')
                 .addClass('floating')
                 .addClass('alive')
-                .data('color', 'red')
+                .data('color', playerColor)
                 .data('selection-slot', $this)
                 /*.data('attack', _char.attack)
                 .data('move', _char.move)
@@ -141,7 +172,7 @@ $(function() {
                 .data('type', character_type.toLowerCase())
                 .data('heading', 'down')
                 .data('direction', default_direction)
-                .css('background-image', "url('/img/characters/" + character_type.toLowerCase() + "/down/red.png')")
+                .css('background-image', "url('/img/characters/" + character_type.toLowerCase() + "/down/" + playerColor + ".png')")
                 .css('top', evt.pageY - screen_pos.top)
                 .css('left', evt.pageX - screen_pos.left)
                 .attr('disabled', 'true');
@@ -167,11 +198,7 @@ $(function() {
         if ($placementSquare) {
             $placementSquare.click();
         } else {
-            var $slot = $this.data('selection-slot');
-            $slot.css('background-image', $slot.data('img'));
-            $this.remove();
-            $placementSquare.removeClass('placement-square');
-            $placementSquare = $();
+            cleanUpFloatingChar($this);
         }
     });
 
@@ -224,6 +251,8 @@ $(function() {
             $('.turn-arrow-container').hide();
             if ($('.selected-character-slot').length == $('sprite:not(.floating)').length) {
                 $('#ready-button').show();
+            } else {
+                $('#ready-button').hide();
             }
         } else {
             console.log('TURN ERROR - tried to turn without char');
@@ -232,16 +261,23 @@ $(function() {
     });
 
     $(document).on('click', '#placement-view sprite:not(.floating)', function(evt) {
-        var $this = $(this);
-        getSquare($this.data('position')).data('character', '');
-        $to_place_character = $this;
-        var $placementView = $('#placement-view');
-        var screen_pos = $placementView.position();
-        $this.addClass('floating')
+        if ($('.turn-arrow-container:visible').length == 0) {
+            var $this = $(this);
+            if ($to_place_character.length == 0) {
+                getSquare($this.data('position')).data('character', '');
+                $to_place_character = $this;
+                var $placementView = $('#placement-view');
+                var screen_pos = $placementView.position();
+                $this.addClass('floating')
 
-                .css('top', evt.pageY - screen_pos.top)
-                .css('left', evt.pageX - screen_pos.left)
-        $placementView.append($this);
+                        .css('top', evt.pageY - screen_pos.top)
+                        .css('left', evt.pageX - screen_pos.left)
+                $placementView.append($this);
+                $('#ready-button').hide();
+            } else {
+                getSquare($this.data('position')).click();
+            }
+        }
     });
 
 
@@ -351,7 +387,6 @@ $(function() {
     socket.on('game-joined', function(message) {
         console.log('game-joined', message);
         gameId = message.gameId;
-        socket.emit('ready-player');
     });
 
     var handleCharacters = function($table, chars) {

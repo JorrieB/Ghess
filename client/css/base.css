@@ -239,7 +239,6 @@
     width: 298px;
     height: 298px;
     width: 40%;
-
 }
 
 .character-roster {
@@ -247,7 +246,6 @@
 }
 
 #selected-characters {
-
     margin-top: 20px;
     float: left;
     background-color: #05acce;

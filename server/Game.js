@@ -7,7 +7,7 @@ var Player = require('./js/player');
 
 module.exports = function() {
 
-    var numCharsForEachPlayer = 5;
+    var numCharsForEachPlayer = 3;
 
 	var _this = this;
     var _characters = [];
@@ -29,6 +29,20 @@ module.exports = function() {
          activePlayerIndex =  (turnNumber % 2 )
          activePlayerId = _playersId[activePlayerIndex].getID();
          return activePlayerId;
+    }
+
+    // Returns an array of positions where the player is allowed to place their characters from the beginning of the game
+    // [{x:int,y:int}]
+    _getPlaceableSquares = function(playerID){
+        squares = [];
+        var player = _playerNumber(playerID);
+        var baseY = player * (1 + (_boardSize/2 | 0));
+        for (x = 0; x < _boardSize; x++){
+            for (y = baseY; y < baseY + (_boardSize/2 | 0); y++){
+                squares.push({'x':x,'y':y});
+            }
+        }
+        return squares;
     }
 
    _isPlayerMove = function(playerId){
@@ -64,9 +78,18 @@ module.exports = function() {
         return characterAtPosition;
     }
 
+    // Returns the index of the player in the player array (either 0 or 1)
+    _playerNumber = function(playerID){
+        return _playersId.findIndex(x => x.getID()==playerID);
+    }
+
+    _playerColor = function(playerID){
+        return (_playerNumber(playerID) == 1) ? "red" : "blue";
+    }
+
     //create the actual character objects based upon what json object somes in
     _createCharacter = function(character,charID){
-        var characterColor = (_playersId.findIndex(x => x.getID()==character.playerId) == 1) ? "red" : "blue";
+        var characterColor = _playerColor(character.playerId);
         var characterObject;
         switch(character.characterType){
             case "archer":
@@ -120,6 +143,7 @@ module.exports = function() {
                 });
             }
         }
+        return characterJSONArray
         _this.insertCharacters(characterJSONArray);
     }
 
@@ -148,7 +172,10 @@ module.exports = function() {
     };
 
     _this.canStart = function() {
-        return (_playersId.length == 2);
+        if (_playersId.length == 2){
+            return (_playersId[0].readyToStart() && _playersId[1].readyToStart());
+        }
+        return false
     }
 
     _this.getActivePlayerId = function(){
@@ -163,40 +190,35 @@ module.exports = function() {
         return _getCharacterAtPosition(position);
     }
 
-    _this.insertCharacters = function(startCharacters){
+    _this.insertCharacters = function(startCharacters, playerID){
         // For now, we just statically insert a list of characters
 
         // TODO: make it such that each player can insert their own characters, and there aren't duplicate inserts
-        _characters = startCharacters.map(function(character){
+        characters = startCharacters.map(function(character){
             return this._createCharacter(character,startCharacters.indexOf(character));
         });
 
-        // TODO: call initialize round at the correct time
-        initializeRound();
+        _getPlayerFromID(playerID).initMyArray(characters);
+
+        //if both players are in the game
+        if (_this.canStart()){
+            //and they have both selected characters
+            if (_playersId[0].readyToStart() && _playersId[1].readyToStart()){
+                initializeRound(_playersId[0],_playersId[1]); //then start the round
+            }
+        }
 
     };
 
     //gets called at the beginning of each round
     //reset all round variables
     //reset player information
-    initializeRound = function(){
+    initializeRound = function(player1,player2){
         _roundNumber++;
         _numberOfMoves = 0;
-        var player0Chars = _characters.filter(function(character){
 
-            if (character.getPlayerId() == _playersId[0].getID()){
-                return character
-            }
-        });
-
-        var player1Chars = _characters.filter(function(character){
-            if (character.getPlayerId() == _playersId[1].getID()){
-                return character
-            }
-        });
-
-        initPlayerArrays(_playersId[0],player0Chars,player1Chars);
-        initPlayerArrays(_playersId[1],player1Chars,player0Chars);
+        player1.initEnemyArray(player2.getMyArray());
+        player2.initEnemyArray(player1.getMyArray());
 
     }
 
@@ -313,13 +335,14 @@ module.exports = function() {
 
 
 
-    _this.getParams = function() {
-        // TODO
+    _this.getParams = function(playerID) {
         params = {
             "board-size":_boardSize,
-            "available-characters":[] // need some way to find restrict available characters, or at least to provide them for the players' placements
+            "roster":["archer","swordsman","scout", "archer","swordsman","scout"], // need some way to find restrict available characters, or at least to provide them for the players' placements
+            "color": _playerColor(playerID),
+            "validSquares":_getPlaceableSquares(playerID),
+            "numChars":numCharsForEachPlayer
         }
-        // This function should return game parameters like available characters, board size, etc
         return params;
     };
 
