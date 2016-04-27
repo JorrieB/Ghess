@@ -7,6 +7,9 @@ $(function() {
     var gameId;
     // Client Id
     var playerId;
+    // team info
+    var playerColor;
+    var playerNumber;
     // Selected Characters
     var selectedCharacters = ['archer', 'swordsman', 'scout'];
     // floating character on placement screen
@@ -42,17 +45,28 @@ $(function() {
         for (var i = 0; i < selectedCharacters.length; i++) {
             var $slot = $slots.eq(i);
             var character = selectedCharacters[i];
-            $slot.css('background-image', "url('/img/characters/" + character + "/down/red.png')")
+            $slot.css('background-image', "url('/img/characters/" + character + "/down/" + playerColor + ".png')")
                 .data('type', character);
         }
         $curr_char = $();
     });
 
     $(document).on('click', '#placement-view #ready-button', function() {
+        var $placementView = $('#placement-view');
+        var $chars = $placementView.find('sprite.character');
+        var charList = []
+        for (var i = 0; i < $chars.length; i++) {
+            var $char = $chars.eq(i);
+            charList.push({
+                'type': $char.data('type'),
+                'position': $char.data('position'),
+                'heading': $char.data('direction'),
+            });
+        }
+        socket.emit('ready-player', {'characters': charList});
         $('.screen').replaceWith($(play_view));
         $('#player-id').html(playerId);
         $curr_char = $();
-        socket.emit('join-any');
     });
 
     $(document).on('click', '#spectator-button', function() {
@@ -76,6 +90,8 @@ $(function() {
     socket.on('team-selection', function(message) {
         console.log('team select', message);
         var roster = message.roster;
+        playerColor = message.gameParams.color;
+        playerNumber = message.gameParams.playerNumber;
         var $charList = $('#characters-list');
         for (var i = 0; i < message.gameParams.roster.length; i++) {
             var character = message.gameParams.roster[i];
@@ -141,7 +157,7 @@ $(function() {
                 .addClass('character')
                 .addClass('floating')
                 .addClass('alive')
-                .data('color', 'red')
+                .data('color', playerColor)
                 .data('selection-slot', $this)
                 /*.data('attack', _char.attack)
                 .data('move', _char.move)
@@ -149,7 +165,7 @@ $(function() {
                 .data('type', character_type.toLowerCase())
                 .data('heading', 'down')
                 .data('direction', default_direction)
-                .css('background-image', "url('/img/characters/" + character_type.toLowerCase() + "/down/red.png')")
+                .css('background-image', "url('/img/characters/" + character_type.toLowerCase() + "/down/" + playerColor + ".png')")
                 .css('top', evt.pageY - screen_pos.top)
                 .css('left', evt.pageX - screen_pos.left)
                 .attr('disabled', 'true');
@@ -364,7 +380,6 @@ $(function() {
     socket.on('game-joined', function(message) {
         console.log('game-joined', message);
         gameId = message.gameId;
-        socket.emit('ready-player');
     });
 
     var handleCharacters = function($table, chars) {
