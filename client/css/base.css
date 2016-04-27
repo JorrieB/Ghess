@@ -161,7 +161,7 @@
     font-size:15px;
     font-weight:bold;
     padding:6px 24px;
-    margin: 10px;
+    margin: 5px;
     text-decoration:none;
 
 }
@@ -313,6 +313,10 @@
 
 .h2 {
     font-size: 18px;
+}
+
+.h3 {
+    font-size: 12px;
 }
 
 .playView-info-text {

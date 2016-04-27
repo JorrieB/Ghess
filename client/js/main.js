@@ -38,22 +38,29 @@ $(function() {
     });
 
     $(document).on('click', '#loading-view #ready-button', function() {
-        var $placement_view = $(placement_view);
-        $placement_view.find('#ready-button').hide();
-        $('.screen').replaceWith($placement_view);
+        if (selectedCharacters.length == 3) {
+            var $placement_view = $(placement_view);
+            $placement_view.find('#ready-button').hide();
+            //TODO: instead of hiding, make this a back button until placement is ready
+            $('.screen').replaceWith($placement_view);
 
-        validPlacementSquares.forEach(function(vec) {
-            getSquare(vec).addClass('visible');
-        });
+            validPlacementSquares.forEach(function(vec) {
+                getSquare(vec).addClass('visible');
+            });
 
-        var $slots = $placement_view.find('.selected-character-slot');
-        for (var i = 0; i < selectedCharacters.length; i++) {
-            var $slot = $slots.eq(i);
-            var character = selectedCharacters[i];
-            $slot.css('background-image', "url('/img/characters/" + character + "/down/" + playerColor + ".png')")
-                .data('type', character);
+            var $slots = $placement_view.find('.selected-character-slot');
+            for (var i = 0; i < selectedCharacters.length; i++) {
+                var $slot = $slots.eq(i);
+                var character = selectedCharacters[i];
+                $slot.css('background-image', "url('/img/characters/" + character + "/down/" + playerColor + ".png')")
+                    .data('type', character);
+            }
+            $curr_char = $();
+        } else {
+            if (selectedCharacters.length < 3) {
+                alert("You need to pick 3 characters!");
+            }
         }
-        $curr_char = $();
     });
 
     $(document).on('click', '#placement-view #ready-button', function() {
@@ -136,16 +143,21 @@ $(function() {
                 selectedCharacters.splice(selectedIndex, 1);
             }
         } else {
-            cellClicked.addClass('selected-char');
-            // Add character to roster
-            var $slots = $(loading_view).find('.selected-character-slot');
-            var $slot = $slots.eq(selectedCharacters.length);
-            console.log("help: ", $slot); // TODO??????
-            $slot.css('background-image', "url('/img/characters/" + cellClicked.text() + "/down/" + playerColor + ".png')")
-                .data('type', cellClicked.text())
-            selectedCharacters.push(cellClicked.text());
+            if (selectedCharacters.length == 3) {
+                alert("Max number of characters is 3!");
+            } else {
+                cellClicked.addClass('selected-char');
+            
+                // Add character to roster
+                var $slots = $(loading_view).find('.selected-character-slot');
+                var $slot = $slots.eq(selectedCharacters.length);
+                console.log("slot: ", $slot); // TODO??????
+                $slot.css('background-image', "url('/img/characters/" + cellClicked.text() + "/down/" + playerColor + ".png')")
+                    .data('type', cellClicked.text())
+                selectedCharacters.push(cellClicked.text());
+            }     
         }
-        console.log("selectedCharacters: ", selectedCharacters);
+        // console.log("selectedCharacters: ", selectedCharacters);
 
     });
 
