@@ -84,7 +84,7 @@ module.exports = function() {
     }
 
     _playerColor = function(playerID){
-        return (_playerNumber == 1) ? "red" : "blue";
+        return (_playerNumber(playerID) == 1) ? "red" : "blue";
     }
 
     //create the actual character objects based upon what json object somes in
