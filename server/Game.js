@@ -88,18 +88,18 @@ module.exports = function() {
     }
 
     //create the actual character objects based upon what json object somes in
-    _createCharacter = function(character,charID){
-        var characterColor = _playerColor(character.playerId);
+    _createCharacter = function(character,charID,playerID){
+        var characterColor = _playerColor(playerID);
         var characterObject;
-        switch(character.characterType){
+        switch(character.type){
             case "archer":
-                characterObject = new Archer(character.position,character.heading,character.playerId,charID,characterColor);
+                characterObject = new Archer(character.position,character.heading,playerID,charID,characterColor);
                 break;
             case "swordsman":
-                characterObject = new Swordsman(character.position,character.heading,character.playerId,charID,characterColor);
+                characterObject = new Swordsman(character.position,character.heading,playerID,charID,characterColor);
                 break;
             case "scout":
-                characterObject = new Scout(character.position,character.heading,character.playerId,charID,characterColor);
+                characterObject = new Scout(character.position,character.heading,playerID,charID,characterColor);
                 break;
             default:
                 break;
@@ -194,8 +194,11 @@ module.exports = function() {
         // For now, we just statically insert a list of characters
 
         // TODO: make it such that each player can insert their own characters, and there aren't duplicate inserts
-        characters = startCharacters.map(function(character){
-            return this._createCharacter(character,startCharacters.indexOf(character));
+
+        var characters = startCharacters.map(function(character){
+            var charObject = this._createCharacter(character,startCharacters.indexOf(character),playerID);
+            _characters.push(charObject);
+            return charObject;
         });
 
         _getPlayerFromID(playerID).initMyArray(characters);
@@ -217,9 +220,19 @@ module.exports = function() {
         _roundNumber++;
         _numberOfMoves = 0;
 
-        player1.initEnemyArray(player2.getMyArray());
-        player2.initEnemyArray(player1.getMyArray());
+        var player1Characters = _characters.filter(function(character){
+            if (player1.getID() == character.getPlayerId()){
+                return character;
+            }
+        });
+        var player2Characters = _characters.filter(function(character){
+            if (player2.getID() == character.getPlayerId()){
+                return character;
+            }
+        });
 
+        player1.initEnemyArray(player2Characters);
+        player2.initEnemyArray(player1Characters);
     }
 
     initPlayerArrays = function(player,allies,enemies){

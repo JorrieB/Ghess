@@ -32,6 +32,7 @@ module.exports = function(ID) {
 	}
 
 	simplifyCharacter = function(characterObject){
+		console.log('THIS IS CHARACTER OBJECT',characterObject);
 		return {
 				"alive":characterObject.alive,
 				"charType":characterObject.getCharacterType(),
@@ -41,7 +42,7 @@ module.exports = function(ID) {
 
 	//reset array with important information for allies
 	_this.initMyArray = function(allies) {
-		myArray = []
+		myArray = [];
 		for (i = 0; i < allies.length; i++){
 			myArray.push(simplifyCharacter(allies[i]));
 		}

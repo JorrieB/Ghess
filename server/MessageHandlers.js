@@ -54,26 +54,19 @@ module.exports = {
         var game = GameStore.get(socket.gameId);
         // TODO: make ready take arguments with initial placement of characters
         socket.emit('player-readied');
-
         
-        game.insertCharacters(socket.playerId);
-        if (data == 'undefined' && game.canStart()){
-            game.staticStart(); // TODO: replace with actual start function
-            // To this player
+        game.insertCharacters(data.characters,socket.playerId);
+
+        if (game.canStart()){
+            console.log('STARTING');
             socket.emit('update-state', game.serialize(socket.playerId));
             // To the other player
             var otherPlayerId = game.getOtherPlayerId(socket.playerId);
             this.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
         } else {
-            game.insertCharacters(socket.playerId);
-
+            console.log('GAME CANNOT START');
         }
 
-        // If both players are ready, start the game & send game state to clients
-        if (game.canStart()) {
-
-
-        }
     },
     'update-game': function(socket, data) {
     	var game = GameStore.get(socket.gameId);
