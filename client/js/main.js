@@ -15,6 +15,8 @@ $(function() {
     // floating character on placement screen
     var $to_place_character = $();
     var $placementSquare = $();
+    // squares that are available for placement
+    var validPlacementSquares;
 
     ///////////////
     // SCREEN FLOW
@@ -39,8 +41,12 @@ $(function() {
     $(document).on('click', '#loading-view #ready-button', function() {
         var $placement_view = $(placement_view);
         $placement_view.find('#ready-button').hide();
-        $placement_view.find('.ghess-td').addClass('visible');
         $('.screen').replaceWith($placement_view);
+
+        validPlacementSquares.forEach(function(vec) {
+            getSquare(vec).addClass('visible');
+        });
+
         var $slots = $placement_view.find('.selected-character-slot');
         for (var i = 0; i < selectedCharacters.length; i++) {
             var $slot = $slots.eq(i);
@@ -92,6 +98,7 @@ $(function() {
         var roster = message.roster;
         playerColor = message.gameParams.color;
         playerNumber = message.gameParams.playerNumber;
+        validPlacementSquares = message.gameParams.validSquares;
         var $charList = $('#characters-list');
         for (var i = 0; i < message.gameParams.roster.length; i++) {
             var character = message.gameParams.roster[i];
