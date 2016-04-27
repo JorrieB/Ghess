@@ -31,6 +31,20 @@ module.exports = function() {
          return activePlayerId;
     }
 
+    // Returns an array of positions where the player is allowed to place their characters from the beginning of the game
+    // [{x:int,y:int}]
+    _getPlaceableSquares = function(playerID){
+        squares = [];
+        var player = _playerNumber(playerID);
+        var baseY = player * (1 + (_boardSize/2 | 0));
+        for (x = 0; x < _boardSize; x++){
+            for (y = baseY; y < baseY + (_boardSize/2 | 0); y++){
+                squares.push({'x':x,'y':y});
+            }
+        }
+        return squares;
+    }
+
    _isPlayerMove = function(playerId){
         return (playerId == _getActivePlayerId())
     }
@@ -64,12 +78,13 @@ module.exports = function() {
         return characterAtPosition;
     }
 
+    // Returns the index of the player in the player array (either 0 or 1)
     _playerNumber = function(playerID){
         return _playersId.findIndex(x => x.getID()==playerID);
     }
 
     _playerColor = function(playerID){
-        return (_playersId.findIndex(x => x.getID()==playerID) == 1) ? "red" : "blue";
+        return (_playerNumber == 1) ? "red" : "blue";
     }
 
     //create the actual character objects based upon what json object somes in
@@ -325,7 +340,7 @@ module.exports = function() {
             "board-size":_boardSize,
             "roster":["archer","swordsman","scout", "archer","swordsman","scout"], // need some way to find restrict available characters, or at least to provide them for the players' placements
             "color": _playerColor(playerID),
-            "playerNumber":_playerNumber(playerID),
+            "validSquares":_getPlaceableSquares(playerID),
             "numChars":numCharsForEachPlayer
         }
         return params;

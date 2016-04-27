@@ -49,16 +49,6 @@ module.exports = {
             socket.emit('team-selection', { gameId: gameId, gameParams: game.getParams(socket.playerId) });
         }
 
-    },    
-    'team-selection': function(socket, data){
-
-        // var roster = game.getRoster();
-        
-        // Nayeon: made roster repeat for testing >3 chars
-        var roster = ["archer","swordsman","scout", "archer","swordsman","scout"];
-        // var numChars = game.getNumChars();
-        var numChars = 3;
-        socket.emit('team-selection', {roster:roster, numChars:numChars});
     },
     'ready-player': function(socket, data) {
         var game = GameStore.get(socket.gameId);
