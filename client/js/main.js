@@ -11,7 +11,7 @@ $(function() {
     var playerColor;
     var playerNumber;
     // Selected Characters
-    var selectedCharacters = ['archer', 'swordsman', 'scout'];
+    var selectedCharacters = [];
     // floating character on placement screen
     var $to_place_character = $();
     var $placementSquare = $();
@@ -33,7 +33,6 @@ $(function() {
 
     $(document).on('click', '#player-button', function() {
     	$('.screen').replaceWith($(loading_view));
-        console.log("emit team-select");
         // socket.emit('team-selection');
         socket.emit('join-any');
     });
@@ -129,9 +128,26 @@ $(function() {
     $(document).on('click', '.roster-cell', function() {
         var cellClicked =  $(this);
         console.log("click!!!");
-        cellClicked.addClass('clicked-cell');
-    });
+        if ( cellClicked.hasClass('selected-char') ) {
+            cellClicked.removeClass('selected-char');
+            // Remove character from roster
+            var selectedIndex = selectedCharacters.indexOf(cellClicked.text());
+            if (selectedIndex > -1) {
+                selectedCharacters.splice(selectedIndex, 1);
+            }
+        } else {
+            cellClicked.addClass('selected-char');
+            // Add character to roster
+            var $slots = $(loading_view).find('.selected-character-slot');
+            var $slot = $slots.eq(selectedCharacters.length);
+            console.log("help: ", $slot); // TODO??????
+            $slot.css('background-image', "url('/img/characters/" + cellClicked.text() + "/down/" + playerColor + ".png')")
+                .data('type', cellClicked.text())
+            selectedCharacters.push(cellClicked.text());
+        }
+        console.log("selectedCharacters: ", selectedCharacters);
 
+    });
 
 ///////////////////////////////////////////
 //****************************************

@@ -230,15 +230,17 @@
 /* LOAD VIEW SELECT PANE */
 
 #characters-list {
-    width: 330px;
+    width: 300px;
     float: left;
-    background-color: grey;
+    border: 2px solid pink;
+    margin: 0 10px;
+    padding: 15px;
+    /*background-color: grey;*/
 }
 
 .loading-view-table.ghess-table {
     width: 298px;
     height: 298px;
-    width: 40%;
 }
 
 .character-roster {
@@ -246,7 +248,6 @@
 }
 
 #selected-characters {
-    margin-top: 20px;
     float: left;
     background-color: #05acce;
     width: 110px;
@@ -269,7 +270,7 @@
     float: left;
     width: 100px;
     height: 100px;
-    margin: 10px 5px;
+    margin: 10px 10px;
     background-color: blue;
     background-size: 100% 100%;
     text-align: center;
@@ -283,8 +284,8 @@
     opacity: .8;
 }
 
-.clicked-cell {
-    border: 5px solid white;
+.selected-char {
+    border: 5px solid yellow;
 }
 
 /* PLACEMENT VIEW */
