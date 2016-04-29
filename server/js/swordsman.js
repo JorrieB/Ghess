@@ -21,7 +21,7 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 	};
 
 	_this.getAttackableCells = function(){
-		return [vectorUtils.vectorSum(_this.position, _this.heading)];
+		return _this.getVisibleCells();
 	};
 
 	_this.getAccessibleCells = function(){
@@ -56,5 +56,13 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 			"startPos":_this.getPosition(),
 			"endPos":attackedPosition
 		};
+	}
+
+	_this.defend = function(attackType, attackHeading){
+		var successfulDefend = false;
+		if (attackType == "arrow" && vectorUtils.isEqual(vectorUtils.vectorSum(_this.getHeading(),attackHeading),{x:0,y:0})){
+			successfulDefend = true;
+		}
+		return successfulDefend;
 	}
 };
