@@ -152,8 +152,9 @@ $(function() {
                 var $slots = $(loading_view).find('.selected-character-slot');
                 var $slot = $slots.eq(selectedCharacters.length);
                 console.log("slot: ", $slot); // TODO??????
-                $slot.css('background-image', "url('/img/characters/" + cellClicked.text() + "/down/" + playerColor + ".png')")
-                    .data('type', cellClicked.text())
+                $slot.first().css('background-image', "url('/img/characters/" + cellClicked.text() + "/down/" + playerColor + ".png')")
+                    .data('type', cellClicked.text());
+
                 selectedCharacters.push(cellClicked.text());
             }     
         }
@@ -477,11 +478,18 @@ $(function() {
 
         // Player Stat
         var selfChars = message.HUD.selfChars;
-        for (var c=0; c < selfChars; c++) {
-            var selfChar = document.createElement("div");
-            selfChar.className = "selfCharCell";
-            selfChar.css('background-image', "url('/img/characters/" + selfChars[c].charType.toLowerCase() + "/down/red.png");
-            $('#player-stat').html(selfChar);
+        console.log("selfChars", selfChars);
+        for (var c = 0; c < selfChars.length; c++) {
+            // var $selfChar = document.createElement("div");
+            var $selfChar = $('<div />');
+            $selfChar.addClass("selfCharCell");
+            $selfChar.css('background-color', 'yellow');
+            $selfChar.css('background-image', "url('/img/characters/" + selfChars[c].charType.toLowerCase() + "/down/red.png");
+            $("#player-stat").append($selfChar);
+            console.log($selfChar);
+            // $selfChar.className = "selfCharCell";
+            // $selfChar.css('background-image', "url('/img/characters/" + selfChars[c].charType.toLowerCase() + "/down/red.png");
+            // $('#player-stat').html($selfChar);
         }
 
         // Enemy Stat

@@ -333,6 +333,18 @@
     height: 140px;
 }
 
+#player-stat {
+    padding: 15px;
+    height: 80px
+}
+
+.selfCharCell {
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    float: left;
+}
+
 /* PLAY VIEW TABLE */
 
 .ghess-table {
@@ -453,25 +465,25 @@ sprite.projectile {
     width: 40%;
     height: 40%;
     background-size: 100%;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
 }
 
 .attack-button {
-    background-image: url('/img/attack.png');
+    background-image: url('/img/attack2.png');
     top: -25%;
-    left: -10%;
+    left: -20%;
 }
 
 .turn-button {
-    background-image: url('/img/turn.png');
-    top: -40%;
+    background-image: url('/img/turn2.png');
+    top: -45%;
     left: 30%;
 }
 
 .move-button {
-    background-image: url('/img/move.png');
+    background-image: url('/img/move2.png');
     top: -25%;
-    left: 70%;
+    left: 80%;
 }
 
 .sleep-button {
