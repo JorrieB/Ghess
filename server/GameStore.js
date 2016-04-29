@@ -33,4 +33,15 @@ module.exports = {
         }
         return null;
     },
+    // Gets first game that is being played (and is therefore observable)
+    getFirstObservable: function() {
+        var gameIds = Object.keys(games);
+        for (var i = 0; i < gameIds.length; i++) {
+            var id = gameIds[i];
+            if (games[id].observable()) {
+                return { id: id, game: games[id] };
+            }
+        }
+        return null;
+    }
 };

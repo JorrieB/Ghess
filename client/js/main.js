@@ -82,7 +82,9 @@ $(function() {
     });
 
     $(document).on('click', '#spectator-button', function() {
-    	$('.screen').replaceWith($(spectator_view));
+        console.log('spectator button');
+        socket.emit('observe-game');
+    	//$('.screen').replaceWith($(spectator_view));
     });
 
     $(document).on('click', '#forefeit-button', function() {
@@ -616,4 +618,23 @@ $(function() {
         cleanSquares();
         $('.glow').removeClass('glow');
     });
+
+///////////////////////////////////////////
+//****************************************
+// SPECTATOR VIEW
+//****************************************
+//////////////////////////////////////////
+
+    socket.on('game-not-available', function(message) {
+        console.log('No game available');
+    });
+
+    socket.on('waiting', function(message) {
+        console.log('Waiting');
+        gameId = message.gameId;
+    });
+
 });
+
+
+

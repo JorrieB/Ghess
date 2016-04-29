@@ -14,6 +14,23 @@ module.exports = {
         // Send message back to client
         socket.emit('game-created', { gameId: created.id, gameParams: created.game.getParams() });
     },
+    'observe-game': function(socket){
+        var game = GameStore.getFirstObservable();
+        console.log('server observer ');
+
+        if (game == null){
+            console.log('could not find game');
+            socket.emit('game-not-available',{});
+        } else {
+            console.log('found game');
+            game.game.addObserver(socket.playerId);
+            if (game.game.canStart()){
+                socket.emit('update-state', game.game.serialize(socket.playerId));
+            } else {
+                socket.emit('waiting',{gameId: game.id});
+            }
+        }
+    },
     'join-game': function(socket, data) {
 
         var game = GameStore.get(data.gameId);
@@ -80,6 +97,11 @@ module.exports = {
             // To the other player
             var otherPlayerId = game.getOtherPlayerId(socket.playerId);
             this.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
+            // Send info to observers each time there was an update
+            for (observer in game.getObservers()){
+                this.to(observer).emit('update-state', game.serialize(observer));
+            }
+
         } else {
             // send back error
         }
