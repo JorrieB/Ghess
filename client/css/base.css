@@ -193,7 +193,7 @@
 }
 
 .screen {
-    width: 800px;
+    width: 1000px;
     height: 600px;
     border: 1px solid black;
     padding: 30px;
@@ -203,19 +203,23 @@
 }
 
 /* START VIEW */
-.start-view {
-
+#start-view {
+    background-color: #3a68ff;
+    padding-top: 0px;
 }
 
 #game-title {
+    background: url('/img/ghess-logo-600x400.png');
     font-size: 64px;
-    margin: auto;
-    width: 50%;
-    text-align: center;
+    margin: 0 auto;
+    background-size: 100%;
+    width: 600px;
+    height: 400px;
+
 }
 
 #button-container {
-    margin: 50px;
+    margin: 0 50px;
     text-align: center;
 }
 
