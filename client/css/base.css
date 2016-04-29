@@ -197,6 +197,7 @@
     height: 600px;
     border: 1px solid black;
     padding: 30px;
+    background-color: #3a68ff;
 
     font-family: 'Sansita One';
     font-style: normal;
@@ -234,17 +235,19 @@
 /* LOAD VIEW SELECT PANE */
 
 #characters-list {
-    width: 300px;
+    width: 395px;
+    height: 350px;
+    overflow: scroll;
     float: left;
     border: 2px solid pink;
-    margin: 0 10px;
+    margin-left: 38px;
     padding: 15px;
     /*background-color: grey;*/
 }
 
 .loading-view-table.ghess-table {
-    width: 298px;
-    height: 298px;
+    width: 350px;
+    height: 350px;
 }
 
 .character-roster {
@@ -253,6 +256,7 @@
 
 #selected-characters {
     float: left;
+    margin: 0 20px;
     background-color: #05acce;
     width: 110px;
     padding: 10px;
