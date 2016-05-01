@@ -1,3 +1,5 @@
 <div class="character-portrait">
-    <div class="round-button wiggle glossy2 action-button sleep-button"></div>
+    {% if not spectator %}
+        <div class="round-button wiggle glossy2 action-button sleep-button"></div>
+    {% endif %}
 </div>

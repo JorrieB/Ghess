@@ -80,6 +80,7 @@ $(function() {
 
     $(document).on('click', '#spectator-button', function() {
         console.log('spectator button');
+        playerColor = 'blue';
     	$('.screen').replaceWith($(spectator_view));
         socket.emit('observe-game');
     });
@@ -382,12 +383,34 @@ $(function() {
     /////////////////////////////////////////
 
     var animateArrow = function(animation, callback) {
-        var $arrow = $('<sprite />').addClass('projectile').css('background-image', "url('/img/characters/archer/attack/red.png')");
-        $arrow.animateProjectile($('.ghess-table'), animation.startPos, animation.endPos, 200, callback);
+        var $arrow = $('<sprite />')
+            .addClass('projectile')
+            .css('background-image', "url('/img/characters/archer/attack/red.png')");
+        $arrow.animateProjectile($('.ghess-table'), animation.startPos, animation.endPos, 300, function() {
+            $arrow.remove();
+            callback();
+        });
+    };
+
+    var animateShield = function(animation, callback) {
+        var $shield = $('<sprite />')
+            .addClass('projectile')
+            .css('background-image', "url('/img/characters/swordsman/defend/red.png')")
+            .hide();
+        $('.ghess-table').append($shield);
+        $shield.placeAt(animation.startPos);
+        $shield.fadeIn(600, function(){
+            $shield.fadeOut(600, function() {
+                $shield.remove();
+                callback();
+            });
+        });
+
     };
 
     var animationFuncMap = {
-        'arrow': animateArrow
+        'arrow': animateArrow,
+        'shield': animateShield
     };
 
     /////////////////////////////////////////
@@ -452,7 +475,7 @@ $(function() {
         var animationList = [];
         for (var i = animations.length - 1; i > -1; i--) {
             try {
-                animationList.push(animationFuncMap[animations[i].attack].bind(null, animations[i], animationList[i+1] || callback));
+                animationList.push(animationFuncMap[animations[i].attack].bind(null, animations[i], animationList[animationList.length-1] || callback));
             } catch(err) {
             }
         }

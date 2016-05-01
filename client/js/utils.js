@@ -1,7 +1,7 @@
 $.fn.allPosition = function() {
     var position = this.position();
-    position.bottom = this.height() + position.top;
-    position.right = this.width() + position.left;
+    position.bottom = position.top;
+    position.right = position.left;
     return position;
 };
 
@@ -73,7 +73,7 @@ var getAnimCoords = function($start_elem, $end_elem,
 var getDirAndLen = function(start, end) {
     var vert = end.y - start.y;
     var horiz = end.x - start.x;
-    var out = {'len': Math.abs(vert || horiz)};
+    var out = {};
     if (vert > 0) {
         out.dir = 'down';
         out.next = {
@@ -101,6 +101,9 @@ var getDirAndLen = function(start, end) {
     } else {
         throw 'no direction';
     }
+    vert = end.y - out.next.y;
+    horiz = end.x - out.next.x;
+    out.len = Math.abs(vert || horiz);
     return out;
 };
 
