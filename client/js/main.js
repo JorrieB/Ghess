@@ -11,7 +11,7 @@ $(function() {
     var playerColor;
     var playerNumber;
     // Selected Characters
-    var selectedCharacters = [];
+    var $selectedCharacters;
     // floating character on placement screen
     var $to_place_character = $();
     var $placementSquare = $();
@@ -38,29 +38,26 @@ $(function() {
     });
 
     $(document).on('click', '#loading-view #ready-button', function() {
-        if (selectedCharacters.length == 3) {
-            var $placement_view = $(placement_view);
-            $placement_view.find('#ready-button').hide();
-            //TODO: instead of hiding, make this a back button until placement is ready
-            $('.screen').replaceWith($placement_view);
+        var $placement_view = $(placement_view);
+        $placement_view.find('#ready-button').hide();
+        //TODO: instead of hiding, make this a back button until placement is ready
+        var selectedCharacters = $selectedCharacters.map(function() {
+            return $(this).data('type');
+        });
+        $('.screen').replaceWith($placement_view);
 
-            validPlacementSquares.forEach(function(vec) {
-                getSquare(vec).addClass('visible');
-            });
+        validPlacementSquares.forEach(function(vec) {
+            getSquare(vec).addClass('visible');
+        });
 
-            var $slots = $placement_view.find('.selected-character-slot');
-            for (var i = 0; i < selectedCharacters.length; i++) {
-                var $slot = $slots.eq(i);
-                var character = selectedCharacters[i];
-                $slot.css('background-image', "url('/img/characters/" + character + "/down/" + playerColor + ".png')")
-                    .data('type', character);
-            }
-            $curr_char = $();
-        } else {
-            if (selectedCharacters.length < 3) {
-                alert("You need to pick 3 characters!");
-            }
+        var $slots = $placement_view.find('.selected-character-slot');
+        for (var i = 0; i < $selectedCharacters.length; i++) {
+            var $slot = $slots.eq(i);
+            var character = selectedCharacters[i];
+            $slot.data('type', character)
+                .css('background-image', "url('/img/characters/" + character + "/down/" + playerColor + ".png')");
         }
+        $curr_char = $();
     });
 
     $(document).on('click', '#placement-view #ready-button', function() {
@@ -113,6 +110,7 @@ $(function() {
             var $charCell = $('<div />')
                 .addClass('roster-cell')
                 .text(character.toLowerCase())
+                .data('type', character.toLowerCase())
                 .css('background-image', "url('/img/characters/" + character + "/down/" + message.gameParams.color + ".png')");
             $charList.append($charCell);
         }
@@ -122,47 +120,33 @@ $(function() {
     // LOAD VIEW INTERACTIONS
     /////////////////////////////////////////
 
-    $(document).on('mouseover', ".roster-cell", function() {
-        var hoverCell =  $(this);
-        hoverCell.addClass('roster-cell-hover');
-        //TODO: function to display stats here & make stats div on left
-    });
-
-    $(document).on('mouseout', ".roster-cell", function() {
-        var hoverCell =  $(this);
-        hoverCell.removeClass('roster-cell-hover');
-
-    });
-
-    $(document).on('click', '.roster-cell', function() {
-        var cellClicked =  $(this);
-        console.log("click!!!");
-        if ( cellClicked.hasClass('selected-char') ) {
-            cellClicked.removeClass('selected-char');
-            // Remove character from roster
-
-            // PROBLEM: indexOf assumes non-repeating characters
-            // TODO: restruct indexing
-            var selectedIndex = selectedCharacters.indexOf(cellClicked.text());
-            if (selectedIndex > -1) {
-                selectedCharacters.splice(selectedIndex, 1);
-                var slot = cellClicked.parent().parent().find('#selected-character-slot-'+selectedIndex+'.selected-character-slot');
-                slot.css('background-image', "none")
-                    .data('type', ''); 
-            }
+    $(document).on('click', '#loading-view .roster-cell', function() {
+        var $cellClicked =  $(this);
+        $selectedCharacters = $('.selected-character-slot.selected');
+        if ( $cellClicked.hasClass('selected-char') ) {
+            $cellClicked.removeClass('selected-char');
+            var $slot = $cellClicked.data('slot');
+            $slot.css('background-image', 'none')
+                .data('type', '')
+                .removeClass('selected');
+            $('#ready-button').hide();
         } else {
-            if (selectedCharacters.length == 3) {
-                alert("Max number of characters is 3!");
+            if ($selectedCharacters.length == 3) {
+                // TODO maybe add negative sound here
             } else {
-                cellClicked.addClass('selected-char');
 
                 // Add character to roster
-                var slotIndex = selectedCharacters.length;
-                var slot = cellClicked.parent().parent().find('#selected-character-slot-'+slotIndex+'.selected-character-slot');                
-                slot.css('background-image', "url('/img/characters/" + cellClicked.text().toLowerCase() + "/down/" + playerColor + ".png')")
-                    .data('type', cellClicked.text());
+                var $slot = $('#loading-view').find('.selected-character-slot:not(.selected)').eq(0);
+                $slot.css('background-image', "url('/img/characters/" + $cellClicked.data('type') + "/down/" + playerColor + ".png')")
+                    .data('type', $cellClicked.data('type'))
+                    .addClass('selected');
+                $cellClicked.addClass('selected-char')
+                    .data('slot', $slot);
+                $selectedCharacters = $('.selected-character-slot.selected');
+                if ($selectedCharacters.length == 3) {
+                    $('#ready-button').show();
+                };
 
-                selectedCharacters.push(cellClicked.text());
             }
         }
     });
@@ -491,14 +475,14 @@ $(function() {
 
         // Player Stat
         var selfChars = message.HUD.selfChars;
+        $('#player-stat').empty();
         for (var c = 0; c < selfChars.length; c++) {
             var $selfChar = $('<div />');
             var character = selfChars[c];
-            $selfChar.addClass("selfCharCell");
-            $selfChar.css('background-size', '100%');
-            // $selfChar.css('background-image', "url('/img/characters/" + character.charType.toLowerCase() + "/down/red.png')");
-            $selfChar.css('background-image', "url('/img/characters/" + character.charType.toLowerCase() + "/down/" + playerColor + ".png')");
-            $("#player-stat").append($selfChar);
+            var alive = character.alive;
+            $selfChar.addClass('stat-cell');
+            $selfChar.css('background-image', "url('/img/characters/" + character.charType.toLowerCase() + (alive ? "/down/" : "/dead/") + playerColor + ".png')");
+            $('#player-stat').append($selfChar);
         }
 
         // Enemy Stat
@@ -509,16 +493,20 @@ $(function() {
         } else {
             enemyColor = 'red';
         }
-        
+
+        $('#enemy-stat').empty();
         for (var e = 0; e < enemyChars.length; e++) {
             var $enemyChar = $('<div />');
             // TODO: if we don't want to specify character type, we need a generic character image asset
+            $enemyChar.addClass('stat-cell');
             var enemy = enemyChars[e].charType;
-            $enemyChar.addClass("enemyCharCell");
-            $enemyChar.css('background-size', '100%');
-            // $enemyChar.css('background-image', "url('/img/characters/" + enemy.toLowerCase() + "/down/blue.png')");
-            $enemyChar.css('background-image', "url('/img/characters/" + enemy.toLowerCase() + "/down/" + enemyColor + ".png')");
-            $("#enemy-stat").append($enemyChar);
+            var alive = enemyChars[e].alive;
+            if (enemy != 'undefined') {
+                $enemyChar.css('background-image', "url('/img/characters/" + enemy.toLowerCase() + (alive ? "/down/" : "/dead/") + enemyColor + ".png')");
+            } else {
+                $enemyChar.addClass('unknown');
+            }
+            $('#enemy-stat').append($enemyChar);
         }
 
         handleAnimations(message.animations, function() {
