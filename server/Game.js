@@ -131,6 +131,22 @@ module.exports = function() {
         return _playersId[index];
     }
 
+    // Is the game over? for now draw not allowed
+    _this.isGameOver = function(){
+        for (i = 0; i < _playersId.length; i++){
+            playerId = _playersId[i].getID();
+            //Find the characters that are still alive for current playerId
+            var playerAliveCharacters = _characters.filter(function(character){
+                if (playerId == character.getPlayerId() && character.getAliveness()){
+                    return character; }})
+            // If there are no characters left for this player, the other player won.
+            if (playerAliveCharacters.length == 0){
+                    return _this.getOtherPlayerId(playerId);
+            }
+        }
+        return false;
+    }
+
     _this.staticStart = function(){
         characterJSONArray = [];
         startCharacters = ["swordsman","archer","scout"];

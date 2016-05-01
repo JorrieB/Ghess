@@ -103,6 +103,13 @@ module.exports = {
                 this.to(observers[observerIndex]).emit('update-state', game.serialize(observers[observerIndex]));
             }
 
+            // If the game is over, notify the players
+            potentialWinnerId = game.isGameOver()
+            if (potentialWinnerId){
+                console.log("Game is over!!")
+                socket.emit('game-over', {winner: potentialWinnerId})
+            }
+
         } else {
             // send back error
         }
