@@ -83,8 +83,8 @@ $(function() {
 
     $(document).on('click', '#spectator-button', function() {
         console.log('spectator button');
+    	$('.screen').replaceWith($(spectator_view));
         socket.emit('observe-game');
-    	//$('.screen').replaceWith($(spectator_view));
     });
 
     $(document).on('click', '#forefeit-button', function() {
@@ -149,7 +149,7 @@ $(function() {
                 alert("Max number of characters is 3!");
             } else {
                 cellClicked.addClass('selected-char');
-            
+
                 // Add character to roster
                 var $slots = $(loading_view).find('.selected-character-slot');
                 var $slot = $slots.eq(selectedCharacters.length);
@@ -157,7 +157,7 @@ $(function() {
                 $slot.css('background-image', "url('/img/characters/" + cellClicked.text() + "/down/" + playerColor + ".png')")
                     .data('type', cellClicked.text())
                 selectedCharacters.push(cellClicked.text());
-            }     
+            }
         }
         // console.log("selectedCharacters: ", selectedCharacters);
 
@@ -435,15 +435,23 @@ $(function() {
                 .data('heading', headingStr)
                 .css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + (_char.alive ? headingStr : 'dead') + "/" + _char.color + ".png')");
 
+            if ($('#spectator-view').length){
+                $char.addClass('mine')
+                    _char.visibility.forEach(function(vec) {
+                        var $square = getSquare(vec);
+                        $square.addClass('visible');
+                    });
 
-            if (_char.team != playerId) {
-                $char.addClass('them');
             } else {
-                $char.addClass('mine');
-                _char.visibility.forEach(function(vec) {
-                    var $square = getSquare(vec);
-                    $square.addClass('visible');
-                });
+                if (_char.team != playerId) {
+                    $char.addClass('them');
+                } else {
+                    $char.addClass('mine');
+                    _char.visibility.forEach(function(vec) {
+                        var $square = getSquare(vec);
+                        $square.addClass('visible');
+                    });
+                }
             }
 
             $table.append($char);
