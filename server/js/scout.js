@@ -15,7 +15,12 @@ module.exports  = function(startPosition, startHeading, playerId, charID, startC
 		visibleCells = []
 		for (var i = -scoutRange; i <= scoutRange; i++) {
 			for (var j = -scoutRange; j <= scoutRange; j++){
-				visibleCells.push(vectorUtils.vectorSum({x:i, y:j}, _this.getPosition()));
+				//restrict visibility to mostly directly in front
+				//TODO: introduce directionality - right now, it doesn't take scout turning into play
+				if ((i+j) > -2 && (i+j) <= 2){
+					visibleCells.push(vectorUtils.vectorSum({x:i, y:j}, _this.getPosition()));
+				}
+				
 			}
 		}
 		return visibleCells;
