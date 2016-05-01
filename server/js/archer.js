@@ -26,6 +26,7 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 	};
 
 	_this.attack = function(attackedPosition, game){
+		var animationList = []
 		for (i = 1; i <= arrowRange; i++){
 			//get square arrow is currently in based on how far the arrow has flown and where the character is
 			var attackTile = utils.vectorSum(utils.vectorMultScalar(_this.heading, i),_this.position);
@@ -46,20 +47,25 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 			// If the character is dead, skip to next cell
 			if (!(attackedCharacter.getAliveness())){ continue}
 
+			var attack = {
+					"isValid":true,
+					"attack":"arrow",
+					"startPos":_this.getPosition(),
+					"endPos":attackedPosition
+				};
+			animationList.push(attack);
+
 			//char in square may be able to defend itself
-			var successfulDefend = attackedCharacter.defend('arrow', _this.heading);
+			var defend = attackedCharacter.defend('arrow', _this.heading);
 			//if not, kill the character
-			if (!successfulDefend){
+			if (!defend.successful){
 				game.destroyCharacter(attackedCharacter);
+			} else {
+				animationList.push(defend);
 			}
 			break;
 		}
-		return {
-			"isValid":true,
-			"attack":"arrow",
-			"startPos":_this.getPosition(),
-			"endPos":attackedPosition
-			};
+		return animationList;
 
 	}
 };

@@ -363,11 +363,11 @@ module.exports = function() {
         if (!(activeCharacter.getPlayerId() == playerId)){
             return false;
         }
-        attack = activeCharacter.attack(attackedPosition, _this);
-        if (!attack.isValid){
+        animationsFromAttack = activeCharacter.attack(attackedPosition, _this);
+        if (animationsFromAttack.length == 0){
             return false;
         }
-        _animations = [attack]; //add the attack animation information
+        _animations = animationsFromAttack; //add the attack animation information
         _numberOfMoves += 1;
         return true;
     };

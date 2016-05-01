@@ -72,18 +72,13 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 		return {};
 	}
 
-	//attack should return its animation information
+	//returns list of animations. If empty, there are no animations.
 	_this.attack = function(){
-		return {
-			"isValid":false,
-			"attack":"undefined",
-			"startPos":{x:0,y:0},
-			"endPos":{x:0,y:0}
-		};
+		return [];
 	};
 
 	_this.defend = function(attackType, attackHeading){
-		return false;
+		return {"successful":false};
 	}
 
 	_this.serialize = function(){
