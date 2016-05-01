@@ -348,9 +348,12 @@ module.exports = function() {
             return false;
         }
         attack = activeCharacter.attack(attackedPosition, _this);
+        if (!attack.isValid){
+            return false;
+        }
         _animations = [attack]; //add the attack animation information
         _numberOfMoves += 1;
-        return attack.isValid;
+        return true;
     };
 
     _this.handlePass  = function(playerId) {
