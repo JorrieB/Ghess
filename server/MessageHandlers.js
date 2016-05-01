@@ -98,8 +98,9 @@ module.exports = {
             var otherPlayerId = game.getOtherPlayerId(socket.playerId);
             this.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
             // Send info to observers each time there was an update
-            for (observer in game.getObservers()){
-                this.to(observer).emit('update-state', game.serialize(observer));
+            var observers = game.getObservers();
+            for (observerIndex in observers){
+                this.to(observers[observerIndex]).emit('update-state', game.serialize(observers[observerIndex]));
             }
 
         } else {

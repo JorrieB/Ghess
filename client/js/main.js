@@ -140,9 +140,15 @@ $(function() {
         if ( cellClicked.hasClass('selected-char') ) {
             cellClicked.removeClass('selected-char');
             // Remove character from roster
+
+            // PROBLEM: indexOf assumes non-repeating characters
+            // TODO: restruct indexing
             var selectedIndex = selectedCharacters.indexOf(cellClicked.text());
             if (selectedIndex > -1) {
                 selectedCharacters.splice(selectedIndex, 1);
+                var slot = cellClicked.parent().parent().find('#selected-character-slot-'+selectedIndex+'.selected-character-slot');
+                slot.css('background-image', "none")
+                    .data('type', ''); 
             }
         } else {
             if (selectedCharacters.length == 3) {
@@ -151,16 +157,14 @@ $(function() {
                 cellClicked.addClass('selected-char');
 
                 // Add character to roster
-                var $slots = $(loading_view).find('.selected-character-slot');
-                var $slot = $slots.eq(selectedCharacters.length);
-                console.log("slot: ", $slot); // TODO??????
-                $slot.css('background-image', "url('/img/characters/" + cellClicked.text() + "/down/" + playerColor + ".png')")
-                    .data('type', cellClicked.text())
+                var slotIndex = selectedCharacters.length;
+                var slot = cellClicked.parent().parent().find('#selected-character-slot-'+slotIndex+'.selected-character-slot');                
+                slot.css('background-image', "url('/img/characters/" + cellClicked.text().toLowerCase() + "/down/" + playerColor + ".png')")
+                    .data('type', cellClicked.text());
+
                 selectedCharacters.push(cellClicked.text());
             }
         }
-        // console.log("selectedCharacters: ", selectedCharacters);
-
     });
 
 ///////////////////////////////////////////
@@ -487,15 +491,35 @@ $(function() {
 
         // Player Stat
         var selfChars = message.HUD.selfChars;
-        for (var c=0; c < selfChars; c++) {
-            var selfChar = document.createElement("div");
-            selfChar.className = "selfCharCell";
-            selfChar.css('background-image', "url('/img/characters/" + selfChars[c].charType.toLowerCase() + "/down/red.png");
-            $('#player-stat').html(selfChar);
+        for (var c = 0; c < selfChars.length; c++) {
+            var $selfChar = $('<div />');
+            var character = selfChars[c];
+            $selfChar.addClass("selfCharCell");
+            $selfChar.css('background-size', '100%');
+            // $selfChar.css('background-image', "url('/img/characters/" + character.charType.toLowerCase() + "/down/red.png')");
+            $selfChar.css('background-image', "url('/img/characters/" + character.charType.toLowerCase() + "/down/" + playerColor + ".png')");
+            $("#player-stat").append($selfChar);
         }
 
         // Enemy Stat
-        $('#enemy-stat').html(message.HUD.enemyChars.length);
+        var enemyChars = message.HUD.enemyChars;
+        var enemyColor;
+        if (playerColor == 'red') {
+            enemyColor = 'blue';
+        } else {
+            enemyColor = 'red';
+        }
+        
+        for (var e = 0; e < enemyChars.length; e++) {
+            var $enemyChar = $('<div />');
+            // TODO: if we don't want to specify character type, we need a generic character image asset
+            var enemy = enemyChars[e].charType;
+            $enemyChar.addClass("enemyCharCell");
+            $enemyChar.css('background-size', '100%');
+            // $enemyChar.css('background-image', "url('/img/characters/" + enemy.toLowerCase() + "/down/blue.png')");
+            $enemyChar.css('background-image', "url('/img/characters/" + enemy.toLowerCase() + "/down/" + enemyColor + ".png')");
+            $("#enemy-stat").append($enemyChar);
+        }
 
         handleAnimations(message.animations, function() {
             var $table = $(table);
