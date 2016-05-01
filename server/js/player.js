@@ -32,7 +32,6 @@ module.exports = function(ID) {
 	}
 
 	simplifyCharacter = function(characterObject){
-		console.log('THIS IS CHARACTER OBJECT',characterObject);
 		return {
 				"alive":characterObject.alive,
 				"charType":characterObject.getCharacterType(),

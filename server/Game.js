@@ -16,7 +16,8 @@ module.exports = function() {
     var _maxTurnTime = 100;
     var _numberOfMoves = 0;     // Number of moves since the beginning of the game
     var _movePerTurn = 2;
-    var _playersId = []
+    var _playersId = [];
+    var _observers = []; // Remember our observers so we can emit messages to them
 
     var _animations = [];
 
@@ -27,7 +28,9 @@ module.exports = function() {
     _getActivePlayerId = function(){
         var turnNumber = Math.floor(_numberOfMoves / _movePerTurn);
          activePlayerIndex =  (turnNumber % 2 )
-         activePlayerId = _playersId[activePlayerIndex].getID();
+         if (activePlayerIndex != -1) {
+            activePlayerId = _playersId[activePlayerIndex].getID();
+         }
          return activePlayerId;
     }
 
@@ -159,6 +162,20 @@ module.exports = function() {
 
     _this.joinable = function(){
         return _playersId.length == 1;
+    }
+
+    _this.observable = function(){
+        return _playersId.length == 2;
+    }
+
+    _this.addObserver = function(observerID){
+        if (_observers.indexOf(observerID) == -1){
+            _observers.push(observerID);
+        }
+    }
+
+    _this.getObservers = function(){
+        return _observers;
     }
 
     _this.getOtherPlayerId = function(playerId) {
@@ -359,9 +376,13 @@ module.exports = function() {
         return params;
     };
 
+    _isObserver = function(playerID){
+        return _observers.indexOf(playerID) != -1;
+    }
+
     //takes player ID and returns all enemy characters that lie within visibility of player's characters
     var charactersVisibleTo = function(playerID){
-        if (playerID == "OBSERVER"){
+        if (_isObserver(playerID)){
             return _characters;
         }
 
@@ -396,6 +417,21 @@ module.exports = function() {
         var serializedChars = charactersVisibleTo(playerID).map(function(character) {
             return character.serialize();
         });
+
+        if (_isObserver(playerID)){
+            return gameObj = {
+            "message":"update-state",
+            "turn":_this.getActivePlayerId(),
+            "characters":serializedChars,
+            "animations":_animations,
+            "HUD":{
+                "selfChars":_playersId[0].getHUDInfoSelf(),
+                "enemyChars":_playersId[1].getHUDInfoSelf(),
+                "selfWins":0,
+                "enemyWins":0
+                }
+            }
+        }
 
         gameObj = {
             "message":"update-state",

@@ -82,7 +82,9 @@ $(function() {
     });
 
     $(document).on('click', '#spectator-button', function() {
+        console.log('spectator button');
     	$('.screen').replaceWith($(spectator_view));
+        socket.emit('observe-game');
     });
 
     $(document).on('click', '#forefeit-button', function() {
@@ -153,6 +155,7 @@ $(function() {
                 alert("Max number of characters is 3!");
             } else {
                 cellClicked.addClass('selected-char');
+
                 // Add character to roster
                 var slotIndex = selectedCharacters.length;
                 var slot = cellClicked.parent().parent().find('#selected-character-slot-'+slotIndex+'.selected-character-slot');                
@@ -160,7 +163,7 @@ $(function() {
                     .data('type', cellClicked.text());
 
                 selectedCharacters.push(cellClicked.text());
-            }     
+            }
         }
     });
 
@@ -436,15 +439,23 @@ $(function() {
                 .data('heading', headingStr)
                 .css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + (_char.alive ? headingStr : 'dead') + "/" + _char.color + ".png')");
 
+            if ($('#spectator-view').length){
+                $char.addClass('mine')
+                    _char.visibility.forEach(function(vec) {
+                        var $square = getSquare(vec);
+                        $square.addClass('visible');
+                    });
 
-            if (_char.team != playerId) {
-                $char.addClass('them');
             } else {
-                $char.addClass('mine');
-                _char.visibility.forEach(function(vec) {
-                    var $square = getSquare(vec);
-                    $square.addClass('visible');
-                });
+                if (_char.team != playerId) {
+                    $char.addClass('them');
+                } else {
+                    $char.addClass('mine');
+                    _char.visibility.forEach(function(vec) {
+                        var $square = getSquare(vec);
+                        $square.addClass('visible');
+                    });
+                }
             }
 
             $table.append($char);
@@ -639,4 +650,23 @@ $(function() {
         cleanSquares();
         $('.glow').removeClass('glow');
     });
+
+///////////////////////////////////////////
+//****************************************
+// SPECTATOR VIEW
+//****************************************
+//////////////////////////////////////////
+
+    socket.on('game-not-available', function(message) {
+        console.log('No game available');
+    });
+
+    socket.on('waiting', function(message) {
+        console.log('Waiting');
+        gameId = message.gameId;
+    });
+
 });
+
+
+
