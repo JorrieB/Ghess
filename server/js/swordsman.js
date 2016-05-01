@@ -32,21 +32,21 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 		// Is the endPosition occupied?
         targetCharacter = (game.getCharacterAtPosition(attackedPosition));
         if (targetCharacter == null){
-            return false;
+            return {"isValid":false};
         }
        	// Is the targetCharacter dead
        	if (!(targetCharacter.getAliveness())){
-       		return false;
+       		return {"isValid":false};
        	}
 
         // Is the targetCharacter an adversary?
         if (targetCharacter.getPlayerId() == playerId){
-            return false;
+            return {"isValid":false};
         }
 
         // Can the swordsman attack in that position?
         if (! vectorUtils.inVectorList(activeCharacter.getAttackableCells(), attackedPosition)){
-            return false;
+            return {"isValid":false};
         }
         // If all of the condition are satisfied, destroy the targerCharacter
         game.destroyCharacter(targetCharacter);

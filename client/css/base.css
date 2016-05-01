@@ -210,7 +210,7 @@
 }
 
 #game-title {
-    background: url('/img/ghess-logo-600x400.png');
+    background: url('/img/Ghess-logo-600x400.png');
     font-size: 64px;
     margin: 0 auto;
     background-size: 100%;
@@ -235,12 +235,12 @@
 /* LOAD VIEW SELECT PANE */
 
 #characters-list {
-    width: 395px;
-    height: 350px;
-    overflow: scroll;
+    width: 410px;
+    max-height: 100%;
+    overflow-y: auto;
     float: left;
     border: 2px solid pink;
-    margin-left: 38px;
+    margin-left: 25px;
     padding: 15px;
     /*background-color: grey;*/
 }
@@ -286,7 +286,7 @@
     line-height: 140px;
 }
 
-.roster-cell-hover {
+.roster-cell:hover {
     /*display: block;*/
     background-color: red;
     opacity: .8;
@@ -341,24 +341,24 @@
     height: 140px;
 }
 
-#player-stat {
+#player-stat, #enemy-stat{
     padding: 15px;
-    height: 80px
+    display: inline-block;
 }
 
-.selfCharCell {
+.stat-cell {
+    background-size: 100%;
     width: 50px;
     height: 50px;
     margin: 5px;
     float: left;
 }
 
-.enemyCharCell {
-    width: 50px;
-    height: 50px;
-    margin: 5px;
-    float: left;
+.unknown {
+    background-image: url('/img/unknown.png');
+    background-color: black;
 }
+
 /* PLAY VIEW TABLE */
 
 .ghess-table {
