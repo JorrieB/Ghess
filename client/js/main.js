@@ -19,6 +19,21 @@ $(function() {
     var validPlacementSquares;
 
     ///////////////
+    // SOUNDS
+    ///////////////
+
+    //var snd_menu = new buzz.sound("/audio/MenuLoop.wav");
+    var snd_click = new buzz.sound("/audio/sfx_button_press.wav");
+    var snd_walk = new buzz.sound("/audio/sfx_walk.wav");
+    var snd_turn = new buzz.sound("/audio/sfx_turn.wav");
+    var snd_sword = new buzz.sound("/audio/sfx_sword.wav");
+    var snd_arrow_fire = new buzz.sound("/audio/sfx_arrow_fire.wav");
+    var snd_arrow_hit_char = new buzz.sound("/audio/sfx_arrow_character.wav");
+    var snd_arrow_hit_shield = new buzz.sound("/audio/sfx_arrow_shield.wav");
+    var snd_arrow_hit_wall = new buzz.sound("/audio/sfx_arrow_wall.wav");
+    buzz.all().load();
+
+    ///////////////
     // SCREEN FLOW
     ///////////////
 	var start_view = nunjucks.render('/templates/start_view.html');
@@ -30,6 +45,7 @@ $(function() {
 
 	// Initialize with start_view
     $('body').append($(start_view));
+    snd_menu.loop().play();
 
     $(document).on('click', '#player-button', function() {
     	$('.screen').replaceWith($(loading_view));
@@ -73,6 +89,7 @@ $(function() {
             });
         }
         socket.emit('ready-player', {'characters': charList});
+        snd_menu.stop();
         $('.screen').replaceWith($(play_view));
         $('#player-id').html(playerId);
         $curr_char = $();
@@ -563,6 +580,8 @@ $(function() {
             $('.character-portrait').css('background-image', "url('/img/characters/" + $curr_char.data('type').toLowerCase() + "/down/" + $curr_char.data('color') + ".png')");
         }
 
+        snd_click.play();
+
         return false;
     });
 
@@ -611,6 +630,7 @@ $(function() {
             var $square = getSquare(vec);
             $square.addClass('attack-candidate');
         });
+        snd_click.play();
         return false;
     });
 
@@ -630,6 +650,7 @@ $(function() {
         if ($curr_char.length) {
             $('.turn-arrow-container').removeClass('transparent').placeAt($curr_char.data('position')).show();
         }
+        snd_click.play();
         return false;
     });
 
@@ -653,6 +674,7 @@ $(function() {
             var $square = getSquare(vec);
             $square.addClass('move-candidate');
         });
+        snd_click.play();
         return false;
     });
 
