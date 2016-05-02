@@ -1,5 +1,10 @@
 module.exports = function(message, game, playerId) {
     var isValid = false;
+
+    if (! (game.canStart()) ){
+        return false;
+    }
+
     switch(message.type) {
     case "move":
         isValid = game.handleMove(message.objectPosition, message.targetPosition, playerId);

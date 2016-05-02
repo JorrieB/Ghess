@@ -31,38 +31,48 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 	_this.attack = function(attackedPosition, game){
 		// Is the endPosition occupied?
         targetCharacter = (game.getCharacterAtPosition(attackedPosition));
+
+        var animationList = [];
+
         if (targetCharacter == null){
-            return {"isValid":false};
+            return animationList;
         }
        	// Is the targetCharacter dead
        	if (!(targetCharacter.getAliveness())){
-       		return {"isValid":false};
+       		return animationList;
        	}
 
         // Is the targetCharacter an adversary?
         if (targetCharacter.getPlayerId() == playerId){
-            return {"isValid":false};
+            return animationList;
         }
 
         // Can the swordsman attack in that position?
         if (! vectorUtils.inVectorList(activeCharacter.getAttackableCells(), attackedPosition)){
-            return {"isValid":false};
+            return animationList;
         }
         // If all of the condition are satisfied, destroy the targerCharacter
         game.destroyCharacter(targetCharacter);
-        return {
+        var swordAttack = {
 			"isValid":true,
 			"attack":"sword",
 			"startPos":_this.getPosition(),
 			"endPos":attackedPosition
 		};
+		animationList.push(swordAttack);
+        return animationList;
 	}
 
 	_this.defend = function(attackType, attackHeading){
-		var successfulDefend = false;
+		var defend = {
+			"successful":false,
+			"attack":"shield",
+			"startPos":_this.getPosition(),
+			"endPos":_this.getPosition()
+		};
 		if (attackType == "arrow" && vectorUtils.isEqual(vectorUtils.vectorSum(_this.getHeading(),attackHeading),{x:0,y:0})){
-			successfulDefend = true;
+			defend.successful = true;
 		}
-		return successfulDefend;
+		return defend;
 	}
 };

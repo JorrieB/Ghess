@@ -19,6 +19,21 @@ $(function() {
     var validPlacementSquares;
 
     ///////////////
+    // SOUNDS
+    ///////////////
+
+    //var snd_menu = new buzz.sound("/audio/MenuLoop.wav");
+    var snd_click = new buzz.sound("/audio/sfx_button_press.wav");
+    var snd_walk = new buzz.sound("/audio/sfx_walk.wav");
+    var snd_turn = new buzz.sound("/audio/sfx_turn.wav");
+    var snd_sword = new buzz.sound("/audio/sfx_sword.wav");
+    var snd_arrow_fire = new buzz.sound("/audio/sfx_arrow_fire.wav");
+    var snd_arrow_hit_char = new buzz.sound("/audio/sfx_arrow_character.wav");
+    var snd_arrow_hit_shield = new buzz.sound("/audio/sfx_arrow_shield.wav");
+    var snd_arrow_hit_wall = new buzz.sound("/audio/sfx_arrow_wall.wav");
+    buzz.all().load();
+
+    ///////////////
     // SCREEN FLOW
     ///////////////
 	var start_view = nunjucks.render('/templates/start_view.html');
@@ -30,6 +45,7 @@ $(function() {
 
 	// Initialize with start_view
     $('body').append($(start_view));
+    snd_menu.loop().play();
 
     $(document).on('click', '#player-button', function() {
     	$('.screen').replaceWith($(loading_view));
@@ -73,6 +89,7 @@ $(function() {
             });
         }
         socket.emit('ready-player', {'characters': charList});
+        snd_menu.stop();
         $('.screen').replaceWith($(play_view));
         $('#player-id').html(playerId);
         $curr_char = $();
@@ -80,6 +97,7 @@ $(function() {
 
     $(document).on('click', '#spectator-button', function() {
         console.log('spectator button');
+        playerColor = 'blue';
     	$('.screen').replaceWith($(spectator_view));
         socket.emit('observe-game');
     });
@@ -382,12 +400,34 @@ $(function() {
     /////////////////////////////////////////
 
     var animateArrow = function(animation, callback) {
-        var $arrow = $('<sprite />').addClass('projectile').css('background-image', "url('/img/characters/archer/attack/red.png')");
-        $arrow.animateProjectile($('.ghess-table'), animation.startPos, animation.endPos, 200, callback);
+        var $arrow = $('<sprite />')
+            .addClass('projectile')
+            .css('background-image', "url('/img/characters/archer/attack/red.png')");
+        $arrow.animateProjectile($('.ghess-table'), animation.startPos, animation.endPos, 300, function() {
+            $arrow.remove();
+            callback();
+        });
+    };
+
+    var animateShield = function(animation, callback) {
+        var $shield = $('<sprite />')
+            .addClass('projectile')
+            .css('background-image', "url('/img/characters/swordsman/defend/red.png')")
+            .hide();
+        $('.ghess-table').append($shield);
+        $shield.placeAt(animation.startPos);
+        $shield.fadeIn(600, function(){
+            $shield.fadeOut(600, function() {
+                $shield.remove();
+                callback();
+            });
+        });
+
     };
 
     var animationFuncMap = {
-        'arrow': animateArrow
+        'arrow': animateArrow,
+        'shield': animateShield
     };
 
     /////////////////////////////////////////
@@ -452,7 +492,7 @@ $(function() {
         var animationList = [];
         for (var i = animations.length - 1; i > -1; i--) {
             try {
-                animationList.push(animationFuncMap[animations[i].attack].bind(null, animations[i], animationList[i+1] || callback));
+                animationList.push(animationFuncMap[animations[i].attack].bind(null, animations[i], animationList[animationList.length-1] || callback));
             } catch(err) {
             }
         }
@@ -540,6 +580,8 @@ $(function() {
             $('.character-portrait').css('background-image', "url('/img/characters/" + $curr_char.data('type').toLowerCase() + "/down/" + $curr_char.data('color') + ".png')");
         }
 
+        snd_click.play();
+
         return false;
     });
 
@@ -588,6 +630,7 @@ $(function() {
             var $square = getSquare(vec);
             $square.addClass('attack-candidate');
         });
+        snd_click.play();
         return false;
     });
 
@@ -607,6 +650,7 @@ $(function() {
         if ($curr_char.length) {
             $('.turn-arrow-container').removeClass('transparent').placeAt($curr_char.data('position')).show();
         }
+        snd_click.play();
         return false;
     });
 
@@ -630,6 +674,7 @@ $(function() {
             var $square = getSquare(vec);
             $square.addClass('move-candidate');
         });
+        snd_click.play();
         return false;
     });
 
