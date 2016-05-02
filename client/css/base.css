@@ -366,7 +366,7 @@
 
 .playView-info-text {
     border: 1px solid black;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     padding: 10px;
 }
 
@@ -380,14 +380,14 @@
 }
 
 #player-stat, #enemy-stat{
-    padding: 15px;
+    padding: 4px;
     display: inline-block;
 }
 
 .stat-cell {
     background-size: 100%;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     margin: 5px;
     float: left;
 }
