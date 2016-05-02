@@ -473,6 +473,7 @@ sprite.projectile {
     background-size: 100%;
     /*width: 100%;*/
     padding-bottom: 155px;
+    margin-bottom: 12px;
 }
 
 .action-overlay {
