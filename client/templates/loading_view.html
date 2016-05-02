@@ -1,13 +1,13 @@
 <div id="loading-view" class="screen">
-    {% set classes="loading-view-table" %}
-    {% set width=5 %}
-    {% set height=5 %}
-    {% include '/templates/table.html' %}
+
+    <div id="loading-view-title"> Team Selection </div>
+    <div id="selected-stat"></div>
+
     <!-- User selects unique playerID before entering play view -->
 
     <!-- User selects a team of characters before entering play view -->
     <div id="characters-list">
-
+    	<div id="characters-list-heading">Characters List</div>
     </div>
 
     {% include '/templates/character_roster.html' %}

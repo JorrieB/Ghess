@@ -49,7 +49,6 @@ $(function() {
 
     $(document).on('click', '#player-button', function() {
     	$('.screen').replaceWith($(loading_view));
-        // socket.emit('team-selection');
         socket.emit('join-any');
     });
 
@@ -122,6 +121,8 @@ $(function() {
         playerColor = message.gameParams.color;
         playerNumber = message.gameParams.playerNumber;
         validPlacementSquares = message.gameParams.validSquares;
+        // Default stat info to Archer (first character in characters-list)
+        $('#selected-stat').css('background-image', "url('/img/characters/archer/stat/" + playerColor + "-stat.png')");
         var $charList = $('#characters-list');
         for (var i = 0; i < message.gameParams.roster.length; i++) {
             var character = message.gameParams.roster[i];
@@ -137,6 +138,11 @@ $(function() {
     /////////////////////////////////////////
     // LOAD VIEW INTERACTIONS
     /////////////////////////////////////////
+
+    $(document).on('mouseover', '#loading-view .roster-cell', function() {
+        var $cellClicked =  $(this);
+        $('#selected-stat').css('background-image', "url('/img/characters/" + $cellClicked.data('type') + "/stat/" + playerColor + "-stat.png')");
+    });
 
     $(document).on('click', '#loading-view .roster-cell', function() {
         var $cellClicked =  $(this);
@@ -580,10 +586,8 @@ $(function() {
             $('.action-overlay').placeAt($curr_char.data('position'));
             $('.action-overlay').show();
             $curr_char.addClass('glow');
-            // $('.character-portrait').css('background-image', "url('/img/characters/" + $curr_char.data('type').toLowerCase() + "/down/" + $curr_char.data('color') + ".png')");
-            $('.character-portrait').css('background-image', "url('/img/characters/" + $curr_char.data('type').toLowerCase() + "/stat/blue-stat.png')");
+            $('.character-portrait').css('background-image', "url('/img/characters/" + $curr_char.data('type').toLowerCase() + "/stat/" + $curr_char.data('color') + "-stat.png')");
         }
-
         // snd_click.play();
 
         return false;
