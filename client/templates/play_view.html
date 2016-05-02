@@ -8,11 +8,11 @@
     	<!-- User selects their unique playerID before entering play view -->
     	<div id="player-id" class="h1 playView-info-text"> (PlayerID) </div>
         {% include '/templates/char_info_panels.html' %}
-
+        <div id="selected-char-description">Selected Character</div>
         {% include '/templates/character_portrait.html' %}
 
         <!-- character-stat contains info about the selected character and his powers -->
-		<div id="character-stat" class="h2 playView-info-text"> (character stats) </div>
+		<!-- <div id="character-stat" class="h2 playView-info-text"> </div> -->
 		<button type="button" id="forfeit-button" class="h2 basic-button redBtn">Forfeit! :(</button>
 
 	</div>

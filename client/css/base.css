@@ -343,7 +343,7 @@
 
 #character-stat {
     height: 140px;
-    background-image: url('/img/characters/archer/stat/blue-stat.png');
+    /*background-image: url('/img/characters/archer/stat/blue-stat.png');*/
 }
 
 #player-stat, #enemy-stat{
@@ -463,11 +463,16 @@ sprite.projectile {
     transform: rotate(180deg);
 }
 
+#selected-char-description {
+    text-align: center;
+    margin: 12px 0;
+}
+
 .character-portrait {
     position: relative;
     background-size: 100%;
-    width: 100%;
-    padding-bottom: 100%;
+    /*width: 100%;*/
+    padding-bottom: 155px;
 }
 
 .action-overlay {
