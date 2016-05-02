@@ -157,7 +157,9 @@
     display:inline-block;
     cursor:pointer;
     color:#ffffff;
-    font-family: 'Sansita One';
+    /*font-family: 'Sansita One';*/
+   /* font-family: 'Bangers', cursive;*/
+    font-family: 'Unica One', cursive;
     font-size:15px;
     font-weight:bold;
     padding:6px 24px;
@@ -199,7 +201,9 @@
     padding: 30px;
     background-color: #3a68ff;
 
-    font-family: 'Sansita One';
+    /*font-family: 'Sansita One';*/
+    font-family: 'Bangers', cursive;
+
     font-style: normal;
 }
 
@@ -339,6 +343,7 @@
 
 #character-stat {
     height: 140px;
+    background-image: url('/img/characters/archer/stat/blue-stat.png');
 }
 
 #player-stat, #enemy-stat{
