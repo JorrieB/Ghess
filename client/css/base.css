@@ -194,6 +194,14 @@
     top:1px;
 }
 
+.view-title {
+    color: white;
+    letter-spacing: 3px;
+    font-size: 50px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 .screen {
     width: 1000px;
     height: 600px;
@@ -238,11 +246,6 @@
 
 /* LOAD VIEW SELECT PANE */
 #loading-view-title {
-    color: white;
-    letter-spacing: 3px;
-    font-size: 50px;
-    text-align: center;
-    margin-bottom: 20px;
 }
 
 #selected-stat {
@@ -333,6 +336,12 @@
    border: 1px dashed yellow !important;
 }
 
+.placement-view-table.ghess-table {
+    width: 480px;
+    height: 480px;
+    margin-right: 40px;
+}
+
 /* PLAY VIEW INFO PANE */
 
 .playView-info {
@@ -394,8 +403,8 @@
     float: left;
     position: relative;
     background-color: transparent;
-    width: 500px;
-    height: 500px;
+    width: 540px;
+    height: 540px;
 }
 
 .ghess-row {
@@ -490,6 +499,7 @@ sprite.projectile {
 #selected-char-description {
     text-align: center;
     margin: 12px 0;
+    letter-spacing: 4px;
 }
 
 .character-portrait {
@@ -536,10 +546,14 @@ sprite.projectile {
 
 .sleep-button {
     background-image: url('/img/sleep.png');
-    top: 66%;
+    top: 90%;
     left: 0%;
-    width: 20%;
-    height: 20%;
+    width: 45px;
+    height: 45px;
+}
+
+#forfeit-button {
+    margin-left: 60px;
 }
 
 .attack-candidate .panel {
