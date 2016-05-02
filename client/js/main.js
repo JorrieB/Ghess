@@ -22,7 +22,7 @@ $(function() {
     // SOUNDS
     ///////////////
 
-    //var snd_menu = new buzz.sound("/audio/MenuLoop.wav");
+    var snd_menu = new buzz.sound("/audio/MenuLoop.wav");
     var snd_click = new buzz.sound("/audio/sfx_button_press.wav");
     var snd_walk = new buzz.sound("/audio/sfx_walk.wav");
     var snd_turn = new buzz.sound("/audio/sfx_turn.wav");
@@ -403,6 +403,7 @@ $(function() {
         var $arrow = $('<sprite />')
             .addClass('projectile')
             .css('background-image', "url('/img/characters/archer/attack/red.png')");
+        snd_arrow_fire.play();
         $arrow.animateProjectile($('.ghess-table'), animation.startPos, animation.endPos, 300, function() {
             $arrow.remove();
             callback();
@@ -416,6 +417,8 @@ $(function() {
             .hide();
         $('.ghess-table').append($shield);
         $shield.placeAt(animation.startPos);
+
+        snd_arrow_hit_shield.play();
         $shield.fadeIn(600, function(){
             $shield.fadeOut(600, function() {
                 $shield.remove();
