@@ -443,6 +443,7 @@ module.exports = function() {
         if (_isObserver(playerID)){
             return gameObj = {
             "message":"update-state",
+            "stamina":(_movePerTurn - (_numberOfMoves % _movePerTurn)),
             "turn":_this.getActivePlayerId(),
             "characters":serializedChars,
             "animations":_animations,
@@ -457,6 +458,7 @@ module.exports = function() {
 
         gameObj = {
             "message":"update-state",
+            "stamina":(_movePerTurn - (_numberOfMoves % _movePerTurn)),
             "turn":_this.getActivePlayerId(),
             "characters":serializedChars,
             "animations":_animations,
