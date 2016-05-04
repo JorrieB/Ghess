@@ -24,14 +24,14 @@ $(function() {
     ///////////////
 
     // var snd_menu = new buzz.sound("/audio/MenuLoop.wav");
-    // var snd_click = new buzz.sound("/audio/sfx_button_press.wav");
+    var snd_click = new buzz.sound("/audio/sfx_button_press.wav");
     // var snd_walk = new buzz.sound("/audio/sfx_walk.wav");
     // var snd_turn = new buzz.sound("/audio/sfx_turn.wav");
     // var snd_sword = new buzz.sound("/audio/sfx_sword.wav");
-    // var snd_arrow_fire = new buzz.sound("/audio/sfx_arrow_fire.wav");
-    // var snd_arrow_hit_char = new buzz.sound("/audio/sfx_arrow_character.wav");
-    // var snd_arrow_hit_shield = new buzz.sound("/audio/sfx_arrow_shield.wav");
-    // var snd_arrow_hit_wall = new buzz.sound("/audio/sfx_arrow_wall.wav");
+    var snd_arrow_fire = new buzz.sound("/audio/sfx_arrow_fire.wav");
+    var snd_arrow_hit_char = new buzz.sound("/audio/sfx_arrow_character.wav");
+    var snd_arrow_hit_shield = new buzz.sound("/audio/sfx_arrow_shield.wav");
+    var snd_arrow_hit_wall = new buzz.sound("/audio/sfx_arrow_wall.wav");
     // buzz.all().load();
 
     ///////////////
@@ -410,7 +410,7 @@ $(function() {
         var $arrow = $('<sprite />')
             .addClass('projectile')
             .css('background-image', "url('/img/characters/archer/attack/red.png')");
-        // snd_arrow_fire.play();
+        snd_arrow_fire.play();
         $arrow.animateProjectile($('.ghess-table'), animation.startPos, animation.endPos, 300, function() {
             $arrow.remove();
             callback();
@@ -425,7 +425,7 @@ $(function() {
         $('.ghess-table').append($shield);
         $shield.placeAt(animation.startPos);
 
-        // snd_arrow_hit_shield.play();
+        snd_arrow_hit_shield.play();
         $shield.fadeIn(600, function(){
             $shield.fadeOut(600, function() {
                 $shield.remove();
@@ -589,7 +589,7 @@ $(function() {
             $curr_char.addClass('glow');
             $('.character-portrait').css('background-image', "url('/img/characters/" + $curr_char.data('type').toLowerCase() + "/stat/" + $curr_char.data('color') + "-stat.png')");
         }
-        // snd_click.play();
+        snd_click.play();
 
         return false;
     });
@@ -639,7 +639,7 @@ $(function() {
             var $square = getSquare(vec);
             $square.addClass('attack-candidate');
         });
-        // snd_click.play();
+        snd_click.play();
         return false;
     });
 
@@ -659,7 +659,7 @@ $(function() {
         if ($curr_char.length) {
             $('.turn-arrow-container').removeClass('transparent').placeAt($curr_char.data('position')).show();
         }
-        // snd_click.play();
+        snd_click.play();
         return false;
     });
 
@@ -683,7 +683,7 @@ $(function() {
             var $square = getSquare(vec);
             $square.addClass('move-candidate');
         });
-        // snd_click.play();
+        snd_click.play();
         return false;
     });
 
