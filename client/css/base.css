@@ -356,6 +356,9 @@ body {
 /* PLAY VIEW INFO PANE */
 
 .playView-info {
+    color: white;
+    background-color: #917EA6;
+    padding: 10px;
     position: relative;
     width: 250px;
     float: right;
