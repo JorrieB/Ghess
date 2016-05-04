@@ -4,6 +4,11 @@ var Character = require('./character');
 module.exports = function(startPosition, startHeading, playerId, charID, startColor) {
 	var _this = this;
 
+	//Costs	
+	_this.headingCost = 1;
+	_this.movingCost = 1;
+	_this.attackCost = 1;
+
  	//The size of the square centerd at the scout is scoutRange + 1
 
 	Character.call(_this, startPosition, startHeading,  playerId, charID, startColor);
@@ -60,7 +65,8 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 			"endPos":attackedPosition
 		};
 		animationList.push(swordAttack);
-        return animationList;
+
+        return {'attackCost':_this.attackCost, 'animationList':animationList};
 	}
 
 	_this.defend = function(attackType, attackHeading){

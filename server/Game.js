@@ -315,9 +315,9 @@ module.exports = function() {
             return false;
         }
 
-        activeCharacter.setPosition(endPosition);
+        movingCost = activeCharacter.setPosition(endPosition);
         _animations = [];
-        _numberOfMoves += 1;
+        _numberOfMoves += movingCost;
         return true;
     };
 
@@ -342,9 +342,9 @@ module.exports = function() {
             return false;
         }
 
-        activeCharacter.setHeading(newHeading);
+        headingCost = activeCharacter.setHeading(newHeading);
         _animations = [];
-        _numberOfMoves += 1;
+        _numberOfMoves += headingCost;
         return true;
     };
 
@@ -363,12 +363,15 @@ module.exports = function() {
         if (!(activeCharacter.getPlayerId() == playerId)){
             return false;
         }
-        animationsFromAttack = activeCharacter.attack(attackedPosition, _this);
+        attackOutput = activeCharacter.attack(attackedPosition, _this);
+        animationsFromAttack = attackOutput.animationList;
+
         if (animationsFromAttack.length == 0){
             return false;
         }
+        
         _animations = animationsFromAttack; //add the attack animation information
-        _numberOfMoves += 1;
+        _numberOfMoves += attackOutput.attackCost;
         return true;
     };
 
@@ -440,6 +443,7 @@ module.exports = function() {
         if (_isObserver(playerID)){
             return gameObj = {
             "message":"update-state",
+            "stamina":(_movePerTurn - (_numberOfMoves % _movePerTurn)),
             "turn":_this.getActivePlayerId(),
             "characters":serializedChars,
             "animations":_animations,
@@ -454,6 +458,7 @@ module.exports = function() {
 
         gameObj = {
             "message":"update-state",
+            "stamina":(_movePerTurn - (_numberOfMoves % _movePerTurn)),
             "turn":_this.getActivePlayerId(),
             "characters":serializedChars,
             "animations":_animations,
