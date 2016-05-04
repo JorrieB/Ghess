@@ -364,10 +364,13 @@ module.exports = function() {
             return false;
         }
         attackOutput = activeCharacter.attack(attackedPosition, _this);
+        animationsFromAttack = attackOutput.animationList;
+
         if (animationsFromAttack.length == 0){
             return false;
         }
-        _animations = attackOutput.animationList; //add the attack animation information
+        
+        _animations = animationsFromAttack; //add the attack animation information
         _numberOfMoves += attackOutput.attackCost;
         return true;
     };

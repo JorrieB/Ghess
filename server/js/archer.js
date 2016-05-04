@@ -5,7 +5,8 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 	var _this = this;
 	var arrowRange = 10;
 
-	
+
+	//Costs
 	_this.headingCost = 1;
 	_this.movingCost = 1;
 	_this.attackCost = 1;
@@ -70,7 +71,6 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 			}
 			break;
 		}
-		return animationList;
-
+		return {'attackCost':_this.attackCost, 'animationList':animationList};
 	}
 };

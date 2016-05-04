@@ -66,7 +66,7 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 		};
 		animationList.push(swordAttack);
 
-        return {'attackCost':attackCost, 'animationList':animationList};
+        return {'attackCost':_this.attackCost, 'animationList':animationList};
 	}
 
 	_this.defend = function(attackType, attackHeading){
