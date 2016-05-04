@@ -123,6 +123,9 @@ module.exports = function() {
             return false;
         }
         character.kill();
+
+        _getPlayerFromID(character.getPlayerId()).allyDied(character);
+
         return true;
     }
 

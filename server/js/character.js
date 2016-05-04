@@ -80,7 +80,7 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 
 	//returns list of animations. If empty, there are no animations.
 	_this.attack = function(){
-		return [];
+		return {'attackCost':_this.attackCost, 'animationList':[]};
 	};
 
 	_this.defend = function(attackType, attackHeading){
