@@ -5,6 +5,11 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 	var _this = this;
 	var arrowRange = 10;
 
+	
+	_this.headingCost = 1;
+	_this.movingCost = 1;
+	_this.attackCost = 1;
+
 	Character.call(_this, startPosition, startHeading, playerId, charID, startColor);
 	_this.characterType = "Archer";
 

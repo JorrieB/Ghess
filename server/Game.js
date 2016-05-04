@@ -315,9 +315,9 @@ module.exports = function() {
             return false;
         }
 
-        activeCharacter.setPosition(endPosition);
+        movingCost = activeCharacter.setPosition(endPosition);
         _animations = [];
-        _numberOfMoves += 1;
+        _numberOfMoves += movingCost;
         return true;
     };
 
@@ -342,9 +342,9 @@ module.exports = function() {
             return false;
         }
 
-        activeCharacter.setHeading(newHeading);
+        headingCost = activeCharacter.setHeading(newHeading);
         _animations = [];
-        _numberOfMoves += 1;
+        _numberOfMoves += headingCost;
         return true;
     };
 
@@ -363,12 +363,12 @@ module.exports = function() {
         if (!(activeCharacter.getPlayerId() == playerId)){
             return false;
         }
-        animationsFromAttack = activeCharacter.attack(attackedPosition, _this);
+        attackOutput = activeCharacter.attack(attackedPosition, _this);
         if (animationsFromAttack.length == 0){
             return false;
         }
-        _animations = animationsFromAttack; //add the attack animation information
-        _numberOfMoves += 1;
+        _animations = attackOutput.animationList; //add the attack animation information
+        _numberOfMoves += attackOutput.attackCost;
         return true;
     };
 
