@@ -4,6 +4,11 @@ var Character = require('./character');
 module.exports = function(startPosition, startHeading, playerId, charID, startColor) {
 	var _this = this;
 
+	//Costs	
+	_this.headingCost = 1;
+	_this.movingCost = 1;
+	_this.attackCost = 1;
+
  	//The size of the square centerd at the scout is scoutRange + 1
 
 	Character.call(_this, startPosition, startHeading,  playerId, charID, startColor);
@@ -35,21 +40,21 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
         var animationList = [];
 
         if (targetCharacter == null){
-            return animationList;
+        return {'attackCost':0, 'animationList':animationList};
         }
        	// Is the targetCharacter dead
        	if (!(targetCharacter.getAliveness())){
-       		return animationList;
+        return {'attackCost':0, 'animationList':animationList};
        	}
 
         // Is the targetCharacter an adversary?
         if (targetCharacter.getPlayerId() == playerId){
-            return animationList;
+        return {'attackCost':0, 'animationList':animationList};
         }
 
         // Can the swordsman attack in that position?
         if (! vectorUtils.inVectorList(activeCharacter.getAttackableCells(), attackedPosition)){
-            return animationList;
+        return {'attackCost':0, 'animationList':animationList};
         }
         // If all of the condition are satisfied, destroy the targerCharacter
         game.destroyCharacter(targetCharacter);
@@ -60,7 +65,8 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 			"endPos":attackedPosition
 		};
 		animationList.push(swordAttack);
-        return animationList;
+
+        return {'attackCost':_this.attackCost, 'animationList':animationList};
 	}
 
 	_this.defend = function(attackType, attackHeading){

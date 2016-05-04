@@ -6,6 +6,10 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 	_this.charID = charID; // charID identifies character for HUD rendering
 	_this.charColor = startColor;
 
+	_this.headingCost = 1;
+	_this.movingCost = 1;
+	_this.attackCost = 1;
+
 	_this.characterType = "Character";
 	_this.alive = true;
 
@@ -23,6 +27,7 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 
 	this.setPosition = function(newPosition) {
 		_this.position = newPosition;
+		return _this.movingCost;
 	};
 
 	_this.getHeading = function(){
@@ -31,6 +36,7 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 
 	_this.setHeading = function(heading){
 		_this.heading = heading;
+		return _this.headingCost;
 	};
 
 	_this.getDynamicVisibility = function(){
@@ -74,7 +80,7 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 
 	//returns list of animations. If empty, there are no animations.
 	_this.attack = function(){
-		return [];
+		return {'attackCost':_this.attackCost, 'animationList':[]};
 	};
 
 	_this.defend = function(attackType, attackHeading){

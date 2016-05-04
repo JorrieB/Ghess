@@ -5,6 +5,12 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 	var _this = this;
 	var arrowRange = 10;
 
+
+	//Costs
+	_this.headingCost = 1;
+	_this.movingCost = 1;
+	_this.attackCost = 1;
+
 	Character.call(_this, startPosition, startHeading, playerId, charID, startColor);
 	_this.characterType = "Archer";
 
@@ -63,9 +69,17 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 			} else {
 				animationList.push(defend);
 			}
-			break;
+			return {'attackCost':_this.attackCost, 'animationList':animationList};
 		}
-		return animationList;
+
+		var animationList =  [{
+					"isValid":true,
+					"attack":"arrow",
+					"startPos":_this.getPosition(),
+					"endPos":attackedPosition
+				}];
+
+		return {'attackCost':_this.attackCost, 'animationList':animationList};
 
 	}
 };
