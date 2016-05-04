@@ -1,4 +1,5 @@
 $(function() {
+    // var socket = io('http://18.111.7.191:8000');
     var socket = io('http://localhost:8000');
 
     // Selected Character Global

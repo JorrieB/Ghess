@@ -63,9 +63,15 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 			} else {
 				animationList.push(defend);
 			}
-			break;
+			return animationList;
 		}
-		return animationList;
+
+		return [{
+					"isValid":true,
+					"attack":"arrow",
+					"startPos":_this.getPosition(),
+					"endPos":attackedPosition
+				}];
 
 	}
 };
