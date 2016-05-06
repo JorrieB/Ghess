@@ -86,8 +86,9 @@ module.exports = {
     },
     'update-game': function(socket, data) {
     	var game = GameStore.get(socket.gameId);
+        // Todo: check if game is game, if not sever connections
         var isValid = game.handleMessage(data, game, socket.playerId);
-        
+
         console.log('updating game');
    		// Send result back
         if (isValid) {

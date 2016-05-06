@@ -458,22 +458,15 @@ module.exports = function() {
     //takes player ID and returns all enemy characters that lie within visibility of player's characters
     var charactersInVisibility = function(visibility,playerID){
 
-        var visibleCharacters = [];
-
         var charactersInGame = _this.getCharacters();
 
-
-        //TODO: use utils.inVectorList
-        
-        for (i = 0; i < charactersInGame.length; i++){
-            for (j = 0; j < visibility.length; j++){
-                if (vectorUtils.isEqual(charactersInGame[i].getPosition(), visibility[j])){
-                    visibleCharacters.push(charactersInGame[i]);
-                    _getPlayerFromID(playerID).seeCharacter(charactersInGame[i]);
-                    break;
-                }
+        var visibleCharacters = charactersInGame.filter(function(character){
+            if (vectorUtils.inVectorList(visibility,character.getPosition())){
+                _getPlayerFromID(playerID).seeCharacter(character);
+                return character;
             }
-        }
+        });
+
         return visibleCharacters;
     }
 
