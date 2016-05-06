@@ -16,7 +16,7 @@ module.exports = function() {
     var _maxTurnTime = 100;
     var _numberOfMoves = 0;     // Number of moves since the beginning of the game
     var _movePerTurn = 2;
-    var _playersId = [];
+    var _players = [];
     var _observers = []; // Remember our observers so we can emit messages to them
 
     var _animations = [];
@@ -25,13 +25,13 @@ module.exports = function() {
 
     // Spooky modular arithmetic for eric
     // Return 1 if this is player's 1 turn, 2 if this is player 2 turn
-    _getActivePlayerId = function(){
+    _getActivePlayer = function(){
         var turnNumber = Math.floor(_numberOfMoves / _movePerTurn);
          activePlayerIndex =  (turnNumber % 2 )
          if (activePlayerIndex != -1) {
-            activePlayerId = _playersId[activePlayerIndex].getID();
+            activePlayer = _players[activePlayerIndex];
          }
-         return activePlayerId;
+         return activePlayer;
     }
 
     // Returns an array of positions where the player is allowed to place their characters from the beginning of the game
@@ -48,8 +48,8 @@ module.exports = function() {
         return squares;
     }
 
-   _isPlayerMove = function(playerId){
-        return (playerId == _getActivePlayerId())
+   _isPlayerMove = function(playerID){
+        return (playerID == _getActivePlayer().getID());
     }
 
     // Return null if there are no characters, return the first character if there are more than 1 character
@@ -83,7 +83,7 @@ module.exports = function() {
 
     // Returns the index of the player in the player array (either 0 or 1)
     _playerNumber = function(playerID){
-        return _playersId.findIndex(x => x.getID()==playerID);
+        return _players.findIndex(x => x.getID()==playerID);
     }
 
     _playerColor = function(playerID){
@@ -130,14 +130,14 @@ module.exports = function() {
     }
 
     _getPlayerFromID = function(playerID){
-        index = _playersId.findIndex(x => x.getID()==playerID);
-        return _playersId[index];
+        index = _players.findIndex(x => x.getID()==playerID);
+        return _players[index];
     }
 
     // Is the game over? for now draw not allowed
     _this.isGameOver = function(){
-        for (i = 0; i < _playersId.length; i++){
-            playerId = _playersId[i].getID();
+        for (i = 0; i < _players.length; i++){
+            playerId = _players[i].getID();
             //Find the characters that are still alive for current playerId
             var playerAliveCharacters = _characters.filter(function(character){
                 if (playerId == character.getPlayerId() && character.getAliveness()){
@@ -155,13 +155,13 @@ module.exports = function() {
         startCharacters = ["swordsman","archer","scout"];
         headingsArray = [{x:0,y:1},{x:0,y:-1}];
         positionsArray = [{x:0,y:0},{x:4,y:5},{x:2,y:0},{x:5,y:6},{x:6,y:6},{x:4,y:6}];
-        for (i = 0; i < _playersId.length; i++){
+        for (i = 0; i < _players.length; i++){
             for (j = 0; j < startCharacters.length; j++){
                 characterJSONArray.push({
                     "characterType":startCharacters[j],
                     "position":positionsArray[i * 3 + j],
                     "heading":headingsArray[i],
-                    "playerId":_playersId[i].getID()
+                    "playerId":_players[i].getID()
                 });
             }
         }
@@ -171,20 +171,20 @@ module.exports = function() {
 
     // Public analog of functions above
     _this.addPlayer = function(playerId) {
-        if (_playersId.length < 2 && (_playersId.findIndex(x => x.getID() == playerId) == -1)){
+        if (_players.length < 2 && (_players.findIndex(x => x.getID() == playerId) == -1)){
             var player = new Player(playerId);
-            _playersId.push(player);
+            _players.push(player);
             return true;
         };
         return false;
     };
 
     _this.joinable = function(){
-        return _playersId.length == 1;
+        return _players.length == 1;
     }
 
     _this.observable = function(){
-        return _playersId.length == 2;
+        return _players.length == 2;
     }
 
     _this.addObserver = function(observerID){
@@ -199,23 +199,23 @@ module.exports = function() {
 
     _this.getOtherPlayerId = function(playerId) {
         if (_this.canStart()){
-            var thisIndex = _playersId.findIndex(x => x.getID()==playerId);
+            var thisIndex = _players.findIndex(x => x.getID()==playerId);
             var otherIndex = (thisIndex + 1 ) % 2;
-            var otherPlayerId = _playersId[otherIndex].getID();
+            var otherPlayerId = _players[otherIndex].getID();
             return otherPlayerId;
         }
         return null;
     };
 
     _this.canStart = function() {
-        if (_playersId.length == 2){
-            return (_playersId[0].readyToStart() && _playersId[1].readyToStart());
+        if (_players.length == 2){
+            return (_players[0].readyToStart() && _players[1].readyToStart());
         }
         return false
     }
 
     _this.getActivePlayerId = function(){
-        return _getActivePlayerId();
+        return _getActivePlayer();
     }
 
     _this.isPlayerMove = function(playerID){
@@ -242,8 +242,8 @@ module.exports = function() {
         //if both players are in the game
         if (_this.canStart()){
             //and they have both selected characters
-            if (_playersId[0].readyToStart() && _playersId[1].readyToStart()){
-                initializeRound(_playersId[0],_playersId[1]); //then start the round
+            if (_players[0].readyToStart() && _players[1].readyToStart()){
+                initializeRound(_players[0],_players[1]); //then start the round
             }
         }
 
@@ -451,8 +451,8 @@ module.exports = function() {
             "characters":serializedChars,
             "animations":_animations,
             "HUD":{
-                "selfChars":_playersId[0].getHUDInfoSelf(),
-                "enemyChars":_playersId[1].getHUDInfoSelf(),
+                "selfChars":_players[0].getHUDInfoSelf(),
+                "enemyChars":_players[1].getHUDInfoSelf(),
                 "selfWins":0,
                 "enemyWins":0
                 }
