@@ -473,47 +473,55 @@ module.exports = function() {
     //returns game state object dependent upon who is requesting it
     //player id can correspond to player 1, 2, or an observer
     _this.serialize = function(playerID){
-        var player = _getPlayerFromID(playerID);
-        var visibility = player.getVisibility();
-        var visibleCharacters = charactersInVisibility(visibility,playerID);
-
-        var serializedChars = visibleCharacters.map(function(character) {
-            return character.serialize();
-        });
-
-
-
-
+        var serializedChars;
         if (_isObserver(playerID)){
-            return {
+            serializedChars = _this.getCharacters().map(function(character) {
+                return character.serialize();
+            });
+        } else {
+            var player = _getPlayerFromID(playerID);
+            var visibility = player.getVisibility();
+            var visibleCharacters = charactersInVisibility(visibility,playerID);
+
+            serializedChars = visibleCharacters.map(function(character) {
+                return character.serialize();
+            });
+
+        }
+
+
+
+
+        // if (_isObserver(playerID)){
+        //     return {
+        //     "message":"update-state",
+        //     "stamina":(_movePerTurn - (_numberOfMoves % _movePerTurn)),
+        //     "turn":_this.getActivePlayerId(),
+        //     "characters":serializedChars,
+        //     "animations":_animations,
+        //     "HUD":{
+        //         "selfChars":_players[0].getHUDInfoSelf(),
+        //         "enemyChars":_players[1].getHUDInfoSelf(),
+        //         "selfWins":0,
+        //         "enemyWins":0
+        //         }
+        //     }
+        // }
+
+        return {
             "message":"update-state",
             "stamina":(_movePerTurn - (_numberOfMoves % _movePerTurn)),
             "turn":_this.getActivePlayerId(),
             "characters":serializedChars,
-            "animations":_animations,
+            "animations":_isObserver(playerID) ? _animations :player.obfuscateAnimations(_animations),
             "HUD":{
-                "selfChars":_players[0].getHUDInfoSelf(),
-                "enemyChars":_players[1].getHUDInfoSelf(),
+                "selfChars": _isObserver(playerID) ? _players[0].getHUDInfoSelf() : _getPlayerFromID(playerID).getHUDInfoSelf(),
+                "enemyChars": _isObserver(playerID) ? _players[1].getHUDInfoSelf() : _getPlayerFromID(playerID).getHUDInfoEnemy(),
                 "selfWins":0,
                 "enemyWins":0
-                }
             }
         }
-
-        gameObj = {
-            "message":"update-state",
-            "stamina":(_movePerTurn - (_numberOfMoves % _movePerTurn)),
-            "turn":_this.getActivePlayerId(),
-            "characters":serializedChars,
-            "animations":player.obfuscateAnimations(_animations),
-            "HUD":{
-                "selfChars":_getPlayerFromID(playerID).getHUDInfoSelf(),
-                "enemyChars":_getPlayerFromID(playerID).getHUDInfoEnemy(),
-                "selfWins":_getPlayerFromID(playerID).getNumWins(),
-                "enemyWins":((_roundNumber-1) - _getPlayerFromID(playerID).getNumWins())
-            }
-        }
-        return gameObj;
+        // return gameObj;
     }
 
     //TEAM-SELECTION
