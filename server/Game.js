@@ -283,13 +283,49 @@ module.exports = function() {
     }
     //Handler for the moves that change the game state:
 
-    _this.handleMove = function(startPosition, endPosition, playerId){
-
-        if (!_isPlayerMove(playerId)){
+    _this.handleMessage = function(message, game, playerID){
+        
+        if (! (game.canStart()) ){
             return false;
         }
+
+        if (!_isPlayerMove(playerID)){
+            return false;
+        }
+
+        var result;
+
+        switch(message.type) {
+        case "move":
+            result = _handleMove(message.objectPosition, message.targetPosition, playerID);
+            break;
+        case "turn":
+            result = _handleTurn(message.objectPosition, message.newHeading, playerID);
+            break;
+        case "attack":
+            result = _handleAttack(message.objectPosition, message.targetPosition, playerID);
+            break;
+        case "pass":
+            result = _handlePass(playerID);
+        default:
+            console.log('Invalid move type');
+            return false;
+        }
+        //if there is no result because intermediate step was bad
+        if (!result){
+            return false;
+        }
+
+        _animations = result.animations;
+        _numberOfMoves += result.moveCost;
+        return result.isValid;
+    }
+
+
+    var _handleMove = function(startPosition, endPosition, playerId){
+
         // Is there a character at startposition?
-        activeCharacter = _getCharacterAtPosition(startPosition);
+        var activeCharacter = _getCharacterAtPosition(startPosition);
         if (activeCharacter == null){
             return false;
         }
@@ -300,7 +336,7 @@ module.exports = function() {
         }
 
         // Is the endPosition empty?
-        characterAtEndPosition =  _getCharacterAtPosition(endPosition);
+        var characterAtEndPosition =  _getCharacterAtPosition(endPosition);
         if (!(characterAtEndPosition == null)){
             // Is the character dead? NOT PROUD OF THIS
              if (characterAtEndPosition.getAliveness()){
@@ -313,20 +349,22 @@ module.exports = function() {
             return false;
         }
 
-        movingCost = activeCharacter.setPosition(endPosition);
-        _animations = [{
+        var moveCost = activeCharacter.setPosition(endPosition);
+        var animations = [{
             "attack":"move",
-            "startPos":{x:0,y:0},
-            "endPos":{x:0,y:0}
+            "startPos":startPosition,
+            "endPos":endPosition
         }];
-        _numberOfMoves += movingCost;
-        return true;
+
+        return {
+            "animations":animations,
+            "moveCost":moveCost,
+            "isValid":true
+        }
+
     };
 
-    _this.handleTurn = function(position, newHeading, playerId){
-        if (!_isPlayerMove(playerId)){
-            return false;
-        }
+    var _handleTurn = function(position, newHeading, playerId){
 
         // Is there a character at startposition?
         activeCharacter = _getCharacterAtPosition(position);
@@ -344,20 +382,21 @@ module.exports = function() {
             return false;
         }
 
-        headingCost = activeCharacter.setHeading(newHeading);
-        _animations = [{
+        var moveCost = activeCharacter.setHeading(newHeading);
+        var animations = [{
             "attack":"turn",
             "startPos":{x:0,y:0},
             "endPos":{x:0,y:0}
         }];
-        _numberOfMoves += headingCost;
-        return true;
+
+        return {
+            "animations":animations,
+            "moveCost":moveCost,
+            "isValid":true
+        };
     };
 
-    _this.handleAttack = function(attackerPosition, attackedPosition, playerId){
-        if (!_isPlayerMove(playerId)){
-            return false;
-        }
+    var _handleAttack = function(attackerPosition, attackedPosition, playerId){
 
         // Is there a character at startposition?
         activeCharacter = _getCharacterAtPosition(attackerPosition);
@@ -369,30 +408,37 @@ module.exports = function() {
         if (!(activeCharacter.getPlayerId() == playerId)){
             return false;
         }
-        attackOutput = activeCharacter.attack(attackedPosition, _this);
-        animationsFromAttack = attackOutput.animationList;
+        var attackOutput = activeCharacter.attack(attackedPosition, _this);
+        var animationsFromAttack = attackOutput.animationList;
 
         if (animationsFromAttack.length == 0){
             return false;
         }
         
-        _animations = animationsFromAttack; //add the attack animation information
-        _numberOfMoves += attackOutput.attackCost;
-        return true;
+        var animations = animationsFromAttack; //add the attack animation information
+        var moveCost = attackOutput.attackCost;
+        return {
+            "animations":animations,
+            "moveCost":moveCost,
+            "isValid":true
+        };
     };
 
-    _this.handlePass  = function(playerID) {
-        if (!_isPlayerMove(playerID)){
-            return false;
-        }
+    var _handlePass  = function(playerID) {
         // More spooky arithmetic for eric
-        _numberOfMoves =  (Math.floor(_numberOfMoves / _movePerTurn) + 1) * _movePerTurn;
-        _animations = _animations = [{
+        var desiredMoveValue =  (Math.floor(_numberOfMoves / _movePerTurn) + 1) * _movePerTurn;
+        var movecost = desiredMoveValue - _numberOfMoves;
+        var animations = _animations = [{
             "attack":"pass",
             "startPos":{x:0,y:0},
             "endPos":{x:0,y:0}
         }];
-        return true;
+
+        return {
+            "animations":animations,
+            "moveCost":moveCost,
+            "isValid":true
+        };
     };
 
     _this.getParams = function(playerID) {
