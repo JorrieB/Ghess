@@ -88,10 +88,10 @@ module.exports = {
     'update-game': function(socket, data) {
     	var game = GameStore.get(socket.gameId);
     	var isValid = GameHandler(data, game, socket.playerId);
-        console.log('1 updating game');
+        console.log('updating game');
    		// Send result back
         if (isValid) {
-            console.log('2 valid move');
+            console.log('valid move');
             // To this player
             socket.emit('update-state', game.serialize(socket.playerId));
             // To the other player

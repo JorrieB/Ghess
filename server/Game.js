@@ -56,9 +56,10 @@ module.exports = function() {
     _getCharacterAtPosition = function(position){
         characterAtPosition = null;
         charactersAtPosition = [];
+        var characters = _this.getCharacters();
 
-        for (characterIndex in _characters){
-            character = _characters[characterIndex];
+        for (characterIndex in characters){
+            character = characters[characterIndex];
             if (vectorUtils.isEqual(character.getPosition(), position)){
                 charactersAtPosition.push(character);
             }
@@ -111,7 +112,7 @@ module.exports = function() {
     }
 
     _destroyCharacter = function(character){
-        var characterIndex = _characters.indexOf(character);
+        var characterIndex = _this.getCharacters().indexOf(character);
         // If there is no such character, return false
         if (characterIndex == -1){
             return false;
@@ -139,7 +140,7 @@ module.exports = function() {
         for (i = 0; i < _players.length; i++){
             playerId = _players[i].getID();
             //Find the characters that are still alive for current playerId
-            var playerAliveCharacters = _characters.filter(function(character){
+            var playerAliveCharacters = _this.getCharacters().filter(function(character){
                 if (playerId == character.getPlayerId() && character.getAliveness()){
                     return character; }})
             // If there are no characters left for this player, the other player won.
@@ -211,6 +212,7 @@ module.exports = function() {
         if (_players.length == 2){
             return (_players[0].readyToStart() && _players[1].readyToStart());
         }
+        console.log('Game cannot start, there are not enough players in the game.');
         return false
     }
 
@@ -230,45 +232,27 @@ module.exports = function() {
         // For now, we just statically insert a list of characters
 
         // TODO: make it such that each player can insert their own characters, and there aren't duplicate inserts
-
+        var player = _getPlayerFromID(playerID);
         var characters = startCharacters.map(function(character){
             var charObject = this._createCharacter(character,startCharacters.indexOf(character),playerID);
-            _characters.push(charObject);
             return charObject;
         });
+        player.initMyArray(characters);
 
-        _getPlayerFromID(playerID).initMyArray(characters);
-
-        //if both players are in the game
         if (_this.canStart()){
-            //and they have both selected characters
-            if (_players[0].readyToStart() && _players[1].readyToStart()){
-                initializeRound(_players[0],_players[1]); //then start the round
-            }
+            initializeRound();
         }
-
     };
 
     //gets called at the beginning of each round
     //reset all round variables
     //reset player information
-    initializeRound = function(player1,player2){
+    initializeRound = function(){
         _roundNumber++;
         _numberOfMoves = 0;
 
-        var player1Characters = _characters.filter(function(character){
-            if (player1.getID() == character.getPlayerId()){
-                return character;
-            }
-        });
-        var player2Characters = _characters.filter(function(character){
-            if (player2.getID() == character.getPlayerId()){
-                return character;
-            }
-        });
-
-        player1.initEnemyArray(player2Characters);
-        player2.initEnemyArray(player1Characters);
+        _players[0].initEnemyArray(_players[1].getMyCharacters());
+        _players[1].initEnemyArray(_players[0].getMyCharacters());
     }
 
     initPlayerArrays = function(player,allies,enemies){
@@ -277,7 +261,10 @@ module.exports = function() {
     }
 
     _this.getCharacters = function(){
-        return _characters;
+        if (_players.length == 2){
+            return _players[0].getMyCharacters().concat(_players[1].getMyCharacters());
+        }
+        console.log('Cannot get characters, there are not two players in the game.');
     };
 
     _this.destroyCharacter = function(character){
@@ -290,6 +277,7 @@ module.exports = function() {
     //Handler for the moves that change the game state:
 
     _this.handleMove = function(startPosition, endPosition, playerId){
+
         if (!_isPlayerMove(playerId)){
             return false;
         }
@@ -378,8 +366,8 @@ module.exports = function() {
         return true;
     };
 
-    _this.handlePass  = function(playerId) {
-        if (!_isPlayerMove(playerId)){
+    _this.handlePass  = function(playerID) {
+        if (!_isPlayerMove(playerID)){
             return false;
         }
         // More spooky arithmetic for eric
@@ -387,8 +375,6 @@ module.exports = function() {
         _animations = [];
         return true;
     };
-
-
 
     _this.getParams = function(playerID) {
         params = {
@@ -406,45 +392,38 @@ module.exports = function() {
     }
 
     //takes player ID and returns all enemy characters that lie within visibility of player's characters
-    var charactersVisibleTo = function(playerID){
-        if (_isObserver(playerID)){
-            return _characters;
-        }
+    var charactersInVisibility = function(visibility,playerID){
 
-        var friendlyChars = _characters.filter(function(character) {
-            return character.getPlayerId() == playerID;
-        });
-        var cumulativeVisibility = [];
-        for (i = 0; i < friendlyChars.length; i++){
-            cumulativeVisibility = cumulativeVisibility.concat(friendlyChars[i].getDynamicVisibility());
-        }
+        var visibleCharacters = [];
 
-        var enemyChars = _characters.filter(function(character) {
-            return character.getPlayerId() != playerID;
-        });
+        var charactersInGame = _this.getCharacters();
 
-        for (i = 0; i < enemyChars.length; i++){
-            for (j = 0; j < cumulativeVisibility.length; j++){
-                if (vectorUtils.isEqual(enemyChars[i].getPosition(), cumulativeVisibility[j])){
-                    friendlyChars.push(enemyChars[i]);
-                    _getPlayerFromID(playerID).seeEnemyCharacter(enemyChars[i]);
+        for (i = 0; i < charactersInGame.length; i++){
+            for (j = 0; j < visibility.length; j++){
+                if (vectorUtils.isEqual(charactersInGame[i].getPosition(), visibility[j])){
+                    visibleCharacters.push(charactersInGame[i]);
+                    _getPlayerFromID(playerID).seeCharacter(charactersInGame[i]);
                     break;
                 }
             }
         }
-        return friendlyChars;
+        return visibleCharacters;
     }
 
     //returns game state object dependent upon who is requesting it
     //player id can correspond to player 1, 2, or an observer
     _this.serialize = function(playerID){
+        var player = _getPlayerFromID(playerID);
+        var visibility = player.getVisibility();
+        var visibleCharacters = charactersInVisibility(visibility,playerID);
 
-        var serializedChars = charactersVisibleTo(playerID).map(function(character) {
+        var serializedChars = visibleCharacters.map(function(character) {
             return character.serialize();
         });
 
+
         if (_isObserver(playerID)){
-            return gameObj = {
+            return {
             "message":"update-state",
             "stamina":(_movePerTurn - (_numberOfMoves % _movePerTurn)),
             "turn":_this.getActivePlayerId(),

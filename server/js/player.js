@@ -31,6 +31,15 @@ module.exports = function(ID) {
 		return myArray;
 	}
 
+	//return cumulative visibility of players chars
+	_this.getVisibility = function(){
+		var cumulativeVisibility = [];
+		for (charIndex in _this.getMyCharacters()){
+			cumulativeVisibility = cumulativeVisibility.concat(myArray[charIndex].getVisibleCells());
+		}
+		return cumulativeVisibility;                                                                                                                                                                                                    
+	}
+
 	simplifyCharacter = function(characterObject){
 		return {
 				"alive":characterObject.alive,
@@ -41,10 +50,7 @@ module.exports = function(ID) {
 
 	//reset array with important information for allies
 	_this.initMyArray = function(allies) {
-		myArray = [];
-		for (i = 0; i < allies.length; i++){
-			myArray.push(simplifyCharacter(allies[i]));
-		}
+		myArray = allies;
 	}
 
 	//reset understanding of the enemy's units
@@ -62,19 +68,26 @@ module.exports = function(ID) {
 	//updates the hud rep from alive to dead for allies
 	_this.allyDied = function(ally){
 		var index = myArray.findIndex(x => x.HUDID==ally.charID);
-		myArray[index] = simplifyCharacter(ally);
+		myArray[index] = ally;
 	}
 
 	//get new information about this character
 	//used when information is discovered about a character
 	//e.g. a dead body is found, an arrow hits a shield, a torch reveals someone
-	_this.seeEnemyCharacter = function(character){
+	_this.seeCharacter = function(character){
+		// If it's your character, don't worry about it
+		if (character.getPlayerId() == _this.getID()){
+			return;
+		}
 		var index = enemyArray.findIndex(x => x.HUDID==character.charID);
 		enemyArray[index] = simplifyCharacter(character);
 	}
 
 	_this.getHUDInfoSelf = function(){
-		return myArray;
+		var simplifiedCharacters = myArray.map(function(character){
+			return simplifyCharacter(character);
+		});
+		return simplifiedCharacters;
 	}
 
 	_this.getHUDInfoEnemy = function(){
