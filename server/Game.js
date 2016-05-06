@@ -126,6 +126,13 @@ module.exports = function() {
         character.kill();
 
         _getPlayerFromID(character.getPlayerId()).allyDied(character);
+        console.log('the character should die... so the animations are', _animations);
+        _animations.push({
+            "attack":"death",
+            "startPos":{x:0,y:0},
+            "endPos":{x:0,y:0}
+        });
+        console.log('and now',_animations);
 
         return true;
     }
@@ -307,7 +314,11 @@ module.exports = function() {
         }
 
         movingCost = activeCharacter.setPosition(endPosition);
-        _animations = [];
+        _animations = [{
+            "attack":"move",
+            "startPos":{x:0,y:0},
+            "endPos":{x:0,y:0}
+        }];
         _numberOfMoves += movingCost;
         return true;
     };
@@ -334,7 +345,11 @@ module.exports = function() {
         }
 
         headingCost = activeCharacter.setHeading(newHeading);
-        _animations = [];
+        _animations = [{
+            "attack":"turn",
+            "startPos":{x:0,y:0},
+            "endPos":{x:0,y:0}
+        }];
         _numberOfMoves += headingCost;
         return true;
     };
@@ -372,7 +387,11 @@ module.exports = function() {
         }
         // More spooky arithmetic for eric
         _numberOfMoves =  (Math.floor(_numberOfMoves / _movePerTurn) + 1) * _movePerTurn;
-        _animations = [];
+        _animations = _animations = [{
+            "attack":"pass",
+            "startPos":{x:0,y:0},
+            "endPos":{x:0,y:0}
+        }];
         return true;
     };
 
