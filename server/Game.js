@@ -321,7 +321,6 @@ module.exports = function() {
         return result.isValid;
     }
 
-
     var _handleMove = function(startPosition, endPosition, playerId){
 
         // Is there a character at startposition?
@@ -463,6 +462,9 @@ module.exports = function() {
 
         var charactersInGame = _this.getCharacters();
 
+
+        //TODO: use utils.inVectorList
+        
         for (i = 0; i < charactersInGame.length; i++){
             for (j = 0; j < visibility.length; j++){
                 if (vectorUtils.isEqual(charactersInGame[i].getPosition(), visibility[j])){
@@ -487,6 +489,8 @@ module.exports = function() {
         });
 
 
+
+
         if (_isObserver(playerID)){
             return {
             "message":"update-state",
@@ -508,7 +512,7 @@ module.exports = function() {
             "stamina":(_movePerTurn - (_numberOfMoves % _movePerTurn)),
             "turn":_this.getActivePlayerId(),
             "characters":serializedChars,
-            "animations":_animations,
+            "animations":player.obfuscateAnimations(_animations),
             "HUD":{
                 "selfChars":_getPlayerFromID(playerID).getHUDInfoSelf(),
                 "enemyChars":_getPlayerFromID(playerID).getHUDInfoEnemy(),

@@ -1,3 +1,5 @@
+var utils = require('../utils/vectorUtils');
+
 module.exports = function(ID) {
 	var _this = this;
 
@@ -93,5 +95,39 @@ module.exports = function(ID) {
 	_this.getHUDInfoEnemy = function(){
 		return enemyArray;
 	}
+
+	//Animation obfuscation functions
+	_this.obfuscateAnimations = function(animations){
+		//switch on animation type
+		obfuscatedAnimations = [];
+		for (index in animations){
+			var animation = animations[index];
+			//if the animation is a pass, send it and do what we will with the sound
+			if (animation.attack == "pass"){
+				obfuscatedAnimations.push(animation);
+				continue;
+			}
+
+			var heading = utils.getHeading(animation.startPos,animation.endPos);
+			//if the animation  takes place on the same square, then we either see it or we don't
+			if (heading.x == 0 && heading.y == 0){
+				if (utils.inVectorList(_this.getVisibility(),animation.startPos)){
+					obfuscatedAnimations.push(animation);
+				}
+				//if visible, add it to the animations
+				continue;
+			}
+
+			//do some fancy shit. 
+			
+
+		}
+
+		return animations;
+	}
+
+
+
+
 
 }

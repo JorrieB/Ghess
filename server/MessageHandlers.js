@@ -1,5 +1,4 @@
 var GameStore = require('./GameStore');
-var GameHandler = require('./GameHandler');
 
 // The socket message handlers.
 // The first argument of each must be the socket
@@ -88,7 +87,7 @@ module.exports = {
     'update-game': function(socket, data) {
     	var game = GameStore.get(socket.gameId);
         var isValid = game.handleMessage(data, game, socket.playerId);
-    	// var isValid = GameHandler(data, game, socket.playerId);
+        
         console.log('updating game');
    		// Send result back
         if (isValid) {
