@@ -18,7 +18,15 @@ module.exports = {
 	isEqual: function(v ,w){
 		return ((v.x == w.x) && (v.y == w.y));
 	},
-
+	getHeading: function(v, w){
+		var normalize = function(s){
+			if (!Boolean(s)){
+				return s;
+			}
+			return s/Math.abs(s);
+		}
+		return {x:normalize(w.x - v.x),y:normalize(w.y - v.y)};
+	},
 	inVectorList: function(vectorList, v){
 		for (i = 0; i < vectorList.length; i++) { 
 			w = vectorList[i];

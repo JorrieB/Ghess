@@ -1,5 +1,4 @@
 var GameStore = require('./GameStore');
-var GameHandler = require('./GameHandler');
 
 // The socket message handlers.
 // The first argument of each must be the socket
@@ -75,23 +74,25 @@ module.exports = {
         game.insertCharacters(data.characters,socket.playerId);
 
         if (game.canStart()){
-            console.log('STARTING');
+            console.log('Starting game.');
             socket.emit('update-state', game.serialize(socket.playerId));
             // To the other player
             var otherPlayerId = game.getOtherPlayerId(socket.playerId);
             this.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
         } else {
-            console.log('GAME CANNOT START');
+            console.log('Game has only one player.');
         }
 
     },
     'update-game': function(socket, data) {
     	var game = GameStore.get(socket.gameId);
-    	var isValid = GameHandler(data, game, socket.playerId);
-        console.log('1 updating game');
+        // Todo: check if game is game, if not sever connections
+        var isValid = game.handleMessage(data, game, socket.playerId);
+
+        console.log('updating game');
    		// Send result back
         if (isValid) {
-            console.log('2 valid move');
+            console.log('Valid move.');
             // To this player
             socket.emit('update-state', game.serialize(socket.playerId));
             // To the other player
@@ -111,7 +112,7 @@ module.exports = {
             }
 
         } else {
-            // send back error
+            console.log('Move was not valid.');
         }
     }
 };

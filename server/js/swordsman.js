@@ -40,21 +40,21 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
         var animationList = [];
 
         if (targetCharacter == null){
-            return animationList;
+        return {'attackCost':0, 'animationList':animationList};
         }
        	// Is the targetCharacter dead
        	if (!(targetCharacter.getAliveness())){
-       		return animationList;
+        return {'attackCost':0, 'animationList':animationList};
        	}
 
         // Is the targetCharacter an adversary?
         if (targetCharacter.getPlayerId() == playerId){
-            return animationList;
+        return {'attackCost':0, 'animationList':animationList};
         }
 
         // Can the swordsman attack in that position?
         if (! vectorUtils.inVectorList(activeCharacter.getAttackableCells(), attackedPosition)){
-            return animationList;
+        return {'attackCost':0, 'animationList':animationList};
         }
         // If all of the condition are satisfied, destroy the targerCharacter
         game.destroyCharacter(targetCharacter);

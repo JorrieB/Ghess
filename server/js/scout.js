@@ -15,16 +15,12 @@ module.exports  = function(startPosition, startHeading, playerId, charID, startC
 	Character.call(_this, startPosition, startHeading, playerId, charID, startColor);
 	_this.characterType = "Scout";
 
-
+	// TODO: fix visibility of scout
 	_this.getVisibleCells = function(){
 		visibleCells = []
 		for (var i = -scoutRange; i <= scoutRange; i++) {
 			for (var j = -scoutRange; j <= scoutRange; j++){
-				//restrict visibility to mostly directly in front
-				//TODO: introduce directionality - right now, it doesn't take scout turning into play
-				// if ((i+j) > -2 && (i+j) <= 2){
-					visibleCells.push(vectorUtils.vectorSum({x:i, y:j}, _this.getPosition()));
-				// }
+				visibleCells.push(vectorUtils.vectorSum({x:i, y:j}, _this.getPosition()));
 				
 			}
 		}

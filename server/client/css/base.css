@@ -1,3 +1,7 @@
+body {
+    margin: 4px;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -158,12 +162,13 @@
     cursor:pointer;
     color:#ffffff;
     /*font-family: 'Sansita One';*/
-   /* font-family: 'Bangers', cursive;*/
-    font-family: 'Unica One', cursive;
+    font-family: 'Bangers', cursive;
+    letter-spacing: 2px;
+    /*font-family: 'Unica One', cursive;*/
     font-size:15px;
     font-weight:bold;
     padding:6px 24px;
-    margin: 5px;
+    margin: 24px;
     text-decoration:none;
 
 }
@@ -206,8 +211,9 @@
     width: 1000px;
     height: 600px;
     border: 1px solid black;
-    padding: 30px;
+    padding: 40px 50px;
     background-color: #3a68ff;
+    background: url('/img/backgroundSM.png');
 
     /*font-family: 'Sansita One';*/
     font-family: 'Bangers', cursive;
@@ -218,7 +224,7 @@
 /* START VIEW */
 #start-view {
     background-color: #3a68ff;
-    padding-top: 0px;
+    padding-top: 32px;
 }
 
 #game-title {
@@ -232,8 +238,12 @@
 }
 
 #button-container {
-    margin: 0 50px;
+    margin: 25px 50px;
     text-align: center;
+}
+
+#ready-button {
+    margin: 2px;
 }
 
 #player-button {
@@ -250,9 +260,10 @@
 
 #selected-stat {
     float: left;
-    background-size: 100%;
-    width: 360px;
-    height: 240px;
+    background-color: #441F60;
+    background-size: 98%;
+    width: 340px;
+    height: 220px;
     margin: 20px 0;
 }
 
@@ -285,7 +296,7 @@
 
 #selected-characters {
     float: left;
-    background-color: #529df9;
+    background-color: hsla(271,40%,57%,1);
     width: 110px;
     padding: 10px;
     text-align: center;
@@ -298,7 +309,7 @@
     width: 80px;
     height: 80px;
     border-radius: 40px;
-    background-color: white;
+    background-color: #72409C;
     background-size: 100% 100%;
 }
 
@@ -308,7 +319,7 @@
     width: 100px;
     height: 100px;
     margin: 10px 10px;
-    background-color: blue;
+    background-color: #6A3196;
     background-size: 100% 100%;
     text-align: center;
     vertical-align: bottom;
@@ -319,12 +330,12 @@
 
 .roster-cell:hover {
     /*display: block;*/
-    background-color: red;
-    opacity: .8;
+    background-color: #A98BC1;
+    /*opacity: .8;*/
 }
 
 .selected-char {
-    border: 5px solid yellow;
+    border: 4px solid yellow;
 }
 
 /* PLACEMENT VIEW */
@@ -337,14 +348,17 @@
 }
 
 .placement-view-table.ghess-table {
-    width: 480px;
-    height: 480px;
-    margin-right: 40px;
+    width: 440px;
+    height: 440px;
+    margin: 0 140px;
 }
 
 /* PLAY VIEW INFO PANE */
 
 .playView-info {
+    color: white;
+    background-color: #917EA6;
+    padding: 10px;
     position: relative;
     width: 250px;
     float: right;
@@ -403,8 +417,8 @@
     float: left;
     position: relative;
     background-color: transparent;
-    width: 540px;
-    height: 540px;
+    width: 500px;
+    height: 500px;
 }
 
 .ghess-row {
@@ -443,6 +457,11 @@ sprite {
     height: 70px;
     position: absolute;
     background-size: 100%;
+}
+
+.ghess-table sprite {
+    width: 14.29%;
+    height: 14.29%;
 }
 
 sprite.alive {
