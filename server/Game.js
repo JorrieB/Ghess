@@ -489,25 +489,6 @@ module.exports = function() {
 
         }
 
-
-
-
-        // if (_isObserver(playerID)){
-        //     return {
-        //     "message":"update-state",
-        //     "stamina":(_movePerTurn - (_numberOfMoves % _movePerTurn)),
-        //     "turn":_this.getActivePlayerId(),
-        //     "characters":serializedChars,
-        //     "animations":_animations,
-        //     "HUD":{
-        //         "selfChars":_players[0].getHUDInfoSelf(),
-        //         "enemyChars":_players[1].getHUDInfoSelf(),
-        //         "selfWins":0,
-        //         "enemyWins":0
-        //         }
-        //     }
-        // }
-
         return {
             "message":"update-state",
             "stamina":(_movePerTurn - (_numberOfMoves % _movePerTurn)),
