@@ -2,15 +2,15 @@
 
     {% set width = 7 %}
     {% set height = 7 %}
-    {% include '/templates/table.html' %}
+    {% include 'client/templates/table.html' %}
 
     <div id="info-pane" class="playView-info">
     	<!-- User selects their unique playerID before entering play view -->
     	<div id="player-id" class="h1 playView-info-text"> (PlayerID) </div>
-        {% include '/templates/char_info_panels.html' %}
+        {% include 'client/templates/char_info_panels.html' %}
         <div id="selected-char-description">Selected Character</div>
-        {% include '/templates/character_portrait.html' %}
-        
+        {% include 'client/templates/character_portrait.html' %}
+
         {% if not spectator %}
         <div class="round-button wiggle glossy2 action-button sleep-button"></div>
         {% endif %}

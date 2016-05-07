@@ -15,7 +15,7 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.use('/static', express.static('js'));
+app.use('/client', express.static(__dirname + '/client'));
 
 // Handle Socket.io communication
 io.on('connection', function(socket) {

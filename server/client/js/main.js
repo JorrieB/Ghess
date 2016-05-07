@@ -22,26 +22,26 @@ $(function() {
     // SOUNDS
     ///////////////
 
-    // var snd_menu = new buzz.sound("/audio/MenuLoop.wav");
-    // var snd_click = new buzz.sound("/audio/sfx_button_press.wav");
-    // var snd_walk = new buzz.sound("/audio/sfx_walk.wav");
-    // var snd_turn = new buzz.sound("/audio/sfx_turn.wav");
-    // var snd_sword = new buzz.sound("/audio/sfx_sword.wav");
-    // var snd_arrow_fire = new buzz.sound("/audio/sfx_arrow_fire.wav");
-    // var snd_arrow_hit_char = new buzz.sound("/audio/sfx_arrow_character.wav");
-    // var snd_arrow_hit_shield = new buzz.sound("/audio/sfx_arrow_shield.wav");
-    // var snd_arrow_hit_wall = new buzz.sound("/audio/sfx_arrow_wall.wav");
+    // var snd_menu = new buzz.sound("/client/audio/MenuLoop.wav");
+    // var snd_click = new buzz.sound("/client/audio/sfx_button_press.wav");
+    // var snd_walk = new buzz.sound("/client/audio/sfx_walk.wav");
+    // var snd_turn = new buzz.sound("/client/audio/sfx_turn.wav");
+    // var snd_sword = new buzz.sound("/client/audio/sfx_sword.wav");
+    // var snd_arrow_fire = new buzz.sound("/client/audio/sfx_arrow_fire.wav");
+    // var snd_arrow_hit_char = new buzz.sound("/client/audio/sfx_arrow_character.wav");
+    // var snd_arrow_hit_shield = new buzz.sound("/client/audio/sfx_arrow_shield.wav");
+    // var snd_arrow_hit_wall = new buzz.sound("/client/audio/sfx_arrow_wall.wav");
     // buzz.all().load();
 
     ///////////////
     // SCREEN FLOW
     ///////////////
-	var start_view = nunjucks.render('/templates/start_view.html');
-    var loading_view = nunjucks.render('/templates/loading_view.html');
-    var table = nunjucks.render('/templates/table.html', {'width': 7, 'height': 7});
-    var play_view = nunjucks.render('/templates/play_view.html');
-	var spectator_view = nunjucks.render('/templates/spectator_view.html');
-    var placement_view = nunjucks.render('/templates/placement_view.html');
+	var start_view = nunjucks.render('client/templates/start_view.html');
+    var loading_view = nunjucks.render('client/templates/loading_view.html');
+    var table = nunjucks.render('client/templates/table.html', {'width': 7, 'height': 7});
+    var play_view = nunjucks.render('client/templates/play_view.html');
+	var spectator_view = nunjucks.render('client/templates/spectator_view.html');
+    var placement_view = nunjucks.render('client/templates/placement_view.html');
 
 	// Initialize with start_view
     $('body').append($(start_view));
@@ -70,7 +70,7 @@ $(function() {
             var $slot = $slots.eq(i);
             var character = selectedCharacters[i];
             $slot.data('type', character)
-                .css('background-image', "url('/img/characters/" + character + "/down/" + playerColor + ".png')");
+                .css('background-image', "url('/client/img/characters/" + character + "/down/" + playerColor + ".png')");
         }
         $curr_char = $();
     });
@@ -122,7 +122,7 @@ $(function() {
         playerNumber = message.gameParams.playerNumber;
         validPlacementSquares = message.gameParams.validSquares;
         // Default stat info to Archer (first character in characters-list)
-        $('#selected-stat').css('background-image', "url('/img/characters/archer/stat/" + playerColor + "-stat.png')");
+        $('#selected-stat').css('background-image', "url('/client/img/characters/archer/stat/" + playerColor + "-stat.png')");
         var $charList = $('#characters-list');
         for (var i = 0; i < message.gameParams.roster.length; i++) {
             var character = message.gameParams.roster[i];
@@ -130,7 +130,7 @@ $(function() {
                 .addClass('roster-cell')
                 .text(character.toLowerCase())
                 .data('type', character.toLowerCase())
-                .css('background-image', "url('/img/characters/" + character + "/down/" + message.gameParams.color + ".png')");
+                .css('background-image', "url('/client/img/characters/" + character + "/down/" + message.gameParams.color + ".png')");
             $charList.append($charCell);
         }
     });
@@ -141,7 +141,7 @@ $(function() {
 
     $(document).on('mouseover', '#loading-view .roster-cell', function() {
         var $cellClicked =  $(this);
-        $('#selected-stat').css('background-image', "url('/img/characters/" + $cellClicked.data('type') + "/stat/" + playerColor + "-stat.png')");
+        $('#selected-stat').css('background-image', "url('/client/img/characters/" + $cellClicked.data('type') + "/stat/" + playerColor + "-stat.png')");
     });
 
     $(document).on('click', '#loading-view .roster-cell', function() {
@@ -161,7 +161,7 @@ $(function() {
 
                 // Add character to roster
                 var $slot = $('#loading-view').find('.selected-character-slot:not(.selected)').eq(0);
-                $slot.css('background-image', "url('/img/characters/" + $cellClicked.data('type') + "/down/" + playerColor + ".png')")
+                $slot.css('background-image', "url('/client/img/characters/" + $cellClicked.data('type') + "/down/" + playerColor + ".png')")
                     .data('type', $cellClicked.data('type'))
                     .addClass('selected');
                 $cellClicked.addClass('selected-char')
@@ -214,7 +214,7 @@ $(function() {
                 .data('type', character_type.toLowerCase())
                 .data('heading', 'down')
                 .data('direction', default_direction)
-                .css('background-image', "url('/img/characters/" + character_type.toLowerCase() + "/down/" + playerColor + ".png')")
+                .css('background-image', "url('/client/img/characters/" + character_type.toLowerCase() + "/down/" + playerColor + ".png')")
                 .css('top', evt.pageY - screen_pos.top)
                 .css('left', evt.pageX - screen_pos.left)
                 .attr('disabled', 'true');
@@ -287,7 +287,7 @@ $(function() {
                 direction = {'x': 0, 'y': 1};
             }
             $curr_char.data('heading', getHeadingStrFromVec(direction));
-            $curr_char.data('direction', direction).css('background-image', "url('/img/characters/" + $curr_char.data('type') + "/" + $curr_char.data('heading') + "/" + $curr_char.data('color') + ".png')")
+            $curr_char.data('direction', direction).css('background-image', "url('/client/img/characters/" + $curr_char.data('type') + "/" + $curr_char.data('heading') + "/" + $curr_char.data('color') + ".png')")
             $curr_char = $();
             $('.character-roster').show();
             $('.turn-arrow-container').hide();
@@ -408,7 +408,7 @@ $(function() {
     var animateArrow = function(animation, callback) {
         var $arrow = $('<sprite />')
             .addClass('projectile')
-            .css('background-image', "url('/img/characters/archer/attack/red.png')");
+            .css('background-image', "url('/client/img/characters/archer/attack/red.png')");
         // snd_arrow_fire.play();
         $arrow.animateProjectile($('.ghess-table'), animation.startPos, animation.endPos, 300, function() {
             $arrow.remove();
@@ -419,7 +419,7 @@ $(function() {
     var animateShield = function(animation, callback) {
         var $shield = $('<sprite />')
             .addClass('projectile')
-            .css('background-image', "url('/img/characters/swordsman/defend/red.png')")
+            .css('background-image', "url('/client/img/characters/swordsman/defend/red.png')")
             .hide();
         $('.ghess-table').append($shield);
         $shield.placeAt(animation.startPos);
@@ -470,7 +470,7 @@ $(function() {
                 .data('visibility', _char.visibility)
                 .data('type', _char.type.toLowerCase())
                 .data('heading', headingStr)
-                .css('background-image', "url('/img/characters/" + _char.type.toLowerCase() + "/" + (_char.alive ? headingStr : 'dead') + "/" + _char.color + ".png')");
+                .css('background-image', "url('/client/img/characters/" + _char.type.toLowerCase() + "/" + (_char.alive ? headingStr : 'dead') + "/" + _char.color + ".png')");
 
             if ($('#spectator-view').length){
                 $char.addClass('mine')
@@ -530,7 +530,7 @@ $(function() {
             var character = selfChars[c];
             var alive = character.alive;
             $selfChar.addClass('stat-cell');
-            $selfChar.css('background-image', "url('/img/characters/" + character.charType.toLowerCase() + (alive ? "/down/" : "/dead/") + playerColor + ".png')");
+            $selfChar.css('background-image', "url('/client/img/characters/" + character.charType.toLowerCase() + (alive ? "/down/" : "/dead/") + playerColor + ".png')");
             $('#player-stat').append($selfChar);
         }
 
@@ -551,7 +551,7 @@ $(function() {
             var enemy = enemyChars[e].charType;
             var alive = enemyChars[e].alive;
             if (enemy != 'undefined') {
-                $enemyChar.css('background-image', "url('/img/characters/" + enemy.toLowerCase() + (alive ? "/down/" : "/dead/") + enemyColor + ".png')");
+                $enemyChar.css('background-image', "url('/client/img/characters/" + enemy.toLowerCase() + (alive ? "/down/" : "/dead/") + enemyColor + ".png')");
             } else {
                 $enemyChar.addClass('unknown');
             }
@@ -586,7 +586,7 @@ $(function() {
             $('.action-overlay').placeAt($curr_char.data('position'));
             $('.action-overlay').show();
             $curr_char.addClass('glow');
-            $('.character-portrait').css('background-image', "url('/img/characters/" + $curr_char.data('type').toLowerCase() + "/stat/" + $curr_char.data('color') + "-stat.png')");
+            $('.character-portrait').css('background-image', "url('/client/img/characters/" + $curr_char.data('type').toLowerCase() + "/stat/" + $curr_char.data('color') + "-stat.png')");
         }
         // snd_click.play();
 

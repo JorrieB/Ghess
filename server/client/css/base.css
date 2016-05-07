@@ -222,7 +222,7 @@
 }
 
 #game-title {
-    background: url('/img/Ghess-logo-600x400.png');
+    background: url('/client/img/Ghess-logo-600x400.png');
     font-size: 64px;
     margin: 0 auto;
     background-size: 100%;
@@ -376,7 +376,7 @@
 
 #character-stat {
     height: 140px;
-    /*background-image: url('/img/characters/archer/stat/blue-stat.png');*/
+    /*background-image: url('/client/img/characters/archer/stat/blue-stat.png');*/
 }
 
 #player-stat, #enemy-stat{
@@ -393,7 +393,7 @@
 }
 
 .unknown {
-    background-image: url('/img/unknown.png');
+    background-image: url('/client/img/unknown.png');
     background-color: black;
 }
 
@@ -465,7 +465,7 @@ sprite.projectile {
 }
 
 .turn-arrow {
-    background-image: url('/img/turn_arrow.png');
+    background-image: url('/client/img/turn_arrow.png');
     background-size: 100%;
     position: absolute;
     width:100%;
@@ -473,7 +473,7 @@ sprite.projectile {
 }
 
 .turn-arrow:hover {
-    background-image: url('/img/turn_arrow_white.png');
+    background-image: url('/client/img/turn_arrow_white.png');
     cursor: pointer;
 }
 
@@ -527,25 +527,25 @@ sprite.projectile {
 }
 
 .attack-button {
-    background-image: url('/img/attack2.png');
+    background-image: url('/client/img/attack2.png');
     top: -25%;
     left: -20%;
 }
 
 .turn-button {
-    background-image: url('/img/turn2.png');
+    background-image: url('/client/img/turn2.png');
     top: -45%;
     left: 30%;
 }
 
 .move-button {
-    background-image: url('/img/move2.png');
+    background-image: url('/client/img/move2.png');
     top: -25%;
     left: 80%;
 }
 
 .sleep-button {
-    background-image: url('/img/sleep.png');
+    background-image: url('/client/img/sleep.png');
     top: 90%;
     left: 0%;
     width: 45px;

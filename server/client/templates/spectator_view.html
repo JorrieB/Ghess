@@ -2,15 +2,15 @@
 
     {% set width = 7 %}
     {% set height = 7 %}
-    {% include '/templates/table.html' %}
+    {% include 'client/templates/table.html' %}
 
     <div id="info-pane" class="playView-info">
     	<!-- User selects their unique playerID before entering play view -->
     	<div id="player-id" class="h1 playView-info-text"> Spectator </div>
         {% set spectator = true %}
-        {% include '/templates/char_info_panels.html' %}
+        {% include 'client/templates/char_info_panels.html' %}
 
-        {% include '/templates/character_portrait.html' %}
+        {% include 'client/templates/character_portrait.html' %}
 
         <!-- character-stat contains info about the selected character and his powers -->
 		<div id="character-stat" class="h2 playView-info-text"> (character stats) </div>
