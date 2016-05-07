@@ -100,10 +100,6 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
    			"color": _this.charColor,
    			"info": _this.getInfo()
 		}
-		if (!(characterObject.alive)){
-			console.log("VIsibility better be fucking empty");
-			console.log(characterObject.visibility);
-		}
 		return characterObject;
 	}
 

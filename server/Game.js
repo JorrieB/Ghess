@@ -284,7 +284,7 @@ module.exports = function() {
     //Handler for the moves that change the game state:
 
     _this.handleMessage = function(message, game, playerID){
-        
+
         if (! (game.canStart()) ){
             return false;
         }
@@ -307,8 +307,8 @@ module.exports = function() {
             break;
         case "pass":
             result = _handlePass(playerID);
+            break;
         default:
-            console.log('Invalid move type');
             return false;
         }
         //if there is no result because intermediate step was bad
@@ -318,6 +318,7 @@ module.exports = function() {
 
         _animations = result.animations;
         _numberOfMoves += result.moveCost;
+
         return result.isValid;
     }
 
@@ -426,7 +427,7 @@ module.exports = function() {
     var _handlePass  = function(playerID) {
         // More spooky arithmetic for eric
         var desiredMoveValue =  (Math.floor(_numberOfMoves / _movePerTurn) + 1) * _movePerTurn;
-        var movecost = desiredMoveValue - _numberOfMoves;
+        var moveCost = desiredMoveValue - _numberOfMoves;
         var animations = _animations = [{
             "attack":"pass",
             "startPos":{x:0,y:0},

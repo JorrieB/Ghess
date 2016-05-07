@@ -36,8 +36,10 @@ module.exports = function(ID) {
 	//return cumulative visibility of players chars
 	_this.getVisibility = function(){
 		var cumulativeVisibility = [];
-		for (charIndex in _this.getMyCharacters()){
-			cumulativeVisibility = cumulativeVisibility.concat(myArray[charIndex].getVisibleCells());
+		for (charIndex in myArray){
+			if (myArray[charIndex].alive){
+				cumulativeVisibility = cumulativeVisibility.concat(myArray[charIndex].getVisibleCells());
+			}
 		}
 		return cumulativeVisibility;                                                                                                                                                                                                    
 	}
@@ -52,7 +54,12 @@ module.exports = function(ID) {
 
 	//reset array with important information for allies
 	_this.initMyArray = function(allies) {
-		myArray = allies;
+		myArray = [];
+		allies.filter(function(character){
+			if (character.getPlayerId() == _this.getID()){
+				myArray.push(character);
+			}
+		});
 	}
 
 	//reset understanding of the enemy's units
@@ -99,8 +106,8 @@ module.exports = function(ID) {
 	//Animation obfuscation functions
 	_this.obfuscateAnimations = function(animations){
 		//switch on animation type
-		obfuscatedAnimations = [];
-		for (index in animations){
+		var obfuscatedAnimations = [];
+		for (index in animations) {
 			var animation = animations[index];
 			//if the animation is a pass, send it and do what we will with the sound
 			if (animation.attack == "pass"){
@@ -108,26 +115,64 @@ module.exports = function(ID) {
 				continue;
 			}
 
+			if (animation.attack == "javelin"){
+				//do javelin stuff
+				//this is here because javelin stuff might be funky AF
+			}
+
 			var heading = utils.getHeading(animation.startPos,animation.endPos);
 			//if the animation  takes place on the same square, then we either see it or we don't
 			if (heading.x == 0 && heading.y == 0){
-				if (utils.inVectorList(_this.getVisibility(),animation.startPos)){
+				if (isCellVisible(animation.startPos)){
 					obfuscatedAnimations.push(animation);
 				}
 				//if visible, add it to the animations
 				continue;
 			}
 
-			//do some fancy shit. 
-			
+			var tempStart = null;
+			var next = animation.startPos;
+
+			while (!utils.isEqual(utils.vectorSum(next,utils.vectorMultScalar(heading,-1)),animation.endPos)){
+				if (tempStart == null){
+					if (isCellVisible(next)){
+						tempStart = next;		
+						next = utils.vectorSum(next,heading);
+					} else {
+						next = utils.vectorSum(next,heading);
+					}
+				} else {
+					if (isCellVisible(next)){
+						if (utils.isEqual(next,animation.endPos)){
+							obfuscatedAnimations.push(makeAnimation(tempStart,next,animation));
+							tempStart = null;
+							next = utils.vectorSum(next,heading);
+						} else {
+							next = utils.vectorSum(next,heading);
+						}
+					} else {
+						obfuscatedAnimations.push(makeAnimation(tempStart,next,animation));
+						tempStart = null;
+					}
+				}
+
+			}
 
 		}
-
-		return animations;
+		return obfuscatedAnimations;
 	}
 
+	var isCellVisible = function(cell){
+		return utils.inVectorList(_this.getVisibility(),cell);
+	}
 
-
+	var makeAnimation = function(start,end,animation){
+		return {
+			"attack":animation.attack,
+			"startPos":start,
+			"endPos":end
+		}
+	}
 
 
 }
