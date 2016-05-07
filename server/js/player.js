@@ -115,6 +115,10 @@ module.exports = function(ID) {
 				continue;
 			}
 
+			if (animation.attack == "shield"){
+				//TODO: Put onomatopoeia stuff here.
+			}
+
 			if (animation.attack == "javelin"){
 				//do javelin stuff
 				//this is here because javelin stuff might be funky AF
@@ -132,32 +136,41 @@ module.exports = function(ID) {
 
 			var tempStart = null;
 			var next = animation.startPos;
+			var delay = 0;
 
 			while (!utils.isEqual(utils.vectorSum(next,utils.vectorMultScalar(heading,-1)),animation.endPos)){
 				if (tempStart == null){
 					if (isCellVisible(next)){
+						if (Boolean(delay)){
+							obfuscatedAnimations.push(makeAnimation({x:0,y:0},{x:delay,y:delay},'delay'));
+						}
+						delay = 0;
 						tempStart = next;		
 						next = utils.vectorSum(next,heading);
 					} else {
+						delay++;
 						next = utils.vectorSum(next,heading);
 					}
 				} else {
 					if (isCellVisible(next)){
 						if (utils.isEqual(next,animation.endPos)){
-							obfuscatedAnimations.push(makeAnimation(tempStart,next,animation));
+							obfuscatedAnimations.push(makeAnimation(tempStart,next,animation.attack));
 							tempStart = null;
 							next = utils.vectorSum(next,heading);
 						} else {
 							next = utils.vectorSum(next,heading);
 						}
 					} else {
-						obfuscatedAnimations.push(makeAnimation(tempStart,next,animation));
+						obfuscatedAnimations.push(makeAnimation(tempStart,next,animation.attack));
 						tempStart = null;
 					}
 				}
 
 			}
-
+			//Add an additional delay at the end of your visibility
+			if (Boolean(delay)){
+				obfuscatedAnimations.push(makeAnimation({x:0,y:0},{x:delay,y:delay},'delay'));
+			}
 		}
 		return obfuscatedAnimations;
 	}
@@ -166,9 +179,9 @@ module.exports = function(ID) {
 		return utils.inVectorList(_this.getVisibility(),cell);
 	}
 
-	var makeAnimation = function(start,end,animation){
+	var makeAnimation = function(start,end,animationType){
 		return {
-			"attack":animation.attack,
+			"attack":animationType,
 			"startPos":start,
 			"endPos":end
 		}
