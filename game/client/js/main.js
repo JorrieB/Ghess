@@ -526,6 +526,7 @@ $(function() {
     };
 
     socket.on('update-state', function(message) {
+        $('.waiting-message').hide();
         $curr_char = $();
         console.log('update-state', message);
 
