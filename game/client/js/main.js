@@ -1,4 +1,16 @@
 $(function() {
+    // auto-resize
+    var $screenContainer = $('.screen-container');
+    var screenContainer = $screenContainer[0];
+    var zoom = 1.0;
+    var resizeGame = function() {
+        var $window = $(this);
+        zoom = Math.min($window.width() / screenContainer.clientWidth, $window.height() / screenContainer.clientHeight);
+        $screenContainer.css('zoom', zoom);
+    };
+    resizeGame();
+    $(window).resize(resizeGame);
+
     // var socket = io('http://18.111.7.191:8000');
     var socket = io('http://localhost:8000');
 
@@ -45,7 +57,7 @@ $(function() {
     var placement_view = nunjucks.render('client/templates/placement_view.html');
 
 	// Initialize with start_view
-    $('body').append($(start_view));
+    $screenContainer.append($(start_view));
     // snd_menu.loop().play();
 
     $(document).on('click', '#player-button', function() {
@@ -228,8 +240,8 @@ $(function() {
         if ($to_place_character.length) {
             var screen_pos = $(this).position();
             $to_place_character
-                .css('top', evt.pageY - screen_pos.top)
-                .css('left', evt.pageX - screen_pos.left);
+                .css('top', (evt.pageY - screen_pos.top)/zoom)
+                .css('left', (evt.pageX - screen_pos.left)/zoom);
             $placementSquare.removeClass('placement-square');
             $placementSquare = $(document.elementsFromPoint(evt.clientX, evt.clientY)).filter('.ghess-td.visible').addClass('placement-square');
         }
