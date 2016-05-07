@@ -23,15 +23,15 @@ $(function() {
     // SOUNDS
     ///////////////
 
-    // var snd_menu = new buzz.sound("/audio/MenuLoop.wav");
-    var snd_click = new buzz.sound("/audio/sfx_button_press.wav");
-    // var snd_walk = new buzz.sound("/audio/sfx_walk.wav");
-    // var snd_turn = new buzz.sound("/audio/sfx_turn.wav");
-    // var snd_sword = new buzz.sound("/audio/sfx_sword.wav");
-    var snd_arrow_fire = new buzz.sound("/audio/sfx_arrow_fire.wav");
-    var snd_arrow_hit_char = new buzz.sound("/audio/sfx_arrow_character.wav");
-    var snd_arrow_hit_shield = new buzz.sound("/audio/sfx_arrow_shield.wav");
-    var snd_arrow_hit_wall = new buzz.sound("/audio/sfx_arrow_wall.wav");
+    // var snd_menu = new buzz.sound("/client/audio/MenuLoop.wav");
+    var snd_click = new buzz.sound("/client/audio/sfx_button_press.wav");
+    // var snd_walk = new buzz.sound("/client/audio/sfx_walk.wav");
+    // var snd_turn = new buzz.sound("/client/audio/sfx_turn.wav");
+    // var snd_sword = new buzz.sound("/client/audio/sfx_sword.wav");
+    var snd_arrow_fire = new buzz.sound("/client/audio/sfx_arrow_fire.wav");
+    var snd_arrow_hit_char = new buzz.sound("/client/audio/sfx_arrow_character.wav");
+    var snd_arrow_hit_shield = new buzz.sound("/client/audio/sfx_arrow_shield.wav");
+    var snd_arrow_hit_wall = new buzz.sound("/client/audio/sfx_arrow_wall.wav");
     buzz.all().load();
 
     ///////////////
@@ -409,7 +409,7 @@ $(function() {
     var animateArrow = function(animation, callback) {
         var $arrow = $('<sprite />')
             .addClass('projectile')
-            .css('background-image', "url('/img/characters/archer/attack/red.png')");
+            .css('background-image', "url('/client/img/characters/archer/attack/red.png')");
         snd_arrow_fire.play();
         $arrow.animateProjectile($('.ghess-table'), animation.startPos, animation.endPos, 300, function() {
             $arrow.remove();

@@ -1,0 +1,15 @@
+{% set light_colors = ['#81D26B', '#5BD86E'] %}
+{% set dark_colors = ['#5DAF40', '#38A048', '#40AF51'] %}
+<div class="ghess-table {{classes}}" data-random="{{ 10000|random }}">
+    {% for y in range(height) %}
+        <div class="ghess-row" style="height:{{100.0/height}}%">
+        {% for x in range(width) %}
+            <div class="ghess-td" data-x="{{ x }}" data-y="{{ y }}" style="width:{{ 100.0/width}}%; background-image: url('/client/img/tiles/{{ (x + y)%6 }}.png');background-color:{% if (x+y)%2 == 1 %} {{ light_colors | random }} {% else %} {{ dark_colors | random }}{% endif %};">
+                <div class="panel"></div>
+            </div>
+        {% endfor %}
+        </div>
+    {% endfor %}
+    {% include 'client/templates/turn_overlay.html' %}
+    {% include 'client/templates/action_overlay.html' %}
+</div>

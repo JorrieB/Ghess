@@ -213,7 +213,7 @@ body {
     border: 1px solid black;
     padding: 40px 50px;
     background-color: #3a68ff;
-    background: url('/img/backgroundSM.png');
+    background: url('/client/img/backgroundSM.png');
 
     /*font-family: 'Sansita One';*/
     font-family: 'Bangers', cursive;
@@ -427,6 +427,7 @@ body {
 }
 
 .ghess-td {
+    background-size: 100%;
     float: left;
     height: 100%;
     border: 1px solid black;
