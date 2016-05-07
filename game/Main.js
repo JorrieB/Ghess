@@ -23,6 +23,7 @@ io.on('connection', function(socket) {
     socket.playerId = 'user_' + toBase64(Date.now());
     socket.join(socket.playerId);
     socket.emit('connected', {'playerId': socket.playerId});
+    
     // Listen for the proper message types
     var eventTypes = Object.keys(MessageHandlers);
     for (var i = 0; i < eventTypes.length; i++) {

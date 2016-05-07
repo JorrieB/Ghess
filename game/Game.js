@@ -152,7 +152,13 @@ module.exports = function() {
                     return character; }})
             // If there are no characters left for this player, the other player won.
             if (playerAliveCharacters.length == 0){
-                    return _this.getOtherPlayerId(playerId);
+                var serializedChars = _this.getCharacters().map(function(character) {
+                    return character.serialize();
+                });
+                return {
+                    "winner":_this.getOtherPlayerId(playerId),
+                    "characters":serializedChars
+                }
             }
         }
         return false;
@@ -285,7 +291,7 @@ module.exports = function() {
 
     _this.handleMessage = function(message, game, playerID){
 
-        if (! (game.canStart()) ){
+        if (!(game.canStart()) ){
             return false;
         }
 
@@ -517,5 +523,14 @@ module.exports = function() {
     //TODO: make this number customizable when creating a game
     _this.getNumChars = function(){
         return numCharsForEachPlayer;
+    }
+
+    _this.removeParticipant = function(participantID){
+        var participantIndex = _observers.indexOf(participantID);
+        if (participantIndex != -1){
+            _observers.splice(participantIndex, 1);
+            return "observer";
+        }
+        return "player";
     }
 };

@@ -4,6 +4,32 @@ var GameStore = require('./GameStore');
 // The first argument of each must be the socket
 // The 'this' reference is bound to the main socket.io instance
 module.exports = {
+    'disconnect' : function(socket){
+        var gameID = socket.gameId;
+        if (typeof gameID !== "undefined"){
+            var game = GameStore.get(gameID);
+            try {
+                var participantType = game.removeParticipant(socket.playerId); //Figure out what kind of person left.
+                if (participantType == "observer"){
+                    console.log('Observer left game',gameID);
+                } else {
+                    console.log('Player left, game is being destroyed');
+                    var data = {};
+                    messageObservers(game.getObservers(),'player-disconnect',data);
+
+                    var otherPlayerId = game.getOtherPlayerId(socket.playerId);
+                    this.to(otherPlayerId).emit('player-disconnect', data);
+
+                    GameStore.remove(gameID);//all players have disconnected client side, now do garbage collection
+                }
+                
+            } catch(err) {
+                console.log('Could not find game.');
+            }
+        } else {
+            console.log('Player was not connected to a game');
+        }
+    },
     'create-game': function(socket, data) {
         // TODO: let users customize by passing parameters
         var created = GameStore.create();
@@ -23,6 +49,9 @@ module.exports = {
         } else {
             console.log('found game');
             game.game.addObserver(socket.playerId);
+            socket.gameId = game.id;
+            console.log("the observer's game id is ",socket.gameId);
+
             if (game.game.canStart()){
                 socket.emit('update-state', game.game.serialize(socket.playerId));
             } else {
@@ -68,51 +97,79 @@ module.exports = {
     },
     'ready-player': function(socket, data) {
         var game = GameStore.get(socket.gameId);
-        // TODO: make ready take arguments with initial placement of characters
-        socket.emit('player-readied');
-        
-        game.insertCharacters(data.characters,socket.playerId);
+        try {
+            socket.emit('player-readied');
+            
+            game.insertCharacters(data.characters,socket.playerId);
 
-        if (game.canStart()){
-            console.log('Starting game.');
-            socket.emit('update-state', game.serialize(socket.playerId));
-            // To the other player
-            var otherPlayerId = game.getOtherPlayerId(socket.playerId);
-            this.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
-        } else {
-            console.log('Game has only one player.');
+            if (game.canStart()){
+                console.log('Starting game.');
+                socket.emit('update-state', game.serialize(socket.playerId));
+                // To the other player
+                var otherPlayerId = game.getOtherPlayerId(socket.playerId);
+                this.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
+            } else {
+                console.log('Game has only one player.');
+            }
+        } catch (err) {
+            console.log('Cannot find game.');
         }
+
 
     },
     'update-game': function(socket, data) {
     	var game = GameStore.get(socket.gameId);
-        // Todo: check if game is game, if not sever connections
-        var isValid = game.handleMessage(data, game, socket.playerId);
 
-        console.log('updating game');
-   		// Send result back
-        if (isValid) {
-            console.log('Valid move.');
-            // To this player
-            socket.emit('update-state', game.serialize(socket.playerId));
-            // To the other player
-            var otherPlayerId = game.getOtherPlayerId(socket.playerId);
-            this.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
-            // Send info to observers each time there was an update
-            var observers = game.getObservers();
-            for (observerIndex in observers){
-                this.to(observers[observerIndex]).emit('update-state', game.serialize(observers[observerIndex]));
+        try{
+            var isValid = game.handleMessage(data, game, socket.playerId);
+
+            console.log('updating game');
+            // Send result back
+            if (isValid) {
+                console.log('Valid move.');
+                // To this player
+                socket.emit('update-state', game.serialize(socket.playerId));
+                // To the other player
+                var otherPlayerId = game.getOtherPlayerId(socket.playerId);
+                console.log('about to send to other player');
+                this.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
+                // Send info to observers each time there was an update
+
+                // messageObservers(game.getObservers(),'update-state',game.serialize('observer'));
+                var observers = game.getObservers();
+                for (index in observers){
+                    this.to(observers[index]).emit('update-state', game.serialize(observer[index]));
+                  }
+
+                // If the game is over, notify the players
+                gameOverInfo = game.isGameOver()
+                if (gameOverInfo){
+                    console.log("Game is over!!")
+                    socket.emit('game-over', gameOverInfo)
+                }
+            } else {
+                console.log('Move was not valid.');
             }
 
-            // If the game is over, notify the players
-            potentialWinnerId = game.isGameOver()
-            if (potentialWinnerId){
-                console.log("Game is over!!")
-                socket.emit('game-over', {winner: potentialWinnerId})
-            }
-
-        } else {
-            console.log('Move was not valid.');
+        } catch (err){
+            console.log('Cannot update game, it does not exist.');
         }
+       
     }
 };
+
+
+////////////////////////////
+// Helper functions
+////////////////////////////
+
+//Message all observers in a game some message
+var messageObservers = function(observers,message,data){
+        for (index in observers){
+            this.to(observers[index]).emit(message, data);
+        }
+}
+
+
+
+

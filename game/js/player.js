@@ -165,12 +165,14 @@ module.exports = function(ID) {
 						tempStart = null;
 					}
 				}
-
 			}
+
 			//Add an additional delay at the end of your visibility
+			//Done so you don't immediately hear a shield when arrow leaves visibility
 			if (Boolean(delay)){
 				obfuscatedAnimations.push(makeAnimation({x:0,y:0},{x:delay,y:delay},'delay'));
 			}
+
 		}
 		return obfuscatedAnimations;
 	}
