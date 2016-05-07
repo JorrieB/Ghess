@@ -5,6 +5,26 @@
             Waiting on opponent
         </div>
     </div>
+    <div class="message win-message" style="display:none">
+        <div class="h1">
+            Victory!
+        </div>
+        <div class="message-button main-menu-button">Main Menu</div>
+    </div>
+    <div class="message lose-message" style="display:none">
+        <img class="lose-sword" src="/client/img/characters/swordsman/dead/red.png" />
+        <div class="h1">
+            You Lost!
+        </div>
+        <div class="message-button main-menu-button">Main Menu</div>
+    </div>
+    <div class="message forfeit-confirmation" style="display:none">
+        <div class="h1">
+            Are you sure?
+        </div>
+        <div class="message-button main-menu-button">Yes</div>
+        <div class="message-button hide-forfeit-confirmation">No</div>
+    </div>
     {% set width = 7 %}
     {% set height = 7 %}
     {% include 'client/templates/table.html' %}

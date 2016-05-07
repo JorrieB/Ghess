@@ -627,13 +627,40 @@ sprite.projectile {
     opacity: .6;
 }
 
-.waiting-message .h1 {
+.message .message-button {
+    cursor: pointer;
+    background: none;
+    color: white;
+    font-family: 'Bangers', cursive;
+    position: absolute;
+    padding: 5px;
+    border: 1px solid white;
+    top: 53%;
+}
+
+.message .main-menu-button {
+    left: 36%;
+}
+
+.forfeit-confirmation .hide-forfeit-confirmation {
+    left: 45%;
+}
+
+.forfeit-confirmation .main-menu-button {
+    left: 36%;
+}
+
+.message .main-menu-button:hover {
+    background-color: #2B2B2B
+}
+
+.waiting-message .h1, .win-message .h1, .lose-message .h1, .forfeit-confirmation .h1{
     position: absolute;
     top: 45%;
     left: 36%;
 }
 
-.waiting-message .wiggly-sword {
+.waiting-message .wiggly-sword, .waiting-message .lose-sword {
     position: absolute;
     width: 131px;
     left: 23%;

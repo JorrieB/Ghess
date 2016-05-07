@@ -114,9 +114,10 @@ $(function() {
         socket.emit('observe-game');
     });
 
-    $(document).on('click', '#forefeit-button', function() {
-        console.log('click!');
-    	$('.screen').replaceWith($(start_view));
+    $(document).on('click', '.main-menu-button', function() {
+        socket.disconnect();
+        $('.screen').replaceWith($(start_view));
+        socket.connect();
     });
 
 ///////////////////////////////////////////
@@ -584,9 +585,26 @@ $(function() {
         console.log('player-readied', message);
     });
 
+    socket.on('game-over', function(message) {
+        $('#forfeit-button').text('Leave');
+        if (message.winner == playerId) {
+            $('.win-message').fadeIn();
+        } else {
+            $('.lose-message').fadeIn();
+        }
+    });
+
     //////////////////////////////////
     // Play View Feedback
     //////////////////////////////////
+
+    $(document).on('click', '#forfeit-button', function() {
+        $('.forfeit-confirmation').fadeIn();
+    });
+
+    $(document).on('click', '.hide-forfeit-confirmation', function() {
+        $('.forfeit-confirmation').fadeOut();
+    });
 
     $(document).on('click', '#play-view sprite.character', function() {
         var $clicked = $(this);
