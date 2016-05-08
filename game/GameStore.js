@@ -24,11 +24,17 @@ module.exports = {
     },
     // Gets first available game, and returns its ID and the game instance (or null if none exists)
     getFirstAvailable: function() {
+        console.log('getting first available');
         var gameIds = Object.keys(games);
         for (var i = 0; i < gameIds.length; i++) {
             var id = gameIds[i];
-            if (games[id].joinable()) {
-                return { id: id, game: games[id] };
+            console.log('game id is',id);
+            try{
+                if (games[id].joinable()) {
+                    return { id: id, game: games[id] };
+                }
+            } catch (err) {
+                console.log('cannot find game with key', id);
             }
         }
         return null;

@@ -30,6 +30,36 @@ module.exports = {
             console.log('Player was not connected to a game');
         }
     },
+    'forfeit' : function(socket){
+        var gameID = socket.gameId;
+        if (typeof gameID !== "undefined"){
+            var game = GameStore.get(gameID);
+            try {
+                var participantType = game.removeParticipant(socket.playerId); //Figure out what kind of person left.
+                if (participantType == "player"){
+                    console.log('Player left, game is being destroyed');
+
+                    var otherPlayerId = game.getOtherPlayerId(socket.playerId);
+
+                    var data = {
+                        "winner":otherPlayerId
+                    };
+                    messageObservers(game.getObservers(),'player-disconnect',data);
+
+                    this.to(otherPlayerId).emit('forfeit', data);
+
+                    GameStore.remove(gameID);//all players have disconnected client side, now do garbage collection
+                } else {
+                    console.log("Observer forfeited...?");
+                }
+                
+            } catch(err) {
+                console.log('Could not find game.');
+            }
+        } else {
+            console.log('Player was not connected to a game');
+        }
+    },
     'create-game': function(socket, data) {
         // TODO: let users customize by passing parameters
         var created = GameStore.create();
