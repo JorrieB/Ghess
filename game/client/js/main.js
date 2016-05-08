@@ -332,8 +332,8 @@ $(function() {
                 var screen_pos = $placementView.position();
                 $this.addClass('floating')
 
-                        .css('top', evt.pageY - screen_pos.top)
-                        .css('left', evt.pageX - screen_pos.left)
+                        .css('top', (evt.pageY - screen_pos.top)/zoom)
+                        .css('left', (evt.pageX - screen_pos.left)/zoom)
                 $placementView.append($this);
                 $('#ready-button').hide();
             } else {
