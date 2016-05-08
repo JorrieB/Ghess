@@ -12,7 +12,7 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 	_this.attackCost = 1;
 
 	Character.call(_this, startPosition, startHeading, playerId, charID, startColor);
-	_this.characterType = "Javelinthrower";
+	_this.characterType = "Archer";
 
 
 	_this.getVisibleCells = function(){
