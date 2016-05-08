@@ -35,15 +35,33 @@ $(function() {
     // SOUNDS
     ///////////////
 
-    var snd_menu = new buzz.sound("/client/audio/MenuLoop.wav");
-    var snd_click = new buzz.sound("/client/audio/sfx_button_press.wav");
-    var snd_walk = new buzz.sound("/client/audio/sfx_walk.wav");
-    var snd_turn = new buzz.sound("/client/audio/sfx_turn.wav");
-    var snd_sword = new buzz.sound("/client/audio/sfx_sword.wav");
-    var snd_arrow_fire = new buzz.sound("/client/audio/sfx_arrow_fire.wav");
-    var snd_arrow_hit_char = new buzz.sound("/client/audio/sfx_arrow_character.wav");
-    var snd_arrow_hit_shield = new buzz.sound("/client/audio/sfx_arrow_shield.wav");
-    var snd_arrow_hit_wall = new buzz.sound("/client/audio/sfx_arrow_wall.wav");
+    // FIX SO THAT SOUNDS CAN BE PLAYED EVEN WHEN THEY ARE ALREADY PLAYING
+    var getSound = function(src) {
+        var sound = new buzz.sound(src);
+        var supported = buzz.isSupported();
+        var play_orig = sound.play;
+        console.log(play_orig);
+        sound.play = function() {
+            if (!supported) {
+                return sound;
+            }
+            sound.setTime(0);
+            sound.sound.play();
+            return sound;
+        };
+        return sound;
+    };
+
+    var snd_menu = getSound("/client/audio/MenuLoop.wav");
+    var snd_click = getSound("/client/audio/sfx_button_press.wav");
+    var snd_walk = getSound("/client/audio/sfx_walk.wav");
+    var snd_turn = getSound("/client/audio/sfx_turn.wav");
+    var snd_sword = getSound("/client/audio/sfx_sword.wav");
+    window.w = snd_sword;
+    var snd_arrow_fire = getSound("/client/audio/sfx_arrow_fire.wav");
+    var snd_arrow_hit_char = getSound("/client/audio/sfx_arrow_character.wav");
+    var snd_arrow_hit_shield = getSound("/client/audio/sfx_arrow_shield.wav");
+    var snd_arrow_hit_wall = getSound("/client/audio/sfx_arrow_wall.wav");
     buzz.all().load();
 
     $(document).on('click', '#toggle-sound', function() {
