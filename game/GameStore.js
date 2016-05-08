@@ -44,6 +44,9 @@ module.exports = {
         var gameIds = Object.keys(games);
         for (var i = 0; i < gameIds.length; i++) {
             var id = gameIds[i];
+
+            if (games[id] == null) {continue}
+
             if (games[id].observable()) {
                 return { id: id, game: games[id] };
             }
