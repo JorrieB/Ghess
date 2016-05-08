@@ -265,12 +265,13 @@ $(function() {
                 .data('type', character_type.toLowerCase())
                 .data('heading', 'down')
                 .data('direction', default_direction)
-                .css('background-image', "url('/client/img/characters/" + character_type.toLowerCase() + "/down/" + playerColor + ".png')")
-                .css('top', (evt.pageY - screen_pos.top)/zoom)
-                .css('left', (evt.pageX - screen_pos.left)/zoom)
-                .attr('disabled', 'true');
+                .css('background-image', "url('/client/img/characters/" + character_type.toLowerCase() + "/down/" + playerColor + ".png')");
+
         $this.data('character-obj', $char);
         $placement_view.append($char);
+        $char.css('top', (evt.pageY - screen_pos.top)/zoom - $char.height()/2.0)
+                .css('left', (evt.pageX - screen_pos.left)/zoom - $char.width()/2.0)
+                .attr('disabled', 'true');
         $to_place_character = $char;
     });
 
@@ -278,8 +279,8 @@ $(function() {
         if ($to_place_character.length) {
             var screen_pos = $(this).position();
             $to_place_character
-                .css('top', (evt.pageY - screen_pos.top)/zoom)
-                .css('left', (evt.pageX - screen_pos.left)/zoom);
+                .css('top', (evt.pageY - screen_pos.top)/zoom - $to_place_character.height()/2.0)
+                .css('left', (evt.pageX - screen_pos.left)/zoom - $to_place_character.width()/2.0);
             $placementSquare.removeClass('placement-square');
             $placementSquare = $(document.elementsFromPoint(evt.clientX, evt.clientY)).filter('.ghess-td.visible').addClass('placement-square');
         }
@@ -363,8 +364,8 @@ $(function() {
                 var screen_pos = $placementView.position();
                 $this.addClass('floating')
 
-                        .css('top', (evt.pageY - screen_pos.top)/zoom)
-                        .css('left', (evt.pageX - screen_pos.left)/zoom)
+                        .css('top', (evt.pageY - screen_pos.top)/zoom - $this.height()/2.0)
+                        .css('left', (evt.pageX - screen_pos.left)/zoom - $this.width()/2.0)
                 $placementView.append($this);
                 $('#ready-button').hide();
             } else {
