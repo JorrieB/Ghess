@@ -48,12 +48,32 @@ body {
     100% {transform:rotate(5deg);}
 }
 
+@keyframes downleft {
+    from {top:-10px; left:48%; width: 50px; height: 50px;}
+    to {top:400px; left:14%; width: 200px; height: 200px;}
+}
+
 @-webkit-keyframes downleft {
     from {top:-10px; left:48%; width: 50px; height: 50px;}
     to {top:400px; left:14%; width: 200px; height: 200px;}
 }
 
+@-moz-keyframes downleft {
+    from {top:-10px; left:48%; width: 50px; height: 50px;}
+    to {top:400px; left:14%; width: 200px; height: 200px;}
+}
+
+@keyframes downright {
+    from {top:-10px; left:52%; width: 50px; height: 50px;}
+    to {top:400px; left:86%; width: 200px; height: 200px;}
+}
+
 @-webkit-keyframes downright {
+    from {top:-10px; left:52%; width: 50px; height: 50px;}
+    to {top:400px; left:86%; width: 200px; height: 200px;}
+}
+
+@-moz-keyframes downright {
     from {top:-10px; left:52%; width: 50px; height: 50px;}
     to {top:400px; left:86%; width: 200px; height: 200px;}
 }
