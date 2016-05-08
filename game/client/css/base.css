@@ -797,7 +797,7 @@ sprite.projectile {
     left: 36%;
 }
 
-.message .main-menu-button:hover {
+.message .message-button:hover {
     background-color: #2B2B2B
 }
 
@@ -813,5 +813,3 @@ sprite.projectile {
     left: 23%;
     top: 37%;
 }
-
-
