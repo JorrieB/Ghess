@@ -35,16 +35,22 @@ $(function() {
     // SOUNDS
     ///////////////
 
-    // var snd_menu = new buzz.sound("/client/audio/MenuLoop.wav");
+    var snd_menu = new buzz.sound("/client/audio/MenuLoop.wav");
     var snd_click = new buzz.sound("/client/audio/sfx_button_press.wav");
-    // var snd_walk = new buzz.sound("/client/audio/sfx_walk.wav");
-    // var snd_turn = new buzz.sound("/client/audio/sfx_turn.wav");
-    // var snd_sword = new buzz.sound("/client/audio/sfx_sword.wav");
+    var snd_walk = new buzz.sound("/client/audio/sfx_walk.wav");
+    var snd_turn = new buzz.sound("/client/audio/sfx_turn.wav");
+    var snd_sword = new buzz.sound("/client/audio/sfx_sword.wav");
     var snd_arrow_fire = new buzz.sound("/client/audio/sfx_arrow_fire.wav");
     var snd_arrow_hit_char = new buzz.sound("/client/audio/sfx_arrow_character.wav");
     var snd_arrow_hit_shield = new buzz.sound("/client/audio/sfx_arrow_shield.wav");
     var snd_arrow_hit_wall = new buzz.sound("/client/audio/sfx_arrow_wall.wav");
     buzz.all().load();
+
+    $(document).on('click', '#toggle-sound', function() {
+        var $this = $(this);
+        buzz.all().toggleMute();
+        $this.toggleClass('sound-on').toggleClass('sound-off');
+    });
 
     ///////////////
     // SCREEN FLOW
@@ -58,7 +64,7 @@ $(function() {
 
 	// Initialize with start_view
     $screenContainer.append($(start_view));
-    // snd_menu.loop().play();
+    snd_menu.loop().play();
 
     $(document).on('click', '#player-button', function() {
     	$('.screen').replaceWith($(loading_view));
@@ -101,7 +107,7 @@ $(function() {
             });
         }
         socket.emit('ready-player', {'characters': charList});
-        // snd_menu.stop();
+        snd_menu.stop();
         $('.screen').replaceWith($(play_view));
         $('#player-id').html(playerId);
         $curr_char = $();
