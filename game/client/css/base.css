@@ -48,12 +48,32 @@ body {
     100% {transform:rotate(5deg);}
 }
 
+@keyframes downleft {
+    from {top:-10px; left:48%; width: 50px; height: 50px;}
+    to {top:400px; left:14%; width: 200px; height: 200px;}
+}
+
 @-webkit-keyframes downleft {
     from {top:-10px; left:48%; width: 50px; height: 50px;}
     to {top:400px; left:14%; width: 200px; height: 200px;}
 }
 
+@-moz-keyframes downleft {
+    from {top:-10px; left:48%; width: 50px; height: 50px;}
+    to {top:400px; left:14%; width: 200px; height: 200px;}
+}
+
+@keyframes downright {
+    from {top:-10px; left:52%; width: 50px; height: 50px;}
+    to {top:400px; left:86%; width: 200px; height: 200px;}
+}
+
 @-webkit-keyframes downright {
+    from {top:-10px; left:52%; width: 50px; height: 50px;}
+    to {top:400px; left:86%; width: 200px; height: 200px;}
+}
+
+@-moz-keyframes downright {
     from {top:-10px; left:52%; width: 50px; height: 50px;}
     to {top:400px; left:86%; width: 200px; height: 200px;}
 }
@@ -160,7 +180,7 @@ body {
 /* BASIC ELEMENTS */
 #toggle-sound {
     position: absolute;
-    z-index: 10;
+    z-index: 51;
     right: 0;
     top: 2px;
     width: 30px;
@@ -782,7 +802,7 @@ sprite.projectile {
     left: 36%;
 }
 
-.message .main-menu-button:hover {
+.message .message-button:hover {
     background-color: #2B2B2B
 }
 
@@ -798,5 +818,3 @@ sprite.projectile {
     left: 23%;
     top: 37%;
 }
-
-
