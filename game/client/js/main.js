@@ -40,7 +40,6 @@ $(function() {
         var sound = new buzz.sound(src);
         var supported = buzz.isSupported();
         var play_orig = sound.play;
-        console.log(play_orig);
         sound.play = function() {
             if (!supported) {
                 return sound;
@@ -142,6 +141,20 @@ $(function() {
         $('.screen').replaceWith($(start_view));
         snd_menu.loop().play();
         socket.connect();
+    });
+
+///////////////////////////////////////////
+//****************************************
+// START VIEW
+//****************************************
+///////////////////////////////////////////
+
+    $(document).on('mouseenter', '#start-view button', function() {
+        $('#game-title').stop().fadeIn(1000);
+    });
+
+    $(document).on('mouseleave', '#start-view button', function() {
+        $('#game-title').stop().fadeOut(1000);
     });
 
 ///////////////////////////////////////////
