@@ -235,8 +235,8 @@ $(function() {
                 .data('heading', 'down')
                 .data('direction', default_direction)
                 .css('background-image', "url('/client/img/characters/" + character_type.toLowerCase() + "/down/" + playerColor + ".png')")
-                .css('top', evt.pageY - screen_pos.top)
-                .css('left', evt.pageX - screen_pos.left)
+                .css('top', (evt.pageY - screen_pos.top)/zoom)
+                .css('left', (evt.pageX - screen_pos.left)/zoom)
                 .attr('disabled', 'true');
         $this.data('character-obj', $char);
         $placement_view.append($char);
