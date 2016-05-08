@@ -578,6 +578,7 @@ $(function() {
         // Player Stat
         var selfChars = message.HUD.selfChars;
         $('#player-stat').empty();
+        $('#player-stat').append('<div class="info-description"> My Team </div>');
         for (var c = 0; c < selfChars.length; c++) {
             var $selfChar = $('<div />');
             var character = selfChars[c];
@@ -597,6 +598,7 @@ $(function() {
         }
 
         $('#enemy-stat').empty();
+        $('#enemy-stat').append('<div class="info-description"> Enemy Team </div>');
         for (var e = 0; e < enemyChars.length; e++) {
             var $enemyChar = $('<div />');
             // TODO: if we don't want to specify character type, we need a generic character image asset
