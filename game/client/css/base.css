@@ -160,7 +160,7 @@ body {
 /* BASIC ELEMENTS */
 #toggle-sound {
     position: absolute;
-    z-index: 10;
+    z-index: 51;
     right: 0;
     top: 2px;
     width: 30px;
