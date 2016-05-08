@@ -140,6 +140,7 @@ $(function() {
     $(document).on('click', '.main-menu-button', function() {
         socket.disconnect();
         $('.screen').replaceWith($(start_view));
+        snd_menu.loop().play();
         socket.connect();
     });
 

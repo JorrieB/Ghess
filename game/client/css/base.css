@@ -679,7 +679,7 @@ sprite.projectile {
     left: 36%;
 }
 
-.waiting-message .wiggly-sword, .waiting-message .lose-sword {
+.waiting-message .wiggly-sword, .lose-message .lose-sword {
     position: absolute;
     width: 131px;
     left: 23%;
