@@ -107,7 +107,6 @@ $(function() {
             });
         }
         socket.emit('ready-player', {'characters': charList});
-        snd_menu.stop();
         $('.screen').replaceWith($(play_view));
         $('#player-id').html(playerId);
         $curr_char = $();
@@ -534,6 +533,7 @@ $(function() {
 
     socket.on('update-state', function(message) {
         $('.waiting-message').hide();
+        snd_menu.stop();
         $curr_char = $();
         console.log('update-state', message);
 
