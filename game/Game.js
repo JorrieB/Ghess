@@ -3,6 +3,7 @@ var Character = require('./js/character');
 var Archer = require('./js/archer');
 var Swordsman = require('./js/swordsman');
 var Scout = require('./js/scout');
+var Javelinthrower = require('./js/javelinthrower');
 var Player = require('./js/player');
 
 module.exports = function() {
@@ -104,6 +105,9 @@ module.exports = function() {
                 break;
             case "scout":
                 characterObject = new Scout(character.position,character.heading,playerID,charID,characterColor);
+                break;
+            case "javelinthrower":
+                characterObject = new Javelinthrower(character.position,character.heading,playerID,charID,characterColor);
                 break;
             default:
                 break;
@@ -420,7 +424,7 @@ module.exports = function() {
         if (animationsFromAttack.length == 0){
             return false;
         }
-        
+
         var animations = animationsFromAttack; //add the attack animation information
         var moveCost = attackOutput.attackCost;
         return {
@@ -450,7 +454,7 @@ module.exports = function() {
     _this.getParams = function(playerID) {
         params = {
             "board-size":_boardSize,
-            "roster":["archer","swordsman","scout", "archer","swordsman","scout"], // need some way to find restrict available characters, or at least to provide them for the players' placements
+            "roster":["archer","swordsman","scout", "javelinthrower","archer","swordsman","scout", "javelinthrower"], // need some way to find restrict available characters, or at least to provide them for the players' placements
             "color": _playerColor(playerID),
             "validSquares":_getPlaceableSquares(playerID),
             "numChars":numCharsForEachPlayer
@@ -515,7 +519,7 @@ module.exports = function() {
     //TEAM-SELECTION
     //returns an array of character objects used during roster selection
     _this.getRoster = function(){
-        return ["archer","swordsman","scout"];
+        return ["archer","swordsman","scout","javelinthrower"];
     }
 
     //property of the game
