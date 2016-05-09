@@ -234,7 +234,7 @@ module.exports = function() {
     }
 
     _this.getActivePlayerId = function(){
-        return _getActivePlayer();
+        return _getActivePlayer().getID();
     }
 
     _this.isPlayerMove = function(playerID){
@@ -502,8 +502,9 @@ module.exports = function() {
 
         return {
             "message":"update-state",
-            "stamina":(_movePerTurn - (_numberOfMoves % _movePerTurn)),
+            "stamina":(!(_this.getActivePlayerId() ==  playerID)) ? false : _this.getStamina(), // TODO:change undefined to the most usable thing for client
             "turn":_this.getActivePlayerId(),
+            "color":_playerColor(_this.getActivePlayerId),
             "characters":serializedChars,
             "animations":_isObserver(playerID) ? _animations :player.obfuscateAnimations(_animations),
             "HUD":{
@@ -536,5 +537,12 @@ module.exports = function() {
             return "observer";
         }
         return "player";
+    }
+
+    _this.getStamina = function(){
+        return {
+            "current": (_movePerTurn - (_numberOfMoves % _movePerTurn)),
+            "max": _movePerTurn
+        };
     }
 };

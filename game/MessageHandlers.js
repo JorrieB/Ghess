@@ -177,6 +177,8 @@ module.exports = {
                     console.log("Game is over!!")
                     socket.emit('game-over', gameOverInfo)
                     this.to(otherPlayerId).emit('game-over',gameOverInfo);
+                    //TODO: emit to observers
+                    GameStore.remove(gameID);
                 }
             } else {
                 console.log('Move was not valid.');

@@ -27,6 +27,17 @@ module.exports  = function(startPosition, startHeading, playerId, charID, startC
 		}
 		return visibleCells;
 	};
+	
+	_this.originalGetVisibleCells = function(){
+		visibleCells = []
+		for (var i = -scoutRange; i <= scoutRange; i++) {
+			for (var j = -scoutRange; j <= scoutRange; j++){
+				visibleCells.push(vectorUtils.vectorSum({x:i, y:j}, _this.getPosition()));
+				
+			}
+		}
+		return visibleCells;
+	};
 
 	_this.getAttackableCells = function(){
 		return [];
