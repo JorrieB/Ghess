@@ -16,7 +16,7 @@ module.exports = function() {
     var _boardSize = 7;
     var _maxTurnTime = 100;
     var _numberOfMoves = 0;     // Number of moves since the beginning of the game
-    var _movePerTurn = 2;
+    var _movePerTurn = 6;
     var _players = [];
     var _observers = []; // Remember our observers so we can emit messages to them
 

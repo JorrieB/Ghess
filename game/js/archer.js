@@ -4,15 +4,15 @@ var utils = require('../utils/vectorUtils');
 module.exports = function(startPosition, startHeading, playerId, charID, startColor) {
 	var _this = this;
 	var arrowRange = 10;
+	Character.call(_this, startPosition, startHeading, playerId, charID, startColor);
 
 
 	//Costs
 	_this.headingCost = 1;
-	_this.movingCost = 1;
-	_this.attackCost = 1;
+	_this.movingCost = 3;
+	_this.attackCost = 3;
 
-	Character.call(_this, startPosition, startHeading, playerId, charID, startColor);
-	_this.characterType = "Archer";
+		_this.characterType = "Archer";
 
 
 	_this.getVisibleCells = function(){

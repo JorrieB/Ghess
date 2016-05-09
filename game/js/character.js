@@ -25,9 +25,9 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 		return _this.position;
 	};
 
-	this.setPosition = function(newPosition) {
+	_this.setPosition = function(newPosition) {
 		_this.position = newPosition;
-		return _this.movingCost;
+		return this.movingCost;
 	};
 
 	_this.getHeading = function(){

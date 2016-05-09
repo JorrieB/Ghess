@@ -3,16 +3,16 @@ var Character = require('./character');
 
 module.exports = function(startPosition, startHeading, playerId, charID, startColor) {
 	var _this = this;
+	Character.call(_this, startPosition, startHeading,  playerId, charID, startColor);
 
 	//Costs	
-	_this.headingCost = 1;
-	_this.movingCost = 1;
-	_this.attackCost = 1;
+	_this.headingCost = 2;
+	_this.movingCost = 3;
+	_this.attackCost = 3;
 
  	//The size of the square centerd at the scout is scoutRange + 1
 
-	Character.call(_this, startPosition, startHeading,  playerId, charID, startColor);
-	_this.characterType = "Swordsman";
+		_this.characterType = "Swordsman";
 
 
 	_this.getVisibleCells = function(){
