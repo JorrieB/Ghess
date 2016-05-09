@@ -468,6 +468,18 @@ $(function() {
         });
     };
 
+    var animateJavelin = function(animation, callback) {
+        var $javelin = $('<sprite />')
+            .addClass('projectile')
+            .css('background-image', "url('/client/img/characters/archer/attack/red.png')");
+        console.log('stuff');
+        $javelin.animateDiagProjectile($('.ghess-table'), animation.startPos, animation.endPos, 300, function() {
+            console.log('more stuff');
+            $javelin.remove();
+            callback();
+        });
+    };
+
     var animateShield = function(animation, callback) {
         var $shield = $('<sprite />')
             .addClass('projectile')
@@ -488,7 +500,8 @@ $(function() {
 
     var animationFuncMap = {
         'arrow': animateArrow,
-        'shield': animateShield
+        'shield': animateShield,
+        'javelin': animateJavelin,
     };
 
     /////////////////////////////////////////
