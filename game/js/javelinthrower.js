@@ -38,14 +38,17 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 
 	_this.attack = function(attackedPosition, game){
 
-        // Is the targetCharacter an adversary?
-        if (targetCharacter.getPlayerId() == playerId){
-        return {'attackCost':0, 'animationList':animationList};
-        }
+  // This should not be commented out, but it's broken and client side should be taking care of it
+  //       // Can the javelinthrower attack in that position?
+  //       if (! vectorUtils.inVectorList(_this.getAttackableCells(), attackedPosition)) {
+  //       return {'attackCost':0, 'animationList':animationList};
+  //       }
 
-        // Can the swordsman attack in that position?
-        if (! vectorUtils.inVectorList(activeCharacter.getAttackableCells(), attackedPosition)){
-        return {'attackCost':0, 'animationList':animationList};
+
+        targetCharacter = (game.getCharacterAtPosition(attackedPosition));
+
+        if (! (targetCharacter == null)){
+        	game.destroyCharacter(targetCharacter);
         }
 
 		var animationList =  [{
@@ -54,6 +57,7 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 					"startPos":_this.getPosition(),
 					"endPos":attackedPosition
 				}];
+
 
 		return {'attackCost':_this.attackCost, 'animationList':animationList};
 
