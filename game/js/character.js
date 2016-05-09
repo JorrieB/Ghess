@@ -75,7 +75,11 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 	//The fields are arbitrary, but should remain consistent for consistent things-
 	////Some characters don't have clear attack range, so they won't have an attack range photo, etc.
 	_this.getInfo = function(){
-		return {};
+		return {
+			"move": _this.movingCost,
+			"turn": _this.headingCost,
+			"attack": _this.attackCost
+		};
 	}
 
 	//returns list of animations. If empty, there are no animations.
@@ -98,7 +102,7 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
    			"move": _this.getAccessibleCells(),
    			"heading": _this.heading,
    			"color": _this.charColor,
-   			"info": _this.getInfo()
+   			"costInfo": _this.getInfo()
 		}
 		return characterObject;
 	}
