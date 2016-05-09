@@ -136,12 +136,15 @@ $(function() {
         console.log('spectator button');
         playerColor = 'blue';
     	$('.screen').replaceWith($(spectator_view));
+        snd_menu.stop();
+        snd_gameplay.loop().play();
         socket.emit('observe-game');
     });
 
     $(document).on('click', '.main-menu-button', function() {
         socket.disconnect();
         $('.screen').replaceWith($(start_view));
+        snd_gameplay.stop();
         snd_menu.loop().play();
         socket.connect();
     });
@@ -475,6 +478,7 @@ $(function() {
         var $javelin = $('<sprite />')
             .addClass('projectile')
             .css('background-image', "url('/client/img/characters/javelinthrower/attack/red.png')");
+        snd_arrow_fire.play();
         $javelin.animateDiagProjectile($('.ghess-table'), animation.startPos, animation.endPos, 300, function() {
             $javelin.remove();
             callback();
@@ -499,10 +503,22 @@ $(function() {
 
     };
 
+    var animateMove = function(animation, callback) {
+        snd_walk.play();
+        callback();
+    };
+
+    var animateTurn = function(animation, callback) {
+        snd_turn.play();
+        callback();
+    };
+
     var animationFuncMap = {
         'arrow': animateArrow,
         'shield': animateShield,
         'javelin': animateJavelin,
+        'move': animateMove,
+        'turn': animateTurn
     };
 
     /////////////////////////////////////////
