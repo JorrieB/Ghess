@@ -52,6 +52,7 @@ $(function() {
     };
 
     var snd_menu = getSound("/client/audio/MenuLoop.wav");
+    var snd_gameplay = getSound("/client/audio/GameplayLoop.wav");
     var snd_click = getSound("/client/audio/sfx_button_press.wav");
     var snd_walk = getSound("/client/audio/sfx_walk.wav");
     var snd_turn = getSound("/client/audio/sfx_turn.wav");
@@ -125,6 +126,8 @@ $(function() {
         }
         socket.emit('ready-player', {'characters': charList});
         $('.screen').replaceWith($(play_view));
+        snd_menu.stop();
+        snd_gameplay.loop().play();
         $('#player-id').html(playerId);
         $curr_char = $();
     });
@@ -577,7 +580,6 @@ $(function() {
 
     socket.on('update-state', function(message) {
         $('.waiting-message').hide();
-        snd_menu.stop();
         $curr_char = $();
         console.log('update-state', message);
 
