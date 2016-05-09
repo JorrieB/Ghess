@@ -23,11 +23,8 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 		attackableCells = [];
 		for (var i = 0; i <= javelinRange; i++) {
 			frontTarget = utils.vectorSum(utils.vectorMultScalar(_this.heading, i),_this.position);
-			attackableCells.push(frontTarget);
-			for (var j = 0; j <= i; j++) {
-				attackableCells.push(utils.vectorSum(utils.vectorMultScalar(utils.turnRight(_this.heading), j), frontTarget));
-				attackableCells.push(utils.vectorSum(utils.vectorMultScalar(utils.turnLeft(_this.heading), j), frontTarget));
-			}
+			attackableCells.push(utils.vectorSum(utils.vectorMultScalar(utils.turnRight(_this.heading), i), frontTarget));
+			attackableCells.push(utils.vectorSum(utils.vectorMultScalar(utils.turnLeft(_this.heading), i), frontTarget));
 		}
 		return attackableCells
 	};
