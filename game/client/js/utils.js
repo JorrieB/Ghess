@@ -134,3 +134,27 @@ $.fn.animateProjectile = function($targetContainer, start, end, speed, callback)
     }, speed*length, 'linear', callback);
     return this;
 };
+
+$.fn.animateDiagProjectile = function($targetContainer, start, end, speed, callback) {
+    var $start_square = getSquare(start);
+    var start_pos = $start_square.position();
+    var $end_square = getSquare(end);
+    var end_pos = $end_square.position();
+
+    this.hide();
+    $targetContainer.append(this);
+
+    var x = end.x-start.x;
+    var y = end.y-start.y;
+    var length = Math.sqrt(Math.pow(x,2) + Math.pow(y,2))
+    this.rotate(Math.atan2(y,x)/(2*Math.PI)*360+90);
+
+    this.css('top', start_pos.top)
+        .css('left', start_pos.left);
+    this.show();
+    this.animate({
+        'top': end_pos.top,
+        'left': end_pos.left,
+    }, speed*length, 'linear', callback);
+    return this;
+};

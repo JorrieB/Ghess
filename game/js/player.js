@@ -41,7 +41,7 @@ module.exports = function(ID) {
 				cumulativeVisibility = cumulativeVisibility.concat(myArray[charIndex].getVisibleCells());
 			}
 		}
-		return cumulativeVisibility;                                                                                                                                                                                                    
+		return cumulativeVisibility;
 	}
 
 	simplifyCharacter = function(characterObject){
@@ -70,7 +70,7 @@ module.exports = function(ID) {
 			simpleEnemy = simplifyCharacter(enemies[i]);
 			simpleEnemy.charType = "undefined"; //obfuscate the enemy type
 			enemyArray.push(simpleEnemy);
-		}	
+		}
 	}
 
 	//this would only be called when an ally died, hence the name.
@@ -145,7 +145,7 @@ module.exports = function(ID) {
 							obfuscatedAnimations.push(makeAnimation({x:0,y:0},{x:delay,y:delay},'delay'));
 						}
 						delay = 0;
-						tempStart = next;		
+						tempStart = next;
 						next = utils.vectorSum(next,heading);
 					} else {
 						delay++;
