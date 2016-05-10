@@ -605,7 +605,6 @@ $(function() {
         } else {
             var turnColor = 'turn-gray';
         }
-
         $('#stamina-title').removeClass().addClass(turnColor);
         $('#stamina-level').removeClass().addClass(turnColor);
         $('#stamina-count').removeClass().addClass(turnColor);
@@ -616,7 +615,7 @@ $(function() {
         var animateSpeed = 2500;
         if (message.stamina == false) {
             levelPercent = 0;
-            animateSpeed = 4000;
+            animateSpeed = 2000;
         }
         $('#stamina-count').html(message.stamina.current);
         $('#stamina-level').animate({
@@ -664,6 +663,7 @@ $(function() {
         handleAnimations(message.animations, function() {
             var $table = $(table);
             $('.ghess-table').replaceWith($table);
+            $('.ghess-table').css('margin-top', '40px');
             handleCharacters($table, message.characters);
         });
 
@@ -728,6 +728,7 @@ $(function() {
             var $square = getSquare(vec);
             $square.addClass('visibility-hover');
         });
+        $('.character-portrait').css('background-image', "url('/client/img/characters/" + $(this).data('type').toLowerCase() + "/stat/" + $(this).data('color') + "-stat.png')");
     });
 
     $(document).on('mouseout', 'sprite.alive.mine', function() {
@@ -735,6 +736,7 @@ $(function() {
             var $square = getSquare(vec);
             $square.removeClass('visibility-hover');
         });
+        // $('.character-portrait').css('background-image', "");
     });
 
 
