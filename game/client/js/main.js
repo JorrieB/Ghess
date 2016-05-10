@@ -609,12 +609,19 @@ $(function() {
         $('#stamina-title').removeClass().addClass(turnColor);
         $('#stamina-level').removeClass().addClass(turnColor);
         $('#stamina-count').removeClass().addClass(turnColor);
-        // $('#stamina-title');
-        // $('#stamina-level');
-        // $('#stamina-count')
 
         // Show stamina info
+        var levelPercent = Math.round((message.stamina.current/message.stamina.max)*100)/100;
+        var meterWidth = $('.stamina-meter').width();
+        var animateSpeed = 2500;
+        if (message.stamina == false) {
+            levelPercent = 0;
+            animateSpeed = 4000;
+        }
         $('#stamina-count').html(message.stamina.current);
+        $('#stamina-level').animate({
+            width: levelPercent * meterWidth
+        }, animateSpeed);
 
         // Player Stat
         var selfChars = message.HUD.selfChars;
