@@ -1,15 +1,22 @@
 <!-- player-stat contains visual info on the characters that comprise their team  -->
 {% set num_chars = 3 %}
-<div id="player-stat" class="h2 playView-info-text">
-    {% for i in range(num_chars) %}
-        <div class="stat-cell unknown"></div>
-    {% endfor %}
+<div id="player-row" class="info-row">
+	<div id="turn-standard" class="standard"> </div>
+	<div id="player-stat" class="h2 playView-info-text">
+	    {% for i in range(num_chars) %}
+	        <div class="stat-cell unknown"></div>
+	    {% endfor %}
+	</div>
 </div>
-<!-- enemy-stat contains info about enemy's team -->
-<div id="enemy-stat" class="h2 playView-info-text">
-    {% for i in range(num_chars) %}
-        <div class="stat-cell unknown"></div>
-    {% endfor %}
+
+<div id="enemy-row" class="info-row">
+	<!-- enemy-stat contains info about enemy's team -->
+	<div id="enemy-turn-standard" class="standard"> </div>
+	<div id="enemy-stat" class="h2 playView-info-text">
+	    {% for i in range(num_chars) %}
+	        <div class="stat-cell unknown"></div>
+	    {% endfor %}
+	</div>
 </div>
 
 

@@ -152,14 +152,13 @@ $(function() {
 //****************************************
 // START VIEW
 //****************************************
-///////////////////////////////////////////
-
+///////////////////////////////////////////    
     $(document).on('mouseenter', '#start-view button', function() {
         $('#game-title').stop().fadeIn(1000);
     });
 
     $(document).on('mouseleave', '#start-view button', function() {
-        $('#game-title').stop().fadeOut(1000);
+        $('#game-title').stop().fadeOut(2000);
     });
 
 ///////////////////////////////////////////
@@ -628,11 +627,25 @@ $(function() {
         $curr_char = $();
         console.log('update-state', message);
 
+        // Enemy Stat
+        var enemyChars = message.HUD.enemyChars;
+        var enemyColor;
+        if (playerColor == 'red') {
+            enemyColor = 'blue';
+        } else {
+            enemyColor = 'red';
+        }
+
         // Show who's turn
+        
         if (playerColor == message.color || $('#spectator-view').length) {
             var turnColor = 'turn-'+message.color;
+            $("#turn-standard").addClass('turn-standard-'+playerColor);
+            $("#enemy-turn-standard").removeClass('turn-standard-'+enemyColor);
         } else {
             var turnColor = 'turn-gray';
+            $("#enemy-turn-standard").addClass('turn-standard-'+enemyColor);
+            $("#turn-standard").removeClass('turn-standard-'+playerColor);
         }
         $('#stamina-title').removeClass().addClass(turnColor);
         $('#stamina-level').removeClass().addClass(turnColor);
@@ -662,15 +675,6 @@ $(function() {
             $selfChar.addClass('stat-cell');
             $selfChar.css('background-image', "url('/client/img/characters/" + character.charType.toLowerCase() + (alive ? "/down/" : "/dead/") + playerColor + ".png')");
             $('#player-stat').append($selfChar);
-        }
-
-        // Enemy Stat
-        var enemyChars = message.HUD.enemyChars;
-        var enemyColor;
-        if (playerColor == 'red') {
-            enemyColor = 'blue';
-        } else {
-            enemyColor = 'red';
         }
 
         $('#enemy-stat').empty();
