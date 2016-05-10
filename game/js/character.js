@@ -62,6 +62,19 @@ module.exports = function(startPosition, startHeading, playerId, charID, startCo
 	_this.getAliveness = function(){
 		return this.alive;
 	}
+	
+	_this.getHeadingCost = function(){
+		return _this.headingCost;
+	}
+	
+	_this.getMovingCost = function(){
+		return _this.movingCost;
+	}
+	
+	_this.getAttackCost = function(){
+		return _this.attackCost;
+	}
+
 
 	_this.kill = function(){
 		console.log("death and despair");
