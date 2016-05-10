@@ -156,12 +156,8 @@ module.exports = function() {
                     return character; }})
             // If there are no characters left for this player, the other player won.
             if (playerAliveCharacters.length == 0){
-                var serializedChars = _this.getCharacters().map(function(character) {
-                    return character.serialize();
-                });
                 return {
-                    "winner":_this.getOtherPlayerId(playerId),
-                    "characters":serializedChars
+                    "winner":_this.getOtherPlayerId(playerId)
                 }
             }
         }
@@ -340,6 +336,10 @@ module.exports = function() {
             return false;
         }
 
+	if (activeCharacter.getMovingCost() > _this.getStamina().current){
+	    return false;
+	}
+
         // Is that character controlled by playerID?
         if (!activeCharacter.getPlayerId() == playerId){
             return false;
@@ -381,6 +381,10 @@ module.exports = function() {
         if (activeCharacter == null){
             return false;
         }
+	
+	if (activeCharacter.getHeadingCost() > _this.getStamina().current){
+	    return false;
+	}
 
         // Is that character controlled by playerID?
         if (!activeCharacter.getPlayerId() == playerId){
@@ -413,6 +417,10 @@ module.exports = function() {
         if (activeCharacter == null){
             return false;
         }
+
+	if (activeCharacter.getAttackCost() > _this.getStamina().current){
+	    return false;
+	}
 
         // Is that character controlled by playerID?
         if (!(activeCharacter.getPlayerId() == playerId)){
