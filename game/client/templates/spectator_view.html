@@ -1,20 +1,42 @@
 <div id="spectator-view" class="screen">
+     <div class="message waiting-message">
+        <img class="wiggle-always wiggly-sword" src="/client/img/characters/swordsman/attack/red.png" />
+        <div class="h1">
+            Waiting on an Observable Match
+        </div>
+        <div class="message-button main-menu-button">Yes</div>
+    </div>
+    <div class="message win-message" style="display:none">
+        <div class="h1">
+            Game Complete!
+        </div>
+        <div class="message-button main-menu-button">Main Menu</div>
+    </div>
+    <div class="message forfeit-confirmation" style="display:none">
+        <div class="h1">
+            Are you sure?
+        </div>
+        <div class="message-button main-menu-button">Yes</div>
+        <div class="message-button hide-forfeit-confirmation">No</div>
+    </div>
 
     {% set width = 7 %}
     {% set height = 7 %}
     {% include 'client/templates/table.html' %}
 
-    <div id="info-pane" class="playView-info">
-    	<!-- User selects their unique playerID before entering play view -->
-    	<div id="player-id" class="h1 playView-info-text"> Spectator </div>
-        {% set spectator = true %}
-        {% include 'client/templates/char_info_panels.html' %}
+    <div id="stamina-title" class='turn-gray'> Energy </div>
+    <div class="stamina-meter">
+      <span id="stamina-level" class='turn-gray'></span>
+    </div>
+    <div id="stamina-count" class='turn-gray'> </div>
 
+
+    <div id="info-pane" class="playView-info">
+        {% include 'client/templates/char_info_panels.html' %}
+        <div class="info-description">Selected Character</div>
         {% include 'client/templates/character_portrait.html' %}
 
-        <!-- character-stat contains info about the selected character and his powers -->
-		<div id="character-stat" class="h2 playView-info-text"> (character stats) </div>
-		<button type="button" id="leave-button" class="h2 basic-button redBtn">Leave</button>
+		<button type="button" id="forfeit-button" class="h2 basic-button redBtn">Leave</button>
 
 	</div>
 

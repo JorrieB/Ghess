@@ -26,7 +26,6 @@
         <div class="message-button hide-forfeit-confirmation">No</div>
     </div>
 
-    {% set classes="play-view-table" %}
     {% set width = 7 %}
     {% set height = 7 %}
     {% include 'client/templates/table.html' %}
@@ -42,10 +41,8 @@
         <div class="info-description">Selected Character</div>
         {% include 'client/templates/character_portrait.html' %}
 
-        {% if not spectator %}
         <div class="round-button wiggle glossy2 action-button sleep-button"></div>
-        {% endif %}
-        
+
 		<button type="button" id="forfeit-button" class="h2 basic-button redBtn">Forfeit! :(</button>
 
 	</div>
