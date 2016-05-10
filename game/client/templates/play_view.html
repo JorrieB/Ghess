@@ -31,11 +31,11 @@
     {% set height = 7 %}
     {% include 'client/templates/table.html' %}
 
-    <div id="stamina-title"> Energy </div>
+    <div id="stamina-title" class='turn-gray'> Energy </div>
     <div class="stamina-meter">
-      <span id="stamina-level" style="width: 25%"></span>
+      <span id="stamina-level" class='turn-gray' style="width: 25%"></span>
     </div>
-    <div id="stamina-count"> </div>
+    <div id="stamina-count" class='turn-gray'> </div>
 
     <div id="info-pane" class="playView-info">
         {% include 'client/templates/char_info_panels.html' %}

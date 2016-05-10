@@ -605,9 +605,13 @@ $(function() {
         } else {
             var turnColor = 'turn-gray';
         }
-        $('#stamina-title').addClass(turnColor);
-        $('#stamina-level').addClass(turnColor);
-        $('#stamina-count').addClass(turnColor);
+
+        $('#stamina-title').removeClass().addClass(turnColor);
+        $('#stamina-level').removeClass().addClass(turnColor);
+        $('#stamina-count').removeClass().addClass(turnColor);
+        // $('#stamina-title');
+        // $('#stamina-level');
+        // $('#stamina-count')
 
         // Show stamina info
         $('#stamina-count').html(message.stamina.current);
