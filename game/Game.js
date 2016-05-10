@@ -510,7 +510,7 @@ module.exports = function() {
 
         return {
             "message":"update-state",
-            "stamina":(!(_this.getActivePlayerId() !=  playerID)) ? false : _this.getStamina(),
+            "stamina":((_this.getOtherPlayerId(_this.getActivePlayerId()) ==  playerID)) ? false : _this.getStamina(),
             "turn":_this.getActivePlayerId(),
             "color":_playerColor(_this.getActivePlayerId()),
             "characters":serializedChars,
