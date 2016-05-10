@@ -16,7 +16,7 @@ body {
     0% {-webkit-transform:rotate(15deg);}
     50% {-webkit-transform:rotate(-15deg);}
     100% {-webkit-transform:rotate(15deg);}
-} 
+}
 
 @-moz-keyframes wiggle {
     0% {-moz-transform:rotate(15deg);}
@@ -78,7 +78,7 @@ body {
     to {top:400px; left:86%; width: 200px; height: 200px;}
 }
 
-.wiggle:hover {
+.wiggle:not(.disabled, .not-turn):hover {
     -webkit-animation: wiggle 1.0s infinite;
     -moz-animation: wiggle 1.0s infinite;
     animation: wiggle 1.0s infinite;
@@ -546,7 +546,7 @@ body {
     border-radius: 25px;
 }
 
-.stamina-meter { 
+.stamina-meter {
     left: 180px;
     width: 700px;
     height: 24px;  /* Can be anything */
@@ -573,7 +573,7 @@ body {
     rgb(43,194,83) 37%,
     rgb(84,240,84) 69%
   );
-  box-shadow: 
+  box-shadow:
     inset 0 2px 9px  rgba(255,255,255,0.3),
     inset 0 -2px 6px rgba(0,0,0,0.4);
   position: relative;
@@ -795,6 +795,15 @@ sprite.projectile {
     width: 54%;
     height: 54%;
     background-size: 100%;
+}
+
+.action-button.disabled, .action-button.not-turn {
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    border: 1px solid black;
 }
 
 .attack-button {
