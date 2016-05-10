@@ -336,6 +336,10 @@ module.exports = function() {
             return false;
         }
 
+	if (activeCharacter.getMovingCost() > _this.getStamina().current){
+	    return false;
+	}
+
         // Is that character controlled by playerID?
         if (!activeCharacter.getPlayerId() == playerId){
             return false;
@@ -377,6 +381,10 @@ module.exports = function() {
         if (activeCharacter == null){
             return false;
         }
+	
+	if (activeCharacter.getHeadingCost() > _this.getStamina().current){
+	    return false;
+	}
 
         // Is that character controlled by playerID?
         if (!activeCharacter.getPlayerId() == playerId){
@@ -409,6 +417,10 @@ module.exports = function() {
         if (activeCharacter == null){
             return false;
         }
+
+	if (activeCharacter.getAttackCost() > _this.getStamina().current){
+	    return false;
+	}
 
         // Is that character controlled by playerID?
         if (!(activeCharacter.getPlayerId() == playerId)){
