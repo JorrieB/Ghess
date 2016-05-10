@@ -156,12 +156,8 @@ module.exports = function() {
                     return character; }})
             // If there are no characters left for this player, the other player won.
             if (playerAliveCharacters.length == 0){
-                var serializedChars = _this.getCharacters().map(function(character) {
-                    return character.serialize();
-                });
                 return {
-                    "winner":_this.getOtherPlayerId(playerId),
-                    "characters":serializedChars
+                    "winner":_this.getOtherPlayerId(playerId)
                 }
             }
         }
