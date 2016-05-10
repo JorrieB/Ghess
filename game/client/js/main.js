@@ -57,7 +57,6 @@ $(function() {
     var snd_walk = getSound("/client/audio/sfx_walk.wav");
     var snd_turn = getSound("/client/audio/sfx_turn.wav");
     var snd_sword = getSound("/client/audio/sfx_sword.wav");
-    window.w = snd_sword;
     var snd_arrow_fire = getSound("/client/audio/sfx_arrow_fire.wav");
     var snd_arrow_hit_char = getSound("/client/audio/sfx_arrow_character.wav");
     var snd_arrow_hit_shield = getSound("/client/audio/sfx_arrow_shield.wav");
@@ -262,7 +261,6 @@ $(function() {
         var $char = $('<sprite>')
                 .addClass('character')
                 .addClass('floating')
-                .addClass('alive')
                 .data('color', playerColor)
                 .data('selection-slot', $this)
                 /*.data('attack', _char.attack)
@@ -628,7 +626,7 @@ $(function() {
         console.log('update-state', message);
 
         // Show who's turn
-        if (playerColor == message.color) {
+        if (playerColor == message.color || $('#spectator-view').length) {
             var turnColor = 'turn-'+message.color;
         } else {
             var turnColor = 'turn-gray';
@@ -683,7 +681,7 @@ $(function() {
             if (enemy != 'undefined') {
                 $enemyChar.css('background-image', "url('/client/img/characters/" + enemy.toLowerCase() + (alive ? "/down/" : "/dead/") + enemyColor + ".png')");
             } else {
-                $enemyChar.addClass('unknown');
+                $enemyChar.addClass('unknown-'+enemyColor);
             }
             $('#enemy-stat').append($enemyChar);
         }
@@ -691,8 +689,11 @@ $(function() {
         handleAnimations(message.animations, function() {
             var $table = $(table);
             $('.ghess-table').replaceWith($table);
-            $('.ghess-table').css('margin-top', '40px');
+            $('.ghess-table').css('margin-top', '36px');
             handleCharacters($table, message.characters);
+            if (message.turn != playerId) {
+                $('.ghess-table').find('.action-button').addClass('disabled not-turn');
+            }
         });
 
     });
@@ -702,11 +703,17 @@ $(function() {
     });
 
     socket.on('game-over', function(message) {
+        console.log('game-over', message);
         $('#forfeit-button').text('Leave');
         if (message.winner == playerId) {
             $('.win-message').fadeIn();
         } else {
             $('.lose-message').fadeIn();
+        }
+        if ($('#spectator-view').length) {
+            var $message = $('.win-message');
+            $message.find('.h1').text(message.winner.toUpperCase() + ' Won!');
+            var $message = $('.win-message').fadeIn();
         }
     });
 
@@ -722,19 +729,37 @@ $(function() {
         $('.forfeit-confirmation').fadeOut();
     });
 
-    $(document).on('click', '#play-view sprite.character', function() {
+    var selectCharacter = function($clicked) {
+        if (!$('#spectator-view').length) {
+            if ($clicked.hasClass('mine')) {
+                $('.ghess-table').find('.action-button').removeClass('disabled');
+            } else {
+                $('.ghess-table').find('.action-button').addClass('disabled');
+            }
+        }
+        cleanSquares();
+        $('.glow').removeClass('glow');
+        $curr_char = $clicked;
+        $('.action-overlay').placeAt($curr_char.data('position'));
+        $('.action-overlay').show();
+        $curr_char.addClass('glow');
+        $('.character-portrait').css('background-image', "url('/client/img/characters/" + $curr_char.data('type').toLowerCase() + "/stat/" + $curr_char.data('color') + "-stat.png')");
+    };
+
+    $(document).on('click', '#play-view sprite.character, #spectator-view sprite.character', function() {
         var $clicked = $(this);
 
         if ($clicked.hasClass('them') || $clicked.hasClass('dead')) {
-            getSquare($clicked.data('position')).click();
+            var $square = getSquare($clicked.data('position')).click();
+            if ($square.hasClass('move-candidate') || $square.hasClass('attack-candidate')) {
+                $square.click();
+            } else {
+                if (!$clicked.hasClass('dead') {
+                    selectCharacter($clicked);
+                }
+            }
         } else {
-            cleanSquares();
-            $('.glow').removeClass('glow');
-            $curr_char = $clicked;
-            $('.action-overlay').placeAt($curr_char.data('position'));
-            $('.action-overlay').show();
-            $curr_char.addClass('glow');
-            $('.character-portrait').css('background-image', "url('/client/img/characters/" + $curr_char.data('type').toLowerCase() + "/stat/" + $curr_char.data('color') + "-stat.png')");
+            selectCharacter($clicked);
         }
         snd_click.play();
 
@@ -745,21 +770,25 @@ $(function() {
 
         $('.ghess-td')
             .removeClass('attack-candidate')
+            .removeClass('attack-candidate-hover')
             .removeClass('move-candidate')
+            .removeClass('move-candidate-hover')
             .removeClass('visibility-hover');
         $('.turn-arrow-container').hide();
         $('.action-overlay').hide();
     };
 
-    $(document).on('mouseover', 'sprite.alive.mine:not(.glow)', function() {
-        $(this).data('visibility').forEach(function(vec) {
-            var $square = getSquare(vec);
-            $square.addClass('visibility-hover');
-        });
-        $('.character-portrait').css('background-image', "url('/client/img/characters/" + $(this).data('type').toLowerCase() + "/stat/" + $(this).data('color') + "-stat.png')");
+    $(document).on('mouseover', 'sprite.alive:not(.glow)', function() {
+        if (!$('.move-candidate').length && !$('.attack-candidate').length) {
+            $(this).data('visibility').forEach(function(vec) {
+                var $square = getSquare(vec);
+                $square.addClass('visibility-hover');
+            });
+            //$('.character-portrait').css('background-image', "url('/client/img/characters/" + $(this).data('type').toLowerCase() + "/stat/" + $(this).data('color') + "-stat.png')");
+        }
     });
 
-    $(document).on('mouseout', 'sprite.alive.mine', function() {
+    $(document).on('mouseout', 'sprite.alive', function() {
         $(this).data('visibility').forEach(function(vec) {
             var $square = getSquare(vec);
             $square.removeClass('visibility-hover');
@@ -782,7 +811,7 @@ $(function() {
         });
     });
 
-    $(document).on('click', '.attack-button', function() {
+    $(document).on('click', '.attack-button:not(.disabled, .not-turn)', function() {
         cleanSquares();
         $curr_char.data('attack').forEach(function(vec) {
             var $square = getSquare(vec);
@@ -803,7 +832,7 @@ $(function() {
         }
     });
 
-    $(document).on('click', '.turn-button', function() {
+    $(document).on('click', '.turn-button:not(.disabled, .not-turn)', function() {
         cleanSquares();
         if ($curr_char.length) {
             $('.turn-arrow-container').removeClass('transparent').placeAt($curr_char.data('position')).show();
@@ -826,7 +855,7 @@ $(function() {
         });
     });
 
-    $(document).on('click', '.move-button', function() {
+    $(document).on('click', '.move-button:not(.disabled, .not-turn)', function() {
         cleanSquares();
         $curr_char.data('move').forEach(function(vec) {
             var $square = getSquare(vec);
@@ -836,7 +865,7 @@ $(function() {
         return false;
     });
 
-    $(document).on('click', '#play-view', function() {
+    $(document).on('click', '#play-view, #spectator-view', function() {
         $curr_char = $();
         cleanSquares();
         $('.glow').removeClass('glow');
@@ -850,6 +879,8 @@ $(function() {
 
     socket.on('game-not-available', function(message) {
         console.log('No game available');
+        $('.message').hide();
+        $('.none-available-message').show();
     });
 
     socket.on('waiting', function(message) {

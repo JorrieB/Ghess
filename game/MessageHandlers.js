@@ -85,7 +85,6 @@ module.exports = {
             if (game.game.canStart()){
                 socket.emit('update-state', game.game.serialize("observer"));
             } else {
-                //TODO: add it to the queue?
                 socket.emit('waiting',{gameId: game.id});
             }
         }
@@ -171,8 +170,13 @@ module.exports = {
                 // If the game is over, notify the players
                 gameOverInfo = game.isGameOver()
                 if (gameOverInfo){
-                    console.log("Game is over!!")
-                    socket.emit('game-over', gameOverInfo)
+                    console.log("Game over!");
+                    //Give everyone all information
+                    socket.emit('update-state', game.serialize("observer"));
+                    this.to(otherPlayerId).emit('update-state', game.serialize("observer"));
+                    messageObservers(game.getObservers(),'update-state',game.serialize('observer'));
+                    //Reveal the winner
+                    socket.emit('game-over', gameOverInfo);
                     this.to(otherPlayerId).emit('game-over',gameOverInfo);
                     messageObservers(game.getObservers(),'game-over',gameOverInfo);
                     GameStore.remove(gameID);

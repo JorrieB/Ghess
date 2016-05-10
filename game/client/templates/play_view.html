@@ -10,6 +10,7 @@
             Victory!
         </div>
         <div class="message-button main-menu-button">Main Menu</div>
+        <div class="message-button hide-message">Review Game</div>
     </div>
     <div class="message lose-message" style="display:none">
         <img class="lose-sword" src="/client/img/characters/swordsman/dead/red.png" />
@@ -17,16 +18,16 @@
             You Lost!
         </div>
         <div class="message-button main-menu-button">Main Menu</div>
+        <div class="message-button hide-message">Review Game</div>
     </div>
     <div class="message forfeit-confirmation" style="display:none">
         <div class="h1">
             Are you sure?
         </div>
         <div class="message-button main-menu-button">Yes</div>
-        <div class="message-button hide-forfeit-confirmation">No</div>
+        <div class="message-button hide-message">No</div>
     </div>
 
-    {% set classes="play-view-table" %}
     {% set width = 7 %}
     {% set height = 7 %}
     {% include 'client/templates/table.html' %}
@@ -42,10 +43,8 @@
         <div class="info-description">Selected Character</div>
         {% include 'client/templates/character_portrait.html' %}
 
-        {% if not spectator %}
         <div class="round-button wiggle glossy2 action-button sleep-button"></div>
-        {% endif %}
-        
+
 		<button type="button" id="forfeit-button" class="h2 basic-button redBtn">Forfeit! :(</button>
 
 	</div>
