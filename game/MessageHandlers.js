@@ -14,11 +14,19 @@ module.exports = {
                     console.log('Observer left game',gameID);
                 } else {
                     console.log('Player left, game is being destroyed');
-                    var data = {};
-                    messageObservers(game.getObservers(),'player-disconnect',data);
-
                     var otherPlayerId = game.getOtherPlayerId(socket.playerId);
-                    this.to(otherPlayerId).emit('player-disconnect', data);
+
+                    var data = {
+                        "winner":otherPlayerId
+                    };
+
+                    messageObservers(game.getObservers(),'game-over',data);
+                    this.to(otherPlayerId).emit('game-over', data);
+
+
+                    this.to(otherPlayerId).emit('update-state', game.serialize('observer'));
+                    messageObservers(game.getObservers(),'update-state',game.serialize('observer'));
+
 
                     GameStore.remove(gameID);//all players have disconnected client side, now do garbage collection
                 }
