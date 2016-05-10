@@ -655,7 +655,7 @@ $(function() {
             if (enemy != 'undefined') {
                 $enemyChar.css('background-image', "url('/client/img/characters/" + enemy.toLowerCase() + (alive ? "/down/" : "/dead/") + enemyColor + ".png')");
             } else {
-                $enemyChar.addClass('unknown');
+                $enemyChar.addClass('unknown-'+enemyColor);
             }
             $('#enemy-stat').append($enemyChar);
         }
@@ -663,7 +663,7 @@ $(function() {
         handleAnimations(message.animations, function() {
             var $table = $(table);
             $('.ghess-table').replaceWith($table);
-            $('.ghess-table').css('margin-top', '40px');
+            $('.ghess-table').css('margin-top', '36px');
             handleCharacters($table, message.characters);
         });
 
