@@ -599,6 +599,10 @@ body {
     background-color: #F02C00 !important;
 }
 
+.turn-gray {
+    background-color: #bababa !important;
+}
+
 .playView-info {
     color: white;
     background-color: rgba(97, 81, 123, 0.38);

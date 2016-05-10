@@ -599,17 +599,18 @@ $(function() {
         $curr_char = $();
         console.log('update-state', message);
 
-        // need player color from turn
-        if (playerColor == 'red') {
-        // if (turn == red) {
-            $('#stamina-title').addClass('turn-red');
-            $('#stamina-level').addClass('turn-red');
-            $('#stamina-count').addClass('turn-red');
+        // Show who's turn
+        if (playerColor == message.color) {
+            var turnColor = 'turn-'+message.color;
         } else {
-            $('#stamina-title').addClass('turn-blue');
-            $('#stamina-level').addClass('turn-blue');
-            $('#stamina-count').addClass('turn-blue');
+            var turnColor = 'turn-gray';
         }
+        $('#stamina-title').addClass(turnColor);
+        $('#stamina-level').addClass(turnColor);
+        $('#stamina-count').addClass(turnColor);
+
+        // Show stamina info
+        $('#stamina-count').html(message.stamina.current);
 
         // Player Stat
         var selfChars = message.HUD.selfChars;
