@@ -463,7 +463,7 @@ module.exports = function() {
     };
 
     _isObserver = function(playerID){
-        return _observers.indexOf(playerID) != -1;
+        return playerID == "observer";
     }
 
     //takes player ID and returns all enemy characters that lie within visibility of player's characters
