@@ -802,6 +802,13 @@ sprite.projectile {
     background-size: 100%;
 }
 
+.action-button:before {
+    font-size: 20px;
+    text-align: right;
+    text-shadow: 0px 0px 5px black, 0px 0px 5px black;
+    color: white;
+}
+
 .action-button.disabled, .action-button.not-turn {
     filter: grayscale(100%);
     -webkit-filter: grayscale(100%);

@@ -577,6 +577,9 @@ $(function() {
                 .data('position', _char.position)
                 .data('visibility', _char.visibility)
                 .data('type', _char.type.toLowerCase())
+                .data('attack-cost', _char.costInfo.attack)
+                .data('move-cost', _char.costInfo.move)
+                .data('turn-cost', _char.costInfo.turn)
                 .data('heading', headingStr)
                 .css('background-image', "url('/client/img/characters/" + _char.type.toLowerCase() + "/" + (_char.alive ? headingStr : 'dead') + "/" + _char.color + ".png')");
 
@@ -741,6 +744,9 @@ $(function() {
         $('.glow').removeClass('glow');
         $curr_char = $clicked;
         $('.action-overlay').placeAt($curr_char.data('position'));
+        $('.attack-button:before').css('content', '-'+$curr_char.data('attack-cost'));
+        $('.turn-button:before').css('content', '-'+$curr_char.data('turn-cost'));
+        $('.move-button:before').css('content', '-'+$curr_char.data('move-cost'));
         $('.action-overlay').show();
         $curr_char.addClass('glow');
         $('.character-portrait').css('background-image', "url('/client/img/characters/" + $curr_char.data('type').toLowerCase() + "/stat/" + $curr_char.data('color') + "-stat.png')");
@@ -754,7 +760,7 @@ $(function() {
             if ($square.hasClass('move-candidate') || $square.hasClass('attack-candidate')) {
                 $square.click();
             } else {
-                if (!$clicked.hasClass('dead') {
+                if (!$clicked.hasClass('dead')) {
                     selectCharacter($clicked);
                 }
             }
