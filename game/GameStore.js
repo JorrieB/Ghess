@@ -20,7 +20,7 @@ module.exports = {
     },
     // Deletes the game with the given ID
     remove: function(id) {
-        games[id] = null;
+        delete games[id];
     },
     // Gets first available game, and returns its ID and the game instance (or null if none exists)
     getFirstAvailable: function() {

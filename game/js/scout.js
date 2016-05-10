@@ -13,7 +13,7 @@ module.exports  = function(startPosition, startHeading, playerId, charID, startC
 
  	//The size of the square centerd at the scout is scoutRange + 1
 
-		_this.characterType = "Scout";
+	_this.characterType = "Scout";
 
 
 	// TODO: fix visibility of scout

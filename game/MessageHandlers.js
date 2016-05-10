@@ -44,7 +44,7 @@ module.exports = {
                     var data = {
                         "winner":otherPlayerId
                     };
-                    messageObservers(game.getObservers(),'player-disconnect',data);
+                    messageObservers(game.getObservers(),'forfeit',data);
 
                     this.to(otherPlayerId).emit('forfeit', data);
 

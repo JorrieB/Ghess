@@ -119,20 +119,7 @@ module.exports = function(ID) {
 				//TODO: Put onomatopoeia stuff here.
 			}
 
-			if (animation.attack == "javelin"){
-				//do javelin stuff
-				//this is here because javelin stuff might be funky AF
-			}
-
 			var heading = utils.getHeading(animation.startPos,animation.endPos);
-			//if the animation  takes place on the same square, then we either see it or we don't
-			if (heading.x == 0 && heading.y == 0){
-				if (isCellVisible(animation.startPos)){
-					obfuscatedAnimations.push(animation);
-				}
-				//if visible, add it to the animations
-				continue;
-			}
 
 			var tempStart = null;
 			var next = animation.startPos;
