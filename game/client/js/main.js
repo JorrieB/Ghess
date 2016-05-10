@@ -570,10 +570,16 @@ $(function() {
         $curr_char = $();
         console.log('update-state', message);
 
-        if (message.turn == playerId) {
-            $('#play-view').css('background-color', 'green');
+        // need player color from turn
+        if (playerColor == 'red') {
+        // if (turn == red) {
+            $('#stamina-title').addClass('turn-red');
+            $('#stamina-level').addClass('turn-red');
+            $('#stamina-count').addClass('turn-red');
         } else {
-            $('#play-view').css('background-color', '');
+            $('#stamina-title').addClass('turn-blue');
+            $('#stamina-level').addClass('turn-blue');
+            $('#stamina-count').addClass('turn-blue');
         }
 
         // Player Stat

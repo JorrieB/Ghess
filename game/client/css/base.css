@@ -528,35 +528,36 @@ body {
 
 #play-view {
     position: relative;
-    padding: 40px 60px 10px 60px;
+    padding: 34px 60px 10px 60px;
 }
 
 .play-view-table.ghess-table {
-    margin-top: 40px;
+    margin-top: 35px;
 }
 
 #stamina-title {
     width: 200px;
-    height: 28px;
+    height: 24px;
     position: absolute;
     padding: 5px 26px;
     color: white;
     letter-spacing: 4px;
-    background-color: #000000;
+    background-color: #7049C5;
+    border-radius: 25px;
 }
 
 .stamina-meter { 
-    left: 120px;
+    left: 180px;
     width: 700px;
-    height: 26px;  /* Can be anything */
-    position: relative;
+    height: 24px;  /* Can be anything */
+    position: absolute;
     background: #555;
     -moz-border-radius: 25px;
     -webkit-border-radius: 25px;
     border-radius: 25px;
-    padding: 8px;
+    padding: 6px;
     box-shadow: inset 0 -1px 1px rgba(255,255,255,0.3);
-    z-index: 10;
+    z-index: 9;
 }
 
 .stamina-meter > span {
@@ -579,6 +580,25 @@ body {
   overflow: hidden;
 }
 
+#stamina-count {
+    right: 58px;
+    width: 100px;
+    height: 24px;
+    position: absolute;
+    padding: 5px 26px;
+    color: white;
+    background-color: #7049C5;
+    border-radius: 25px;
+}
+
+.turn-blue {
+    background-color: #2A3FFE !important;
+}
+
+.turn-red {
+    background-color: #F02C00 !important;
+}
+
 .playView-info {
     color: white;
     background-color: rgba(97, 81, 123, 0.38);
@@ -588,7 +608,7 @@ body {
     float: right;
     padding-left: 16px;
     padding-right: 16px;
-    margin-top: 20px;
+    margin-top: 35px;
 }
 
 .h1 {
