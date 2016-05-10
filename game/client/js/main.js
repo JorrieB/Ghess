@@ -664,7 +664,7 @@ $(function() {
             $('.ghess-table').css('margin-top', '40px');
             handleCharacters($table, message.characters);
             if (message.turn != playerId) {
-                $('.action-button').addClass('disabled not-turn');
+                $('.ghess-table').find('.action-button').addClass('disabled not-turn');
             }
         });
 
@@ -704,9 +704,9 @@ $(function() {
     var selectCharacter = function($clicked) {
         if (!$('#spectator-view').length) {
             if ($clicked.hasClass('mine')) {
-                $('.action-button').removeClass('disabled');
+                $('.ghess-table').find('.action-button').removeClass('disabled');
             } else {
-                $('.action-button').addClass('disabled');
+                $('.ghess-table').find('.action-button').addClass('disabled');
             }
         }
         cleanSquares();
@@ -726,7 +726,9 @@ $(function() {
             if ($square.hasClass('move-candidate') || $square.hasClass('attack-candidate')) {
                 $square.click();
             } else {
-                selectCharacter($clicked);
+                if (!$clicked.hasClass('dead') {
+                    selectCharacter($clicked);
+                }
             }
         } else {
             selectCharacter($clicked);
@@ -849,6 +851,8 @@ $(function() {
 
     socket.on('game-not-available', function(message) {
         console.log('No game available');
+        $('.message').hide();
+        $('.none-available-message').show();
     });
 
     socket.on('waiting', function(message) {

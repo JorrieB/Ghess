@@ -880,19 +880,15 @@ sprite.projectile {
     left: 36%;
 }
 
-.forfeit-confirmation .hide-forfeit-confirmation {
+.message .hide-message {
     left: 45%;
-}
-
-.forfeit-confirmation .main-menu-button {
-    left: 36%;
 }
 
 .message .message-button:hover {
     background-color: #2B2B2B
 }
 
-.waiting-message .h1, .win-message .h1, .lose-message .h1, .forfeit-confirmation .h1{
+.waiting-message .h1, .win-message .h1, .lose-message .h1, .forfeit-confirmation .h1, .none-available-message .h1{
     position: absolute;
     top: 45%;
     left: 36%;
