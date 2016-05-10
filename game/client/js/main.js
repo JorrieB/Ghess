@@ -744,9 +744,9 @@ $(function() {
         $('.glow').removeClass('glow');
         $curr_char = $clicked;
         $('.action-overlay').placeAt($curr_char.data('position'));
-        $('.attack-button:before').css('content', '-'+$curr_char.data('attack-cost'));
-        $('.turn-button:before').css('content', '-'+$curr_char.data('turn-cost'));
-        $('.move-button:before').css('content', '-'+$curr_char.data('move-cost'));
+        $('.attack-button').attr('data-cost', '-'+$curr_char.data('attack-cost'));
+        $('.turn-button').attr('data-cost', '-'+$curr_char.data('turn-cost'));
+        $('.move-button').attr('data-cost', '-'+$curr_char.data('move-cost'));
         $('.action-overlay').show();
         $curr_char.addClass('glow');
         $('.character-portrait').css('background-image', "url('/client/img/characters/" + $curr_char.data('type').toLowerCase() + "/stat/" + $curr_char.data('color') + "-stat.png')");

@@ -802,7 +802,8 @@ sprite.projectile {
     background-size: 100%;
 }
 
-.action-button:before {
+.action-button:not(.sleep):before {
+    content: attr(data-cost);
     font-size: 20px;
     text-align: right;
     text-shadow: 0px 0px 5px black, 0px 0px 5px black;
