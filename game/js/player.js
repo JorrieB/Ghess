@@ -41,7 +41,7 @@ module.exports = function(ID) {
 				cumulativeVisibility = cumulativeVisibility.concat(myArray[charIndex].getVisibleCells());
 			}
 		}
-		return cumulativeVisibility;                                                                                                                                                                                                    
+		return cumulativeVisibility;
 	}
 
 	simplifyCharacter = function(characterObject){
@@ -70,7 +70,7 @@ module.exports = function(ID) {
 			simpleEnemy = simplifyCharacter(enemies[i]);
 			simpleEnemy.charType = "undefined"; //obfuscate the enemy type
 			enemyArray.push(simpleEnemy);
-		}	
+		}
 	}
 
 	//this would only be called when an ally died, hence the name.
@@ -119,20 +119,7 @@ module.exports = function(ID) {
 				//TODO: Put onomatopoeia stuff here.
 			}
 
-			if (animation.attack == "javelin"){
-				//do javelin stuff
-				//this is here because javelin stuff might be funky AF
-			}
-
 			var heading = utils.getHeading(animation.startPos,animation.endPos);
-			//if the animation  takes place on the same square, then we either see it or we don't
-			if (heading.x == 0 && heading.y == 0){
-				if (isCellVisible(animation.startPos)){
-					obfuscatedAnimations.push(animation);
-				}
-				//if visible, add it to the animations
-				continue;
-			}
 
 			var tempStart = null;
 			var next = animation.startPos;
@@ -145,7 +132,7 @@ module.exports = function(ID) {
 							obfuscatedAnimations.push(makeAnimation({x:0,y:0},{x:delay,y:delay},'delay'));
 						}
 						delay = 0;
-						tempStart = next;		
+						tempStart = next;
 						next = utils.vectorSum(next,heading);
 					} else {
 						delay++;

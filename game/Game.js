@@ -16,7 +16,7 @@ module.exports = function() {
     var _boardSize = 7;
     var _maxTurnTime = 100;
     var _numberOfMoves = 0;     // Number of moves since the beginning of the game
-    var _movePerTurn = 2;
+    var _movePerTurn = 6;
     var _players = [];
     var _observers = []; // Remember our observers so we can emit messages to them
 
@@ -234,7 +234,7 @@ module.exports = function() {
     }
 
     _this.getActivePlayerId = function(){
-        return _getActivePlayer();
+        return _getActivePlayer().getID();
     }
 
     _this.isPlayerMove = function(playerID){
@@ -463,7 +463,7 @@ module.exports = function() {
     };
 
     _isObserver = function(playerID){
-        return _observers.indexOf(playerID) != -1;
+        return playerID == "observer";
     }
 
     //takes player ID and returns all enemy characters that lie within visibility of player's characters
@@ -502,8 +502,9 @@ module.exports = function() {
 
         return {
             "message":"update-state",
-            "stamina":(_movePerTurn - (_numberOfMoves % _movePerTurn)),
+            "stamina":(!(_this.getActivePlayerId() ==  playerID)) ? false : _this.getStamina(), // TODO:change undefined to the most usable thing for client
             "turn":_this.getActivePlayerId(),
+            "color":_playerColor(_this.getActivePlayerId),
             "characters":serializedChars,
             "animations":_isObserver(playerID) ? _animations :player.obfuscateAnimations(_animations),
             "HUD":{
@@ -536,5 +537,12 @@ module.exports = function() {
             return "observer";
         }
         return "player";
+    }
+
+    _this.getStamina = function(){
+        return {
+            "current": (_movePerTurn - (_numberOfMoves % _movePerTurn)),
+            "max": _movePerTurn
+        };
     }
 };
