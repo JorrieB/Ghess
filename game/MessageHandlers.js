@@ -20,12 +20,12 @@ module.exports = {
                         "winner":otherPlayerId
                     };
 
-                    messageObservers(game.getObservers(),'game-over',data);
+                    messageObservers(this, game.getObservers(),'game-over',data);
                     this.to(otherPlayerId).emit('game-over', data);
 
 
                     this.to(otherPlayerId).emit('update-state', game.serialize('observer'));
-                    messageObservers(game.getObservers(),'update-state',game.serialize('observer'));
+                    messageObservers(this, game.getObservers(),'update-state',game.serialize('observer'));
 
 
                     GameStore.remove(gameID);//all players have disconnected client side, now do garbage collection
@@ -52,7 +52,7 @@ module.exports = {
                     var data = {
                         "winner":otherPlayerId
                     };
-                    messageObservers(game.getObservers(),'forfeit',data);
+                    messageObservers(this, game.getObservers(),'forfeit',data);
 
                     this.to(otherPlayerId).emit('forfeit', data);
 
@@ -172,8 +172,9 @@ module.exports = {
                 console.log('about to send to other player');
                 this.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
                 // Send info to observers each time there was an update
-
-                messageObservers(game.getObservers(),'update-state',game.serialize('observer'));
+		console.log('about to send to other player');
+		console.log(this);
+                messageObservers(this, game.getObservers(),'update-state',game.serialize('observer'));
 
                 // If the game is over, notify the players
                 gameOverInfo = game.isGameOver()
@@ -182,11 +183,11 @@ module.exports = {
                     //Give everyone all information
                     socket.emit('update-state', game.serialize("observer"));
                     this.to(otherPlayerId).emit('update-state', game.serialize("observer"));
-                    messageObservers(game.getObservers(),'update-state',game.serialize('observer'));
+                    messageObservers(this, game.getObservers(),'update-state',game.serialize('observer'));
                     //Reveal the winner
                     socket.emit('game-over', gameOverInfo);
                     this.to(otherPlayerId).emit('game-over',gameOverInfo);
-                    messageObservers(game.getObservers(),'game-over',gameOverInfo);
+                    messageObservers(this, game.getObservers(),'game-over',gameOverInfo);
                     GameStore.remove(gameID);
                 }
             } else {
@@ -206,9 +207,9 @@ module.exports = {
 ////////////////////////////
 
 //Message all observers in a game some message
-var messageObservers = function(observers,message,data){
+var messageObservers = function(io, observers,message,data){
         for (index in observers){
-            this.to(observers[index]).emit(message, data);
+            io.to(observers[index]).emit(message, data);
         }
 }
 
