@@ -504,7 +504,7 @@ module.exports = function() {
             "message":"update-state",
             "stamina":(!(_this.getActivePlayerId() ==  playerID)) ? false : _this.getStamina(), // TODO:change undefined to the most usable thing for client
             "turn":_this.getActivePlayerId(),
-            "color":_playerColor(_this.getActivePlayerId),
+            "color":_playerColor(_this.getActivePlayerId()),
             "characters":serializedChars,
             "animations":_isObserver(playerID) ? _animations :player.obfuscateAnimations(_animations),
             "HUD":{
