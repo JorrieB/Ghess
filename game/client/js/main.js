@@ -675,11 +675,17 @@ $(function() {
     });
 
     socket.on('game-over', function(message) {
+        console.log('game-over', message);
         $('#forfeit-button').text('Leave');
         if (message.winner == playerId) {
             $('.win-message').fadeIn();
         } else {
             $('.lose-message').fadeIn();
+        }
+        if ($('#spectator-view').length) {
+            var $message = $('.win-message');
+            $message.find('.h1').text(message.winner.toUpperCase() + ' Won!');
+            var $message = $('.win-message').fadeIn();
         }
     });
 
