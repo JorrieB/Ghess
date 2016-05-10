@@ -613,7 +613,7 @@ body {
     float: right;
     padding-left: 16px;
     padding-right: 16px;
-    margin-top: 35px;
+    margin-top: 40px;
 }
 
 .h1 {
@@ -629,9 +629,11 @@ body {
 }
 
 .playView-info-text {
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     margin-bottom: 15px;
     padding: 10px;
+    background-color: #655582;
+    border-radius: 5px;
 }
 
 #player-id {
@@ -652,15 +654,17 @@ body {
     background-size: 100%;
     width: 60px;
     height: 60px;
-    margin: 5px 10px;
+    margin: 5px 8px;
     float: left;
 }
 
-.unknown {
-    background-image: url('/client/img/unknown.png');
-    background-color: black;
+.unknown-red {
+    background-image: url('/client/img/characters/question/red.png');
 }
 
+.unknown-blue {
+    background-image: url('/client/img/characters/question/blue.png');
+}
 /* PLAY VIEW TABLE */
 
 .ghess-table {
@@ -777,6 +781,7 @@ sprite.projectile {
     position: relative;
     background-size: 100%;
     /*width: 100%;*/
+    height: 164px;
     padding-bottom: 155px;
     margin-bottom: 12px;
 }
@@ -795,6 +800,14 @@ sprite.projectile {
     width: 54%;
     height: 54%;
     background-size: 100%;
+}
+
+.action-button:not(.sleep):before {
+    content: attr(data-cost);
+    font-size: 20px;
+    text-align: right;
+    text-shadow: 0px 0px 5px black, 0px 0px 5px black;
+    color: white;
 }
 
 .action-button.disabled, .action-button.not-turn {
@@ -880,19 +893,15 @@ sprite.projectile {
     left: 36%;
 }
 
-.forfeit-confirmation .hide-forfeit-confirmation {
+.message .hide-message {
     left: 45%;
-}
-
-.forfeit-confirmation .main-menu-button {
-    left: 36%;
 }
 
 .message .message-button:hover {
     background-color: #2B2B2B
 }
 
-.waiting-message .h1, .win-message .h1, .lose-message .h1, .forfeit-confirmation .h1{
+.waiting-message .h1, .win-message .h1, .lose-message .h1, .forfeit-confirmation .h1, .none-available-message .h1{
     position: absolute;
     top: 45%;
     left: 36%;

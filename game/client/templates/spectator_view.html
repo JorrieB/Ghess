@@ -1,10 +1,9 @@
 <div id="spectator-view" class="screen">
-     <div class="message waiting-message">
-        <img class="wiggle-always wiggly-sword" src="/client/img/characters/swordsman/attack/red.png" />
+    <div class="message none-available-message" style="display:none">
         <div class="h1">
-            Waiting on an Observable Match
+            No Observable Matches Found
         </div>
-        <div class="message-button main-menu-button">Yes</div>
+        <div class="message-button main-menu-button">Main Menu</div>
     </div>
     <div class="message win-message" style="display:none">
         <div class="h1">
@@ -17,7 +16,7 @@
             Are you sure?
         </div>
         <div class="message-button main-menu-button">Yes</div>
-        <div class="message-button hide-forfeit-confirmation">No</div>
+        <div class="message-button hide-message">No</div>
     </div>
 
     {% set width = 7 %}

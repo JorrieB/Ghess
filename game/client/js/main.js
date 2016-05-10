@@ -472,6 +472,34 @@ $(function() {
         });
     };
 
+    var animateSword = function(animation, callback) {
+        var $sword = $('<sprite />')
+            .addClass('projectile')
+            .css('background-image', "url('/client/img/characters/swordsman/attack/red.png')")
+            .hide();
+        $('.ghess-table').append($sword);
+        $sword.placeAt(animation.endPos);
+        snd_sword.play();
+        $sword.fadeIn({
+            duration: 600,
+            step: function(t) {
+                $sword.rotate(30*t);
+            },
+            complete: function() {
+                $sword.fadeOut({
+                    duration: 600,
+                    step: function(t) {
+                        $sword.rotate(30*t);
+                    },
+                    complete: function() {
+                        $sword.remove();
+                        callback();
+                    }
+                });
+            }
+        });
+    };
+
     var animateJavelin = function(animation, callback) {
         var $javelin = $('<sprite />')
             .addClass('projectile')
@@ -490,7 +518,6 @@ $(function() {
             .hide();
         $('.ghess-table').append($shield);
         $shield.placeAt(animation.startPos);
-
         snd_arrow_hit_shield.play();
         $shield.fadeIn(600, function(){
             $shield.fadeOut(600, function() {
@@ -513,6 +540,7 @@ $(function() {
 
     var animationFuncMap = {
         'arrow': animateArrow,
+        'sword': animateSword,
         'shield': animateShield,
         'javelin': animateJavelin,
         'move': animateMove,
@@ -549,6 +577,9 @@ $(function() {
                 .data('position', _char.position)
                 .data('visibility', _char.visibility)
                 .data('type', _char.type.toLowerCase())
+                .data('attack-cost', _char.costInfo.attack)
+                .data('move-cost', _char.costInfo.move)
+                .data('turn-cost', _char.costInfo.turn)
                 .data('heading', headingStr)
                 .css('background-image', "url('/client/img/characters/" + _char.type.toLowerCase() + "/" + (_char.alive ? headingStr : 'dead') + "/" + _char.color + ".png')");
 
@@ -653,7 +684,7 @@ $(function() {
             if (enemy != 'undefined') {
                 $enemyChar.css('background-image', "url('/client/img/characters/" + enemy.toLowerCase() + (alive ? "/down/" : "/dead/") + enemyColor + ".png')");
             } else {
-                $enemyChar.addClass('unknown');
+                $enemyChar.addClass('unknown-'+enemyColor);
             }
             $('#enemy-stat').append($enemyChar);
         }
@@ -661,10 +692,10 @@ $(function() {
         handleAnimations(message.animations, function() {
             var $table = $(table);
             $('.ghess-table').replaceWith($table);
-            $('.ghess-table').css('margin-top', '40px');
+            $('.ghess-table').css('margin-top', '36px');
             handleCharacters($table, message.characters);
             if (message.turn != playerId) {
-                $('.action-button').addClass('disabled not-turn');
+                $('.ghess-table').find('.action-button').addClass('disabled not-turn');
             }
         });
 
@@ -704,15 +735,18 @@ $(function() {
     var selectCharacter = function($clicked) {
         if (!$('#spectator-view').length) {
             if ($clicked.hasClass('mine')) {
-                $('.action-button').removeClass('disabled');
+                $('.ghess-table').find('.action-button').removeClass('disabled');
             } else {
-                $('.action-button').addClass('disabled');
+                $('.ghess-table').find('.action-button').addClass('disabled');
             }
         }
         cleanSquares();
         $('.glow').removeClass('glow');
         $curr_char = $clicked;
         $('.action-overlay').placeAt($curr_char.data('position'));
+        $('.attack-button').attr('data-cost', '-'+$curr_char.data('attack-cost'));
+        $('.turn-button').attr('data-cost', '-'+$curr_char.data('turn-cost'));
+        $('.move-button').attr('data-cost', '-'+$curr_char.data('move-cost'));
         $('.action-overlay').show();
         $curr_char.addClass('glow');
         $('.character-portrait').css('background-image', "url('/client/img/characters/" + $curr_char.data('type').toLowerCase() + "/stat/" + $curr_char.data('color') + "-stat.png')");
@@ -726,7 +760,9 @@ $(function() {
             if ($square.hasClass('move-candidate') || $square.hasClass('attack-candidate')) {
                 $square.click();
             } else {
-                selectCharacter($clicked);
+                if (!$clicked.hasClass('dead')) {
+                    selectCharacter($clicked);
+                }
             }
         } else {
             selectCharacter($clicked);
@@ -849,6 +885,8 @@ $(function() {
 
     socket.on('game-not-available', function(message) {
         console.log('No game available');
+        $('.message').hide();
+        $('.none-available-message').show();
     });
 
     socket.on('waiting', function(message) {
