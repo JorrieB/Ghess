@@ -474,6 +474,34 @@ $(function() {
         });
     };
 
+    var animateSword = function(animation, callback) {
+        var $sword = $('<sprite />')
+            .addClass('projectile')
+            .css('background-image', "url('/client/img/characters/swordsman/attack/red.png')")
+            .hide();
+        $('.ghess-table').append($sword);
+        $sword.placeAt(animation.endPos);
+        snd_sword.play();
+        $sword.fadeIn({
+            duration: 600,
+            step: function(t) {
+                $sword.rotate(30*t);
+            },
+            complete: function() {
+                $sword.fadeOut({
+                    duration: 600,
+                    step: function(t) {
+                        $sword.rotate(30*t);
+                    },
+                    complete: function() {
+                        $sword.remove();
+                        callback();
+                    }
+                });
+            }
+        });
+    };
+
     var animateJavelin = function(animation, callback) {
         var $javelin = $('<sprite />')
             .addClass('projectile')
@@ -492,7 +520,6 @@ $(function() {
             .hide();
         $('.ghess-table').append($shield);
         $shield.placeAt(animation.startPos);
-
         snd_arrow_hit_shield.play();
         $shield.fadeIn(600, function(){
             $shield.fadeOut(600, function() {
@@ -515,6 +542,7 @@ $(function() {
 
     var animationFuncMap = {
         'arrow': animateArrow,
+        'sword': animateSword,
         'shield': animateShield,
         'javelin': animateJavelin,
         'move': animateMove,
