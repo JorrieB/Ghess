@@ -115,15 +115,18 @@ module.exports = function(ID) {
 				continue;
 			}
 
-			if (animation.attack == "shield"){
-				//TODO: Put onomatopoeia stuff here.
-			}
-
 			var heading = utils.getHeading(animation.startPos,animation.endPos);
 
 			var tempStart = null;
 			var next = animation.startPos;
 			var delay = 0;
+
+			if (animation.attack == "shield"){
+				if (isCellVisible(next)) {
+					obfuscatedAnimations.push(animation);
+				}
+				//TODO: Put onomatopoeia stuff here.
+			}
 
 			while (!utils.isEqual(utils.vectorSum(next,utils.vectorMultScalar(heading,-1)),animation.endPos)){
 				if (tempStart == null){

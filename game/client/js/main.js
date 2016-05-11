@@ -154,11 +154,12 @@ $(function() {
 //****************************************
 ///////////////////////////////////////////    
     $(document).on('mouseenter', '#start-view button', function() {
-        $('#game-title').stop().fadeIn(1000);
+        $('#game-title').stop().fadeIn(700);
     });
 
     $(document).on('mouseleave', '#start-view button', function() {
-        $('#game-title').stop().fadeOut(2000);
+        $('#game-title').stop().fadeOut(700);
+
     });
 
 ///////////////////////////////////////////
@@ -583,12 +584,14 @@ $(function() {
                 .css('background-image', "url('/client/img/characters/" + _char.type.toLowerCase() + "/" + (_char.alive ? headingStr : 'dead') + "/" + _char.color + ".png')");
 
             if ($('#spectator-view').length){
-                $char.addClass('mine')
-                    _char.visibility.forEach(function(vec) {
+                $char.addClass('mine');
+                var setting = ($('.toggle-visibility').data('visibility') || 0)%3;
+                if (setting == 0 || ($char.data('color')=='blue' && setting==1) || ($char.data('color')=='red' && setting==2)) {
+                    $char.data('visibility').forEach(function(vec) {
                         var $square = getSquare(vec);
                         $square.addClass('visible');
                     });
-
+                }
             } else {
                 if (_char.team != playerId) {
                     $char.addClass('them');
@@ -666,8 +669,7 @@ $(function() {
 
         // Player Stat
         var selfChars = message.HUD.selfChars;
-        $('#player-stat').empty();
-        $('#player-stat').append('<div class="info-description"> My Team </div>');
+        $('#player-stat .stat-cell').remove();
         for (var c = 0; c < selfChars.length; c++) {
             var $selfChar = $('<div />');
             var character = selfChars[c];
@@ -677,8 +679,7 @@ $(function() {
             $('#player-stat').append($selfChar);
         }
 
-        $('#enemy-stat').empty();
-        $('#enemy-stat').append('<div class="info-description"> Enemy Team </div>');
+        $('#enemy-stat .stat-cell').remove();
         for (var e = 0; e < enemyChars.length; e++) {
             var $enemyChar = $('<div />');
             // TODO: if we don't want to specify character type, we need a generic character image asset
@@ -732,8 +733,8 @@ $(function() {
         $('.forfeit-confirmation').fadeIn();
     });
 
-    $(document).on('click', '.hide-forfeit-confirmation', function() {
-        $('.forfeit-confirmation').fadeOut();
+    $(document).on('click', '.hide-message', function() {
+        $('.message').fadeOut();
     });
 
     var selectCharacter = function($clicked) {
@@ -886,6 +887,32 @@ $(function() {
 // SPECTATOR VIEW
 //****************************************
 //////////////////////////////////////////
+    $(document).on('click', '#spectator-view .toggle-visibility', function() {
+        var $this = $(this);
+        if (typeof($this.data('visibility')) != typeof(1)) {
+            $this.data('visibility', 1);
+        }
+        var setting = $this.data('visibility')%3;
+        if (setting == 0) {
+            $this.css('background-color', '');
+        } else if (setting == 1) {
+            $this.css('background-color', 'blue');
+        } else if (setting == 2) {
+            $this.css('background-color', 'red');
+        }
+
+        $('.ghess-td').removeClass('visible');
+        $('.character.alive').each(function() {
+            var $char = $(this);
+            if (setting == 0 || ($char.data('color')=='blue' && setting==1) || ($char.data('color')=='red' && setting==2)) {
+                $char.data('visibility').forEach(function(vec) {
+                    var $square = getSquare(vec);
+                    $square.addClass('visible');
+                });
+            }
+        });
+        $this.data('visibility', $this.data('visibility') + 1);
+    });
 
     socket.on('game-not-available', function(message) {
         console.log('No game available');

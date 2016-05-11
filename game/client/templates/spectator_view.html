@@ -10,6 +10,7 @@
             Game Complete!
         </div>
         <div class="message-button main-menu-button">Main Menu</div>
+        <div class="message-button hide-message">Review Game</div>
     </div>
     <div class="message forfeit-confirmation" style="display:none">
         <div class="h1">
@@ -31,10 +32,12 @@
 
 
     <div id="info-pane" class="playView-info">
+        {% set spectator = true %}
         {% include 'client/templates/char_info_panels.html' %}
         <div class="info-description">Selected Character</div>
         {% include 'client/templates/character_portrait.html' %}
 
+        <button type="button" class="toggle-visibility basic-button">Toggle Vis</button>
 		<button type="button" id="forfeit-button" class="h2 basic-button redBtn">Leave</button>
 
 	</div>
