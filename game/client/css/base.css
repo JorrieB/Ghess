@@ -330,6 +330,28 @@ body {
     padding-top: 32px;
 }
 
+#credits {
+    background: url('/client/img/credits.png');
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.see-credits {
+   position: absolute;
+   right: 5%;
+   bottom: 5%;
+   z-index: 2;
+   cursor: pointer;
+   color: white;
+   background-color: black;
+   border: 1px solid white;
+   padding: 5px;
+}
+
 #game-title {
     background: url('/client/img/Ghess-logo-600x400.png');
     z-index: 50;

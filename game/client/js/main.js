@@ -162,6 +162,16 @@ $(function() {
 
     });
 
+
+    $(document).on('mouseenter', '#start-view .see-credits', function() {
+        $('#credits').stop().fadeIn(700);
+    });
+
+    $(document).on('mouseleave', '#start-view .see-credits', function() {
+        $('#credits').stop().fadeOut(700);
+    });
+
+
 ///////////////////////////////////////////
 //****************************************
 // LOAD VIEW
