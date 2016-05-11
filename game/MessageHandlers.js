@@ -30,7 +30,7 @@ module.exports = {
 
                     GameStore.remove(gameID);//all players have disconnected client side, now do garbage collection
                 }
-                
+
             } catch(err) {
                 console.log('Could not find game.');
             }
@@ -60,7 +60,7 @@ module.exports = {
                 } else {
                     console.log("Observer forfeited...?");
                 }
-                
+
             } catch(err) {
                 console.log('Could not find game.');
             }
@@ -118,7 +118,7 @@ module.exports = {
             game = created.game;
             game.addPlayer(socket.playerId);
             socket.gameId = gameId;
-            
+
             socket.emit('team-selection', { gameId: gameId, gameParams: game.getParams(socket.playerId) });
 
 
@@ -137,7 +137,7 @@ module.exports = {
         var game = GameStore.get(socket.gameId);
         try {
             socket.emit('player-readied');
-            
+
             game.insertCharacters(data.characters,socket.playerId);
 
             if (game.canStart()){
@@ -172,8 +172,7 @@ module.exports = {
                 console.log('about to send to other player');
                 this.to(otherPlayerId).emit('update-state', game.serialize(otherPlayerId));
                 // Send info to observers each time there was an update
-		console.log('about to send to other player');
-		console.log(this);
+                console.log('about to send to other player');
                 messageObservers(this, game.getObservers(),'update-state',game.serialize('observer'));
 
                 // If the game is over, notify the players
@@ -197,7 +196,7 @@ module.exports = {
         } catch (err){
             console.log('Cannot update game, it does not exist.');
         }
-       
+
     }
 };
 
