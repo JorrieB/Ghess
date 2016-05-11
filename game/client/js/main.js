@@ -16,6 +16,8 @@ $(function() {
 
     // Selected Character Global
     var $curr_char;
+    // Current stamina
+    var currentStamina;
     // Current Game ID
     var gameId;
     // Client Id
@@ -402,6 +404,9 @@ $(function() {
 
     $(document).on('click', '#play-view .turn-arrow', function() {
         var $arrow_clicked = $(this);
+        if ($curr_char.data('turn-cost') > currentStamina) {
+            signalInvalidAction();
+        }
         var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
             var direction;
@@ -428,6 +433,9 @@ $(function() {
 
     $(document).on('click', '#play-view .attack-candidate', function() {
         var $attackable_square = $(this);
+        if ($curr_char.data('attack-cost') > currentStamina) {
+            signalInvalidAction();
+        }
         var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
             var attack_x = $attackable_square.data('x');
@@ -446,6 +454,9 @@ $(function() {
 
     $(document).on('click', '#play-view .move-candidate', function() {
         var $move_square = $(this);
+        if ($curr_char.data('move-cost') > currentStamina) {
+            signalInvalidAction();
+        }
         var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
             var move_x = $move_square.data('x');
@@ -470,6 +481,10 @@ $(function() {
     /////////////////////////////////////////
     // PLAY VIEW ANIMATIONS
     /////////////////////////////////////////
+
+    function signalInvalidAction() {
+        alert('you dont have enough stamina homie');
+    }
 
     var animateArrow = function(animation, callback) {
         var $arrow = $('<sprite />')
@@ -672,6 +687,7 @@ $(function() {
             levelPercent = 0;
             animateSpeed = 2000;
         }
+        currentStamina = message.stamina.current;
         $('#stamina-count').html(message.stamina.current);
         $('#stamina-level').animate({
             width: levelPercent * meterWidth
