@@ -56,6 +56,7 @@ $(function() {
     var snd_menu = getSound("/client/audio/MenuLoop.wav");
     var snd_gameplay = getSound("/client/audio/GameplayLoop.wav");
     var snd_click = getSound("/client/audio/sfx_button_press.wav");
+    var snd_invalid = getSound("/client/audio/sfx_invalid_action.wav");
     var snd_walk = getSound("/client/audio/sfx_walk.wav");
     var snd_turn = getSound("/client/audio/sfx_turn.wav");
     var snd_sword = getSound("/client/audio/sfx_sword.wav");
@@ -404,9 +405,6 @@ $(function() {
 
     $(document).on('click', '#play-view .turn-arrow', function() {
         var $arrow_clicked = $(this);
-        if ($curr_char.data('turn-cost') > currentStamina) {
-            signalInvalidAction();
-        }
         var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
             var direction;
@@ -433,9 +431,6 @@ $(function() {
 
     $(document).on('click', '#play-view .attack-candidate', function() {
         var $attackable_square = $(this);
-        if ($curr_char.data('attack-cost') > currentStamina) {
-            signalInvalidAction();
-        }
         var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
             var attack_x = $attackable_square.data('x');
@@ -454,9 +449,6 @@ $(function() {
 
     $(document).on('click', '#play-view .move-candidate', function() {
         var $move_square = $(this);
-        if ($curr_char.data('move-cost') > currentStamina) {
-            signalInvalidAction();
-        }
         var curr_char_pos = $curr_char.data('position');
         if (curr_char_pos) {
             var move_x = $move_square.data('x');
@@ -483,7 +475,15 @@ $(function() {
     /////////////////////////////////////////
 
     function signalInvalidAction() {
-        alert('you dont have enough stamina homie');
+        snd_invalid.play();
+        $('.stamina-meter').addClass('not-enough');
+        var t = setInterval(function() {
+            $('.stamina-meter').toggleClass('not-enough');
+        }, 150);
+        setTimeout(function() {
+            clearInterval(t);
+            $('.stamina-meter').removeClass('not-enough');
+        }, 1500);
     }
 
     var animateArrow = function(animation, callback) {
@@ -850,6 +850,10 @@ $(function() {
 
     $(document).on('click', '.attack-button:not(.disabled, .not-turn)', function() {
         cleanSquares();
+        if ($curr_char.data('attack-cost') > currentStamina) {
+            signalInvalidAction();
+            return false;
+        }
         $curr_char.data('attack').forEach(function(vec) {
             var $square = getSquare(vec);
             $square.addClass('attack-candidate');
@@ -872,6 +876,10 @@ $(function() {
     $(document).on('click', '.turn-button:not(.disabled, .not-turn)', function() {
         cleanSquares();
         if ($curr_char.length) {
+            if ($curr_char.data('turn-cost') > currentStamina) {
+                signalInvalidAction();
+                return false;
+            }
             $('.turn-arrow-container').removeClass('transparent').placeAt($curr_char.data('position')).show();
         }
         snd_click.play();
@@ -894,6 +902,10 @@ $(function() {
 
     $(document).on('click', '.move-button:not(.disabled, .not-turn)', function() {
         cleanSquares();
+        if ($curr_char.data('move-cost') > currentStamina) {
+            signalInvalidAction();
+            return false;
+        }
         $curr_char.data('move').forEach(function(vec) {
             var $square = getSquare(vec);
             $square.addClass('move-candidate');

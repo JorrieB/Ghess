@@ -586,6 +586,10 @@ body {
     z-index: 1;
 }
 
+.stamina-meter.not-enough {
+    box-shadow: 0 0 10px 5px rgb(200, 0, 0);
+}
+
 .stamina-meter > span {
   display: block;
   height: 100%;
