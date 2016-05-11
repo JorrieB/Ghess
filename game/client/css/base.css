@@ -897,17 +897,12 @@ sprite.projectile {
     left: 90%;
 }
 
-.sleep-button {
-    background-image: url('/client/img/sleep.png');
-    top: 90%;
-    left: -20%;
-    width: 40px;
-    height: 40px;
-}
-
+#sleep-button,
 #forfeit-button {
-    margin: 12px;
-    margin-left: 60px;
+    display: inline-block;
+    margin: 0;
+    padding: 6px 0;
+    width: 49%;
 }
 
 .attack-candidate .panel {
