@@ -152,7 +152,7 @@ $(function() {
 //****************************************
 // START VIEW
 //****************************************
-///////////////////////////////////////////    
+///////////////////////////////////////////
     $(document).on('mouseenter', '#start-view button', function() {
         $('#game-title').stop().fadeIn(700);
     });
@@ -650,7 +650,7 @@ $(function() {
         }
 
         // Show who's turn
-        
+
         if (playerColor == message.color || $('#spectator-view').length) {
             var turnColor = 'turn-'+message.color;
             $("#turn-standard").addClass('turn-standard-'+playerColor);
@@ -899,9 +899,7 @@ $(function() {
 //////////////////////////////////////////
     $(document).on('click', '#spectator-view .toggle-visibility', function() {
         var $this = $(this);
-        if (typeof($this.data('visibility')) != typeof(1)) {
-            $this.data('visibility', 1);
-        }
+        $this.data('visibility', ($this.data('visibility') || 0) + 1);
         var setting = $this.data('visibility')%3;
         if (setting == 0) {
             $this.css('background-color', '');
@@ -921,7 +919,6 @@ $(function() {
                 });
             }
         });
-        $this.data('visibility', $this.data('visibility') + 1);
     });
 
     socket.on('game-not-available', function(message) {
