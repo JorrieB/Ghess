@@ -675,6 +675,16 @@ $(function() {
             $("#enemy-turn-standard").addClass('turn-standard-'+enemyColor);
             $("#turn-standard").removeClass('turn-standard-'+playerColor);
         }
+
+        if ($('#spectator-view').length) {
+            if (message.color == 'blue') {
+                $("#turn-standard").addClass('turn-standard-blue');
+                $("#enemy-turn-standard").removeClass('turn-standard-red');
+            } else {
+                $("#enemy-turn-standard").addClass('turn-standard-red');
+                $("#turn-standard").removeClass('turn-standard-blue');
+            }
+        }
         $('#stamina-title').removeClass().addClass(turnColor);
         $('#stamina-level').removeClass().addClass(turnColor);
         $('#stamina-count').removeClass().addClass(turnColor);
@@ -723,7 +733,6 @@ $(function() {
         handleAnimations(message.animations, function() {
             var $table = $(table);
             $('.ghess-table').replaceWith($table);
-            $('.ghess-table').css('margin-top', '36px');
             handleCharacters($table, message.characters);
             if (message.turn != playerId) {
                 $('.ghess-table').find('.action-button').addClass('disabled not-turn');
